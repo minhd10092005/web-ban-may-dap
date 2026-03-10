@@ -1,0 +1,151 @@
+.news-section {
+    width: 100%;
+    padding: 80px 0;
+    background-color: #fff;
+}
+
+/* Tiêu đề chính */
+.news-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 900;
+    color: #000;
+    margin-bottom: 50px;
+}
+
+.news-container {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    /* Để định vị 2 nút điều hướng */
+}
+
+/* Thẻ tin tức (Card) */
+.news-card {
+    background-color: #fff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    /* Bóng đổ mờ mờ */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+}
+
+.news-image {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
+.news-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.news-card:hover .news-image img {
+    transform: scale(1.05);
+    /* Zoom nhẹ ảnh khi hover */
+}
+
+/* Phần nội dung chữ bên dưới ảnh */
+.news-content {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    /* Đẩy chữ Xem thêm xuống đáy */
+}
+
+.news-category {
+    color: #ffcc00;
+    /* Vàng TTP */
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.news-content h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: #333;
+    line-height: 1.4;
+    margin-bottom: 15px;
+    /* Cắt bớt chữ nếu tiêu đề quá dài (Tối đa 3 dòng) */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.news-content p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    /* Cắt bớt chữ (Tối đa 3 dòng) */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Nút Xem thêm */
+.read-more {
+    margin-top: auto;
+    /* Tự động bị đẩy xuống dưới cùng */
+    align-self: flex-end;
+    /* Căn sang phải */
+    color: #ffcc00;
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.read-more:hover {
+    color: #cc0000;
+}
+
+/* ==== Cụm Nút Điều Hướng Vuông Vức ==== */
+.news-custom-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 40px;
+    /* Cách xa slider ra một chút */
+}
+
+.news-nav-prev,
+.news-nav-next {
+    width: 40px;
+    height: 40px;
+    background-color: #c4c4c4;
+    /* Màu xám đặc trưng */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.news-nav-prev:hover,
+.news-nav-next:hover {
+    background-color: #ffcc00;
+    /* Hover vào đổi màu vàng */
+}
+
+/* Ẩn các nút điều hướng mặc định của Swiper đi vì mình đã dùng nút custom */
+:global(.news-swiper .swiper-button-next),
+:global(.news-swiper .swiper-button-prev) {
+    display: none !important;
+}

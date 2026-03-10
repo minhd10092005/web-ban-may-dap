@@ -1,0 +1,155 @@
+/* Khung bao ngoài cùng tràn viền */
+.about-section {
+    width: 100%;
+    background-color: #fff;
+    padding: 60px 0;
+    /* Chỉ giữ padding trên dưới, bỏ 2 bên để căn giữa chuẩn */
+    display: flex;
+    justify-content: center;
+}
+
+/* Container chứa nội dung căn giữa hoàn hảo */
+.about-content {
+    display: flex;
+    width: 90%;
+    max-width: 1250px;
+    /* Giới hạn độ rộng để thẳng hàng với Header/Menu */
+    margin: 0 auto;
+    /* Tự động chia đều khoảng trắng 2 bên */
+}
+
+/* Phần nền xám đậm có cắt góc */
+.text-side {
+    width: 50%;
+    /* Ép cứng chiếm đúng 50% diện tích */
+    box-sizing: border-box;
+    /* Bắt buộc có để padding không làm phình khối */
+    background-color: #7b7e81;
+    /* Màu xám đặc trưng */
+    padding: 60px 50px 60px 60px;
+    color: white;
+
+    /* ĐÂY LÀ DÒNG CODE TẠO RA GÓC VÁT TRÊN TRÁI & DƯỚI PHẢI */
+    clip-path: polygon(80px 0, 100% 0, 100% calc(100% - 80px), calc(100% - 80px) 100%, 0 100%, 0 80px);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.about-title {
+    font-size: 42px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 30px;
+}
+
+/* Dấu ngoặc kép vàng khổng lồ */
+.quote-box {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 25px;
+}
+
+.quote-box p {
+    font-size: 22px;
+    font-weight: bold;
+    color: #fff;
+    line-height: 1.5;
+    margin: 0 10px;
+}
+
+.quote-mark {
+    color: #ffcc00;
+    /* Màu vàng Tiến Tuấn */
+    font-size: 70px;
+    line-height: 0.6;
+    font-family: Georgia, serif;
+}
+
+.quote-mark.right {
+    align-self: flex-end;
+}
+
+/* Chữ mô tả nhỏ gióng đều 2 bên */
+.main-desc,
+.sub-desc {
+    font-size: 15px;
+    color: #e0e0e0;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+/* Nút bấm XEM THÊM */
+.btn-view-more {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 12px 30px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s ease;
+}
+
+.arrow-icon {
+    color: #ffcc00;
+    /* Mũi tên vàng */
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.btn-view-more:hover {
+    background-color: #ffcc00;
+    color: #000;
+    border-color: #ffcc00;
+}
+
+.btn-view-more:hover .arrow-icon {
+    color: #000;
+}
+
+/* Phần hình ảnh */
+.image-side {
+    width: 50%;
+    /* Ép cứng chiếm 50% không cho lấn sang chữ */
+    box-sizing: border-box;
+}
+
+.image-side img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Chống méo ảnh */
+    display: block;
+    /* Xóa khoảng hở nhỏ dưới đáy ảnh */
+}
+
+/* Rất quan trọng: Responsive để không bị vỡ trên điện thoại/Tablet */
+@media (max-width: 992px) {
+    .about-content {
+        flex-direction: column;
+        width: 95%;
+    }
+
+    .text-side,
+    .image-side {
+        width: 100%;
+    }
+
+    .text-side {
+        padding: 50px 30px;
+        /* Giảm độ vát góc đi một chút cho màn hình nhỏ đỡ bị mất chữ */
+        clip-path: polygon(50px 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%, 0 100%, 0 50px);
+    }
+
+    .image-side {
+        height: 400px;
+    }
+}

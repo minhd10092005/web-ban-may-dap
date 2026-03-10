@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+// Import Global Components (Dùng chung cho mọi trang)
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import BackToTop from './components/BackToTop';
+
+// Import các Trang (Pages)
+import Home from './pages/Home';
+// Ví dụ sau này bro tạo thêm trang Sản phẩm:
+// import Products from './pages/Products'; 
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div className="App">
+        {/* Navbar nằm ngoài Routes: Lúc nào cũng hiện diện ở trên nóc */}
+        <Navbar />
+
+        {/* Khúc giữa này sẽ biến đổi tùy theo URL (đường dẫn) */}
+        <Routes>
+          {/* Nếu URL là trang chủ "/" -> Hiển thị cục Home */}
+          <Route path="/" element={<Home />} />
+
+          {/* Nếu URL là "/san-pham" -> Hiển thị cục Products */}
+          <Route path="/san-pham" element={<div>Đây là trang Sản Phẩm (Đang xây dựng)</div>} />
+
+          {/* Nếu URL là "/lien-he" -> Hiển thị cục Contact */}
+          <Route path="/lien-he" element={<div>Đây là trang Liên Hệ (Đang xây dựng)</div>} />
+        </Routes>
+
+        {/* Footer nằm ngoài Routes: Lúc nào cũng hiện diện ở dưới đáy */}
+        <Footer />
+        <BackToTop />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;
