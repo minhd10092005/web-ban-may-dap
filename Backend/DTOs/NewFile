@@ -1,0 +1,3 @@
+﻿Thư mục DTOs (Gói hàng gửi cho React):
+👉 Viết các Class "rút gọn" hoặc "chế biến lại" từ Models.
+(Ví dụ: Model User có cột Password rất nhạy cảm. Mình không được gửi thẳng Model này cho React. Thay vào đó, tạo một file UserDTO.cs chỉ có Name và Email rồi gửi cái DTO này đi. Tóm lại: React cần nhận gì, gửi lên gì thì tạo Class ở đây).
