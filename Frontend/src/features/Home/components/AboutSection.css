@@ -1,35 +1,24 @@
-/* Khung bao ngoài cùng tràn viền */
 .about-section {
     width: 100%;
     background-color: #fff;
     padding: 60px 0;
-    /* Chỉ giữ padding trên dưới, bỏ 2 bên để căn giữa chuẩn */
     display: flex;
     justify-content: center;
 }
 
-/* Container chứa nội dung căn giữa hoàn hảo */
 .about-content {
     display: flex;
     width: 90%;
     max-width: 1250px;
-    /* Giới hạn độ rộng để thẳng hàng với Header/Menu */
     margin: 0 auto;
-    /* Tự động chia đều khoảng trắng 2 bên */
 }
 
-/* Phần nền xám đậm có cắt góc */
 .text-side {
     width: 50%;
-    /* Ép cứng chiếm đúng 50% diện tích */
     box-sizing: border-box;
-    /* Bắt buộc có để padding không làm phình khối */
     background-color: #7b7e81;
-    /* Màu xám đặc trưng */
     padding: 60px 50px 60px 60px;
     color: white;
-
-    /* ĐÂY LÀ DÒNG CODE TẠO RA GÓC VÁT TRÊN TRÁI & DƯỚI PHẢI */
     clip-path: polygon(80px 0, 100% 0, 100% calc(100% - 80px), calc(100% - 80px) 100%, 0 100%, 0 80px);
 
     display: flex;
@@ -45,7 +34,6 @@
     margin-bottom: 30px;
 }
 
-/* Dấu ngoặc kép vàng khổng lồ */
 .quote-box {
     display: flex;
     align-items: flex-start;
@@ -62,7 +50,6 @@
 
 .quote-mark {
     color: #ffcc00;
-    /* Màu vàng Tiến Tuấn */
     font-size: 70px;
     line-height: 0.6;
     font-family: Georgia, serif;
@@ -72,7 +59,6 @@
     align-self: flex-end;
 }
 
-/* Chữ mô tả nhỏ gióng đều 2 bên */
 .main-desc,
 .sub-desc {
     font-size: 15px;
@@ -82,7 +68,6 @@
     text-align: justify;
 }
 
-/* Nút bấm XEM THÊM */
 .btn-view-more {
     display: inline-flex;
     align-items: center;
@@ -100,7 +85,6 @@
 
 .arrow-icon {
     color: #ffcc00;
-    /* Mũi tên vàng */
     margin-right: 8px;
     font-size: 16px;
 }
@@ -114,11 +98,8 @@
 .btn-view-more:hover .arrow-icon {
     color: #000;
 }
-
-/* Phần hình ảnh */
 .image-side {
     width: 50%;
-    /* Ép cứng chiếm 50% không cho lấn sang chữ */
     box-sizing: border-box;
 }
 
@@ -126,12 +107,9 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* Chống méo ảnh */
     display: block;
-    /* Xóa khoảng hở nhỏ dưới đáy ảnh */
 }
 
-/* Rất quan trọng: Responsive để không bị vỡ trên điện thoại/Tablet */
 @media (max-width: 992px) {
     .about-content {
         flex-direction: column;

@@ -1,4 +1,4 @@
-// File: src/pages/Home.jsx
+
 import React from 'react';
 import HeroSlider from '../features/Home/components/HeroSlider';
 import AboutSection from '../features/Home/components/AboutSection';

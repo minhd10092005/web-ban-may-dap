@@ -5,11 +5,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import BackToTop from './components/BackToTop';
+import FloatingContact from './components/FloatingContact';
 
-// Import các Trang (Pages)
 import Home from './pages/Home';
-// Ví dụ sau này bro tạo thêm trang Sản phẩm:
-// import Products from './pages/Products'; 
+
 
 function App() {
   return (
@@ -32,6 +31,9 @@ function App() {
 
         {/* Footer nằm ngoài Routes: Lúc nào cũng hiện diện ở dưới đáy */}
         <Footer />
+        {/* Nút liên hệ nổi */}
+        <FloatingContact />
+        {/* Nút Back to Top */}
         <BackToTop />
       </div>
     </Router>

@@ -20,13 +20,9 @@
 /* Khung bọc ngoài Swiper */
 .cert-slider-wrapper {
     max-width: 1250px;
-    /* Khớp với độ rộng của phần chữ xám vát góc ở trên */
     margin: 0 auto;
     padding: 20px 10px;
-    /* Thêm padding để cái bóng (shadow) của thẻ không bị cắt */
 }
-
-/* Đảm bảo bóng không bị cắt viền khi Swiper trượt */
 .cert-swiper {
     padding-bottom: 30px !important;
 }
@@ -34,7 +30,6 @@
 /* Từng ô thẻ chứa logo */
 .cert-card {
     width: 100%;
-    /* Giờ rộng 100% theo sự phân chia của Swiper */
     height: 130px;
     background-color: #fff;
     border-radius: 15px;
@@ -45,8 +40,6 @@
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
     border: 1px solid #f0f0f0;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-    /* Chống bôi đen và giữ mượt khi kéo chuột */
     user-select: none;
 }
 
@@ -59,8 +52,6 @@
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-
-    /* Chống lỗi trình duyệt tưởng người dùng muốn kéo thả file ảnh về máy */
     pointer-events: none;
 }
 

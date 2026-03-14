@@ -74,24 +74,54 @@
     color: #000;
     transform: scale(1.05);
 }
+/* ==== ĐỘ NÚT MŨI TÊN (DIỆT TẬN GỐC LỖI SIZE ICON) ==== */
+.swiper-button-prev,
+.swiper-button-next {
+    width: 50px !important;
+    height: 50px !important;
+    background-color: rgba(160, 160, 160, 0.8) !important;
+    border-radius: 50% !important;
+    color: #ffffff !important;
+    transition: all 0.3s ease;
+    margin-top: -25px !important;
 
-/* Tùy chỉnh nút mũi tên Swiper */
-:global(.swiper-button-next),
-:global(.swiper-button-prev) {
-    color: rgba(255, 255, 255, 0.7) !important;
-    transition: 0.3s;
+    /* === BÍ KÍP TRỊ SWIPER CHÍNH LÀ DÒNG NÀY === */
+    --swiper-navigation-size: 20px !important;
+    /* Ép cứng size icon từ trong lõi Swiper */
+
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
 }
 
-:global(.swiper-button-next:hover),
-:global(.swiper-button-prev:hover) {
-    color: #fff !important;
+/* Chỉ cần ép thêm độ dày nét chữ là đủ */
+.swiper-button-prev::after,
+.swiper-button-next::after {
+    font-weight: 900 !important;
 }
+
+/* Vị trí lùi vào trong 12% */
+.swiper-button-prev {
+    left: 12% !important;
+}
+
+.swiper-button-next {
+    right: 12% !important;
+}
+
+/* Hiệu ứng khi rà chuột vào */
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+    background-color: rgba(100, 100, 100, 0.9) !important;
+    transform: scale(1.1);
+}
+
+/* ========================================================== */
 
 /* Tùy chỉnh dấu chấm chuyển slide */
-:global(.swiper-pagination-bullet-active) {
+.swiper-pagination-bullet-active {
     background: #cc0000 !important;
 }
-
 
 .section-spacer {
     width: 100%;

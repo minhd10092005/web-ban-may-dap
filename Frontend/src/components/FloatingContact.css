@@ -1,0 +1,103 @@
+.floating-contact-bar {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 2147483647;
+    /* Trùm cuối z-index */
+}
+
+.contact-item {
+    display: flex;
+    justify-content: flex-end;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* ==== BÍ KÍP ĐỂ KHÔNG ĐẨY MẤT ICON ==== */
+.contact-content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /* Ép icon luôn dính chặt vào mép phải */
+    background-color: #ffffff;
+    border-radius: 25px;
+    height: 50px;
+    width: 50px;
+    /* Bắt đầu chỉ rộng bằng đúng cái icon */
+    overflow: hidden;
+    position: relative;
+    /* Dùng làm gốc tọa độ để neo dòng chữ */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    border: 1px solid #f0f0f0;
+    transition: width 0.4s ease, background-color 0.4s ease, border-color 0.4s ease;
+}
+
+/* Phần Icon được bảo vệ nghiêm ngặt */
+.icon-wrapper {
+    min-width: 50px;
+    /* Ép cứng chiều rộng không cho ai tranh giành */
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color: #333333;
+    font-size: 20px;
+    z-index: 2;
+    /* Nổi lên trên chữ */
+}
+
+.zalo-icon span {
+    font-size: 13px;
+    font-weight: 900;
+    color: #0068ff;
+}
+
+/* Phần chữ giấu hoàn toàn ra sau lưng, không ảnh hưởng đến Flexbox */
+.contact-label {
+    position: absolute;
+    right: 50px;
+    /* Nép ngay vào sát sườn bên trái của icon */
+    color: #000000;
+    font-size: 14px;
+    font-weight: bold;
+    white-space: nowrap;
+    /* Cấm xuống dòng */
+    padding-right: 15px;
+    /* Cách icon ra một tí cho thoáng */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* ==== KHI NGƯỜI DÙNG RÀ CHUỘT VÀO ==== */
+.contact-item:hover .contact-content {
+    width: 260px;
+    /* Kéo dài hẳn 260px để dư sức chứa email và không bị cắt chữ */
+    background-color: #ffcc00;
+    border-color: #ffcc00;
+}
+
+.contact-item:hover .contact-label {
+    opacity: 1;
+    /* Hiển thị chữ lên */
+}
+
+.contact-item:hover .zalo-icon span {
+    color: #000000;
+    /* Zalo đổi màu đen cho nổi trên nền vàng */
+}
+
+/* Ẩn hiệu ứng trượt trên điện thoại */
+@media (max-width: 768px) {
+    .floating-contact-bar {
+        right: 10px;
+    }
+
+    .contact-item:hover .contact-content {
+        width: 50px;
+    }
+}
