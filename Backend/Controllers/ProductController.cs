@@ -15,9 +15,10 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> GetProducts([FromQuery] string search = "", [FromQuery] int? categoryId = null, [FromQuery] int page = 1, [FromQuery] int pageSize = 6)
         {
-            var data = await _repo.GetProducts();
+            // Truyền tham số từ URL xuống Repository
+            var data = await _repo.GetProductsAdvanced(search, categoryId, page, pageSize);
             return Ok(data);
         }
 

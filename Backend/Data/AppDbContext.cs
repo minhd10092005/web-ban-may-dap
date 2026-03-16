@@ -11,7 +11,8 @@ namespace Backend.Data
         }
 
         public DbSet<Product> Products { get; set; }
-
-        public DbSet<ProductSpec> ProductSpecs { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<ProductDetail> ProductDetails { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
     }
 }

@@ -1,0 +1,254 @@
+/* ProductDetail.css */
+
+/* --- BÙA CHÚ ĐÈ LỆNH INDEX.CSS TỪ XA --- */
+body {
+    display: block !important; 
+    margin: 0 !important;
+    min-height: 100vh !important;
+}
+
+#root {
+    max-width: 100% !important; 
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left !important; 
+}
+/* --------------------------------------- */
+
+.product-detail-container {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+}
+
+/* ================= 1. KHU VỰC ẢNH & THÔNG SỐ ================= */
+.detail-top {
+    display: flex;
+    gap: 50px;
+    margin-bottom: 60px;
+}
+
+.detail-image-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 500px; /* Giới hạn chiều rộng để slider không bị phình to */
+}
+
+/* KHUNG BÊN NGOÀI CỦA SLIDER (Giấu phần tràn) */
+.slider-container {
+    width: 100%;
+    overflow: hidden; 
+    border: 1px solid #eee;
+    background-color: #fff;
+}
+
+/* BĂNG CHUYỀN BÊN TRONG (Chứa 4 ảnh xếp ngang) */
+.slider-wrapper {
+    display: flex;
+    width: 100%;
+    transition: transform 0.5s ease-in-out; /* Hiệu ứng trượt ngang mượt mà */
+}
+
+.detail-main-image {
+    min-width: 100%; /* Ép mỗi ảnh chiếm đúng 100% khung */
+    height: 400px;
+    object-fit: contain;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Các chấm bi dưới ảnh */
+.slider-dots {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ccc;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.dot.active {
+    background-color: #f1c40f; /* Màu vàng đặc trưng */
+}
+
+/* Phần thông tin bên phải */
+.detail-info {
+    flex: 1;
+}
+
+.detail-title {
+    font-size: 28px;
+    color: #333;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+}
+
+.detail-model {
+    font-size: 18px;
+    color: #666;
+    margin: 0 0 30px 0;
+    font-weight: bold;
+}
+
+/* Bảng thông số kỹ thuật */
+.specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+.specs-table th, .specs-table td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: left;
+}
+.specs-table th {
+    background-color: #f8f9fa;
+    color: #333;
+    font-weight: bold;
+}
+
+/* ================= 2. KHU VỰC TỔNG QUAN ================= */
+.overview-section {
+    margin-bottom: 60px;
+}
+
+.overview-header {
+    background-color: #f8f9fa;
+    padding: 15px 20px;
+    border-left: 4px solid #f1c40f; /* Vạch vàng đặc trưng */
+    margin-bottom: 20px;
+}
+
+.overview-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+    font-weight: normal;
+}
+
+.overview-content {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+    padding: 0 20px;
+}
+
+/* ================= 3. KHU VỰC SẢN PHẨM LIÊN QUAN ================= */
+.related-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+}
+
+.related-header h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #333;
+    text-transform: uppercase;
+    position: relative;
+}
+
+/* Gạch chân màu vàng dưới chữ */
+.related-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #f1c40f; 
+}
+
+.nav-buttons button {
+    background-color: #ccc;
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    margin-left: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.related-item {
+    border: 1px solid #eee;
+    padding: 15px;
+    text-align: center;
+    transition: box-shadow 0.2s;
+}
+
+.related-item:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.related-item img {
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+.related-item h4 {
+    margin: 0;
+    color: #000;
+    font-size: 16px;
+}
+
+/* --- PHẦN SẢN PHẨM LIÊN QUAN --- */
+.related-grid {
+    display: flex; /* Bắt buộc xếp hàng ngang */
+    overflow-x: auto; /* Cho phép cuộn ngang */
+    scroll-behavior: smooth; /* Hiệu ứng trượt mượt */
+    gap: 20px;
+    padding-bottom: 15px;
+}
+
+/* Ẩn thanh cuộn ngang (Scrollbar) cho sạch sẽ */
+.related-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.related-item {
+    min-width: 220px; /* Bắt buộc ép chiều rộng cố định */
+    flex-shrink: 0;   /* Cấm các hộp bị co rút lại khi chật chỗ */
+    border: 1px solid #eee;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background-color: white; /* Thêm nền trắng cho đẹp */
+}
+
+.related-item img {
+    max-width: 100%;
+    height: 150px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.related-item h4 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.related-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
