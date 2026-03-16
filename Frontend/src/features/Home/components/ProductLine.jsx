@@ -2,12 +2,12 @@ import React from 'react';
 import './ProductLine.css';
 
 // Import ảnh (Bro nhớ sửa lại tên file cho đúng với ảnh thực tế trong máy nhé)
-import img1 from '../../../assets/imgs/1.jpg';
-import img2 from '../../../assets/imgs/2.jpg';
-import img3 from '../../../assets/imgs/3.jpg';
-import img4 from '../../../assets/imgs/4.jpg';
-import img5 from '../../../assets/imgs/5.jpg';
-import img6 from '../../../assets/imgs/3.jpg';
+import img1 from '../../../assets/imgs/sp1.jpg';
+import img2 from '../../../assets/imgs/sp2.jpg';
+import img3 from '../../../assets/imgs/sp3.jpg';
+import img4 from '../../../assets/imgs/sp4.jpg';
+import img5 from '../../../assets/imgs/sp5.jpg';
+import img6 from '../../../assets/imgs/sp6.jpg';
 
 const ProductLine = () => {
     const products = [

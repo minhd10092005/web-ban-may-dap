@@ -3,7 +3,7 @@ import { FaMapMarkerAlt, FaEnvelope, FaPhoneAlt, FaGlobe, FaYoutube, FaTwitter, 
 import './Footer.css';
 
 // Bro tải cái logo Bộ Công Thương (tick xanh) về lưu vào thư mục imgs nhé
-// import bctLogo from '../assets/imgs/bo-cong-thuong.png';
+import bctLogo from '../assets/imgs/bct.png';
 
 const Footer = () => {
     return (
@@ -46,7 +46,7 @@ const Footer = () => {
 
                 <div className="bct-logo">
                     {/* Tạm thời dùng thẻ img, bro nhớ thay ảnh thật nhé */}
-                    {/* <img src={bctLogo} alt="Đã thông báo Bộ Công Thương" onError={(e) => e.target.style.display = 'none'} /> */}
+                    <img src={bctLogo} alt="Đã thông báo Bộ Công Thương" onError={(e) => e.target.style.display = 'none'} />
                 </div>
             </div>
 

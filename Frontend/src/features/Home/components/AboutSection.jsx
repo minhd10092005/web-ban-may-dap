@@ -1,6 +1,6 @@
 import React from 'react';
 import './AboutSection.css';
-import factoryImg from '../../../assets/imgs/building.avif'; // Nhớ đường dẫn ảnh nha bro
+import factoryImg from '../../../assets/imgs/building.jpg';
 
 const AboutSection = () => {
     return (

@@ -9,11 +9,11 @@ import 'swiper/css/pagination';
 import './HeroSlider.css';
 
 // Import ảnh từ thư mục src/assets/imgs
-import img1 from "../../../assets/imgs/1.jpg";
-import img2 from "../../../assets/imgs/2.jpg";
-import img3 from "../../../assets/imgs/3.jpg";
-import img4 from "../../../assets/imgs/4.jpg";
-import img5 from "../../../assets/imgs/5.jpg";
+import img1 from "../../../assets/imgs/artboard-3.jpg";
+import img2 from "../../../assets/imgs/artboard-8.jpg";
+import img3 from "../../../assets/imgs/banner-51.jpg";
+import img4 from "../../../assets/imgs/granulation-line-200kg-at1.jpg";
+import img5 from "../../../assets/imgs/dc-am-tuong.jpg";
 
 const HeroSlider = () => {
     const banners = [

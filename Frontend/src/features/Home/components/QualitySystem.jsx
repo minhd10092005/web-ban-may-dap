@@ -4,10 +4,10 @@ import 'swiper/css';
 import './QualitySystem.css';
 
 // Import ảnh của bro
-import certPed from '../../../assets/imgs/1.jpg';
-import certEx from '../../../assets/imgs/1.jpg';
-import certTuv from '../../../assets/imgs/1.jpg';
-import certCe from '../../../assets/imgs/1.jpg';
+import certPed from '../../../assets/imgs/qualyti01.jpg';
+import certEx from '../../../assets/imgs/qualyti02.jpg';
+import certTuv from '../../../assets/imgs/qualyti03.jpg';
+import certCe from '../../../assets/imgs/qualyti04.jpg';
 
 const QualitySystem = () => {
     const certs = [

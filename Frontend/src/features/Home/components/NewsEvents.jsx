@@ -6,12 +6,11 @@ import 'swiper/css/navigation';
 import './NewsEvents.css';
 
 // Dùng tạm ảnh có sẵn để không bị lỗi trắng trang
-import news1 from '../../../assets/imgs/1.jpg';
-import news2 from '../../../assets/imgs/2.jpg';
-import news3 from '../../../assets/imgs/3.jpg';
+import news1 from '../../../assets/imgs/sp1.jpg';
+import news2 from '../../../assets/imgs/sp2.jpg';
+import news3 from '../../../assets/imgs/sp3.jpg';
 
 const NewsEvents = () => {
-    // Dữ liệu mẫu giống trong ảnh bro gửi
     const newsList = [
         {
             id: 1, img: news1, category: "Sự kiện & Hội chợ",
