@@ -4,7 +4,7 @@ namespace Backend.DTOs
     {
         public string Name { get; set; }
 
-        public string ModelNumber { get; set; }
+        public string ImageUrl { get; set; }
 
         public List<ProductSpecDTO> Specs { get; set; }
     }

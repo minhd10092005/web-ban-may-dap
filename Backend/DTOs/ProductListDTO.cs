@@ -6,6 +6,6 @@ namespace Backend.DTOs
 
         public string Name { get; set; }
 
-        public string ModelNumber { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

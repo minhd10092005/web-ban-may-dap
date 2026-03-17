@@ -22,7 +22,7 @@ namespace Backend.Repositories
                 {
                     Id = p.Id,
                     Name = p.Name,
-                    ModelNumber = p.ModelNumber
+                    ImageUrl = p.ImageUrl // Đã đổi từ ModelNumber sang ImageUrl
                 })
                 .ToListAsync();
         }
@@ -34,7 +34,9 @@ namespace Backend.Repositories
                 .Select(p => new ProductDetailDTO
                 {
                     Name = p.Name,
-                    ModelNumber = p.ModelNumber,
+                    ImageUrl = p.ImageUrl, // Đã đổi từ ModelNumber sang ImageUrl
+
+                    // Đoạn code xử lý Specs của bạn viết rất chuẩn, tôi giữ nguyên:
                     Specs = _context.ProductSpecs
                         .Where(s => s.ProductId == p.Id)
                         .Select(s => new ProductSpecDTO
