@@ -1,12 +1,20 @@
-﻿// File: Frontend/src/services/api.js
-import axios from 'axios';
+﻿// Thay port 7263 bằng đúng port Backend đang chạy của bạn nhé
+const BASE_URL = 'https://localhost:7263/api';
 
-// Thay cổng 5000 bằng cổng thực tế của Back-end khi bro chạy .NET
-const api = axios.create({
-    baseURL: 'https://localhost:7001',
-    headers: {
-        'Content-Type': 'application/json'
+// Hàm lấy danh sách sản phẩm
+export const fetchProducts = async () => {
+    const response = await fetch(`${BASE_URL}/products`);
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
     }
-});
+    return response.json();
+};
 
-export default api;
+// Hàm lấy chi tiết một sản phẩm theo ID
+export const fetchProductById = async (id) => {
+    const response = await fetch(`${BASE_URL}/products/${id}`);
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+};
