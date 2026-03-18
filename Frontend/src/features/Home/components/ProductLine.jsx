@@ -1,7 +1,8 @@
 import React from 'react';
 import './ProductLine.css';
+import { Link } from 'react-router-dom';
 
-// Import ảnh (Bro nhớ sửa lại tên file cho đúng với ảnh thực tế trong máy nhé)
+// Import ảnh (Đảm bảo đường dẫn này khớp với cấu trúc folder assets của bro)
 import img1 from '../../../assets/imgs/sp1.jpg';
 import img2 from '../../../assets/imgs/sp2.jpg';
 import img3 from '../../../assets/imgs/sp3.jpg';
@@ -16,7 +17,7 @@ const ProductLine = () => {
         { id: 3, name: "Hạt pellet", img: img3 },
         { id: 4, name: "Viên nén", img: img4 },
         { id: 5, name: "Viên nang", img: img5 },
-        { id: 6, name: "Vỉ- Hộp", img: img6 }
+        { id: 6, name: "Vỉ - Hộp", img: img6 }
     ];
 
     return (
@@ -36,18 +37,27 @@ const ProductLine = () => {
 
                 <div className="product-grid">
                     {products.map((item) => (
-                        <div className="product-card" key={item.id}>
-                            <div className="card-image">
-                                <img src={item.img} alt={item.name} />
-                            </div>
-                            {/* Thanh tên sản phẩm và nút mũi tên nằm đè lên ảnh */}
-                            <div className="card-footer">
-                                <h3>{item.name}</h3>
-                                <div className="arrow-btn">
-                                    <span>▶</span>
+                        /* Bọc toàn bộ Card bằng Link để tối ưu trải nghiệm người dùng */
+                        <Link
+                            to={`/products?categoryId=${item.id}`}
+                            key={item.id}
+                            className="product-card-wrapper"
+                            style={{ textDecoration: 'none', color: 'inherit' }}
+                        >
+                            <div className="product-card">
+                                <div className="card-image">
+                                    <img src={item.img} alt={item.name} />
+                                </div>
+
+                                {/* Thanh tên sản phẩm và nút mũi tên nằm đè lên ảnh */}
+                                <div className="card-footer">
+                                    <h3>{item.name}</h3>
+                                    <div className="arrow-btn">
+                                        <span>▶</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </div>

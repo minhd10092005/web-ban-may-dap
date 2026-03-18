@@ -1,0 +1,171 @@
+/* --- Style cơ bản cho Section --- */
+.featured-products-section {
+    padding: 80px 0;
+    background-color: #f9f9f9;
+    position: relative;
+    /* Để watermarkPRODUCTS in chìm (nếu có) */
+}
+
+/* --- Xử lý Header section --- */
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-header h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #333;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 15px;
+}
+
+/* Tạo gạch chân đỏ nhỏ dưới tiêu đề */
+.section-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: #cc0000;
+    /* Màu đỏ Tiến Tuấn */
+}
+
+.section-header p {
+    margin-top: 15px;
+    font-size: 16px;
+    color: #666;
+}
+
+/* --- Style lại các component Swiper (Mũi tên, Dấu chấm) cho khớp thiết kế --- */
+
+/* 1. Đổi màu mũi tên Trái/Phải thành màu đỏ */
+.featured-products-swiper .swiper-button-next,
+.featured-products-swiper .swiper-button-prev {
+    color: #cc0000;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.8);
+    /* Nền trắng mờ */
+    border-radius: 50%;
+    /* Bo tròn nút */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Thu nhỏ icon mũi tên lại 1 chút cho tinh tế */
+.featured-products-swiper .swiper-button-next::after,
+.featured-products-swiper .swiper-button-prev::after {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* 2. Đổi màu và vị trí các dấu chấm pagination */
+.featured-products-swiper .swiper-pagination {
+    bottom: -10px;
+    /* Đẩy dấu chấm xuống dưới card một chút */
+}
+
+.featured-products-swiper .swiper-pagination-bullet {
+    background: #ccc;
+    /* Màu xám cho các nút không active */
+    opacity: 1;
+}
+
+.featured-products-swiper .swiper-pagination-bullet-active {
+    background: #cc0000;
+    /* Màu đỏ cho nút active */
+}
+
+/* --- GIỮ NGUYÊN STYLE CARD CŨ (CHỈ CHỈNH NHỎ) --- */
+.product-grid {
+    padding: 0 10%;
+}
+
+.loading-text {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+}
+
+/* Card body cũ của bro */
+.product-card {
+    background-color: #fff;
+    border: 1px solid #eee;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    height: 100%;
+    /* Ép card full chiều cao để đều nhau */
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    /* Dùng contain để hiện đủ ảnh máy bay N/A */
+    border-radius: 4px;
+    background-color: #eee;
+    /* Nền xám nhạt giống ảnh gốc của bro */
+}
+
+.model-tag {
+    display: inline-block;
+    background-color: #eee;
+    color: #cc0000;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin: 15px 0 10px;
+}
+
+.product-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: auto;
+    /* Đẩy nút XEM CHI TIẾT xuống đáy card */
+    padding: 0 10px 15px;
+}
+
+.view-detail-btn {
+    display: inline-block;
+    padding: 10px 25px;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.featured-products-section {
+    padding-top: 80px;
+    padding-bottom: 80px;
+    padding-left: 10%;
+    padding-right: 10%;
+
+    background-color: #f9f9f9;
+}
+.view-detail-btn:hover {
+    background-color: #cc0000;
+}
+/* Responsive cho mobile */
+@media (max-width: 768px) {
+    .featured-products-section {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}

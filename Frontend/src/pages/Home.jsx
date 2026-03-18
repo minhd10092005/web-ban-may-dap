@@ -5,6 +5,7 @@ import AboutSection from '../features/Home/components/AboutSection';
 import QualitySystem from '../features/Home/components/QualitySystem';
 import ProductLine from '../features/Home/components/ProductLine';
 import NewsEvents from '../features/Home/components/NewsEvents';
+import FeaturedProducts from '../features/Home/components/FeaturedProducts';
 
 const Home = () => {
     return (
@@ -14,6 +15,7 @@ const Home = () => {
             <AboutSection />
             <QualitySystem />
             <ProductLine />
+            <FeaturedProducts />
             <NewsEvents />
         </main>
     );
