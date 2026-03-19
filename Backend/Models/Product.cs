@@ -13,12 +13,12 @@ namespace Backend.Models
         [Column("product_name")]
         public string Name { get; set; }
 
-        // SQL của bạn dùng image_url, nên C# phải khai báo tương ứng
+        // THÊM DẤU ? VÀO STRING
         [Column("image_url")]
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
 
-        // SQL của bạn dùng overview
+        // THÊM DẤU ? VÀO STRING
         [Column("overview")]
-        public string Overview { get; set; }
+        public string? Overview { get; set; }
     }
 }

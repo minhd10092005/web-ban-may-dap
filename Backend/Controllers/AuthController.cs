@@ -40,6 +40,7 @@ namespace Backend.Controllers
             {
                 Email = request.Email,
                 PasswordHash = passwordHash,
+                CreatedAt = DateTime.Now
             };
 
             _context.Users.Add(newUser);
@@ -52,48 +53,57 @@ namespace Backend.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO request)
         {
-            // 1. Tìm user trong Database theo Email
+            // --- 1. KIỂM TRA TRONG SỔ ADMIN TRƯỚC ---
+            var admin = await _context.Admins.FirstOrDefaultAsync(a => a.Email == request.Email);
+            if (admin != null)
+            {
+                bool isAdminPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, admin.PasswordHash);
+                if (!isAdminPasswordValid) return BadRequest(new { message = "Email hoặc mật khẩu không đúng!" });
+
+                // Đúng là Admin -> Cấp Token có Role là "Admin"
+                string token = GenerateJwtToken(admin.AdminId.ToString(), admin.Email, "Admin");
+                return Ok(new { message = "Đăng nhập Admin thành công!", token = token });
+            }
+
+            // --- 2. NẾU KHÔNG PHẢI ADMIN, KIỂM TRA SỔ USERS (CANDIDATE) ---
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
-
-            // Nếu không tìm thấy user
-            if (user == null)
+            if (user != null)
             {
-                return BadRequest(new { message = "Email hoặc mật khẩu không đúng!" });
+                bool isUserPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
+                if (!isUserPasswordValid) return BadRequest(new { message = "Email hoặc mật khẩu không đúng!" });
+
+                // Đúng là Candidate -> Cấp Token có Role là "Candidate"
+                string token = GenerateJwtToken(user.UserId.ToString(), user.Email, "Candidate");
+                return Ok(new { message = "Đăng nhập Candidate thành công!", token = token });
             }
 
-            // 2. Dùng BCrypt để kiểm tra xem mật khẩu nhập vào có khớp với mã băm trong DB không
-            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
-            if (!isPasswordValid)
-            {
-                return BadRequest(new { message = "Email hoặc mật khẩu không đúng!" });
-            }
+            // --- 3. KHÔNG CÓ TRONG CẢ 2 SỔ ---
+            return BadRequest(new { message = "Email hoặc mật khẩu không đúng!" });
+        }
 
-            // 3. Nếu đúng hết, bắt đầu tạo Token (Vé thông hành)
+        // ==========================================
+        // HÀM HỖ TRỢ: CHUYÊN ĐÚC TOKENS MANG THEO ROLE
+        // (Copy hàm này dán vào bên trong class AuthController, dưới hàm Login nhé)
+        // ==========================================
+        private string GenerateJwtToken(string id, string email, string role)
+        {
             var tokenHandler = new JwtSecurityTokenHandler();
-            // Lấy chìa khóa từ appsettings.json
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                // Nhét thông tin của user vào Token
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                    new Claim(ClaimTypes.Email, user.Email)
+                    new Claim(ClaimTypes.NameIdentifier, id),
+                    new Claim(ClaimTypes.Email, email),
+                    new Claim(ClaimTypes.Role, role) // NHÉT CHỨC VỤ VÀO ĐÂY!
                 }),
-                Expires = DateTime.UtcNow.AddDays(7), // Token có hạn 7 ngày
+                Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
-
-            // 4. Trả về Token cho Frontend
-            return Ok(new
-            {
-                message = "Đăng nhập thành công!",
-                token = tokenString
-            });
+            return tokenHandler.WriteToken(token);
         }
     }
 }
