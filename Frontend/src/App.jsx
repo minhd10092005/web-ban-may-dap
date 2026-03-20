@@ -1,69 +1,56 @@
-<<<<<<< HEAD
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-// Import Global Components (Dùng chung cho mọi trang)
+// --- IMPORT GLOBAL COMPONENTS ---
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import BackToTop from './components/BackToTop';
 import FloatingContact from './components/FloatingContact';
 
-// Import các Trang (Pages)
+// --- IMPORT CÁC TRANG CỦA BRO (GIỮ LẠI TRANG HOME ĐẸP) ---
 import Home from './pages/Home';
-
-// Import component từ thư mục features
 import ProductList from './features/products/ProductList';
 import ProductDetail from './features/products/ProductDetail';
 
-function App() {
-  return (
-    <Router>
-      <div className="App">
-        {/* Navbar nằm ngoài Routes: Lúc nào cũng hiện diện ở trên nóc */}
-        <Navbar />
-
-        {/* Khúc giữa này sẽ biến đổi tùy theo URL (đường dẫn) */}
-        <Routes>
-          {/* Trang chủ (Bảo toàn trang Home tuyệt đẹp vừa code xong) */}
-          <Route path="/" element={<Home />} />
-
-          {/* Route danh sách và chi tiết sản phẩm (Lấy từ code mới) */}
-          <Route path="/products" element={<ProductList />} />
-          <Route path="/products/:id" element={<ProductDetail />} />
-
-          {/* Nếu gõ tiếng Việt /san-pham thì tự động bẻ lái sang /products */}
-          <Route path="/san-pham" element={<Navigate to="/products" replace />} />
-
-          {/* Trang Liên Hệ (Tạm thời) */}
-          <Route path="/lien-he" element={
-            <div style={{ padding: '150px 0', textAlign: 'center', fontSize: '24px' }}>
-              Đây là trang Liên Hệ (Đang xây dựng)
-            </div>
-          } />
-        </Routes>
-
-        {/* Footer nằm ngoài Routes: Lúc nào cũng hiện diện ở dưới đáy */}
-        <Footer />
-
-        {/* Các công cụ lơ lửng */}
-        <FloatingContact />
-        <BackToTop />
-      </div>
-    </Router>
-=======
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+// --- IMPORT CÁC TRANG MỚI CỦA NHÓM TRƯỞNG (PULL VỀ) ---
 import About from "./features/about/About";
 import Contact from "./features/contact/Contact";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-      </Routes>
-    </BrowserRouter>
->>>>>>> 01b581039d261a092ea10797170a4308931fac48
+    <Router>
+      <div className="App">
+        {/* Navbar và các nút liên hệ luôn hiện diện */}
+        <Navbar />
+        <FloatingContact />
+        <BackToTop />
+
+        <Routes>
+          {/* 1. Trang chủ của bro (Giữ đúng path "/") */}
+          <Route path="/" element={<Home />} />
+
+          {/* 2. Trang danh sách và chi tiết máy móc */}
+          <Route path="/products" element={<ProductList />} />
+          {/* Lưu ý: path là /product/:id để khớp với link ở trang Home */}
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/san-pham" element={<Navigate to="/products" replace />} />
+
+          {/* 3. Trang About của nhóm trưởng (Đổi sang path "/about") */}
+          <Route path="/about" element={<About />} />
+
+          {/* 4. Trang Contact của nhóm trưởng (Đổi sang path "/contact") */}
+          <Route path="/contact" element={<Contact />} />
+
+          {/* 5. Trang Liên Hệ tạm của bro (Nếu cần giữ) */}
+          <Route path="/lien-he" element={<Navigate to="/contact" replace />} />
+
+          {/* 6. Chống gõ bậy bạ */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
