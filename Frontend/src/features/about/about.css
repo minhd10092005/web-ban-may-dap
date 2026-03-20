@@ -1,0 +1,171 @@
+.about-container{
+  width:100%;
+  font-family:Arial, Helvetica, sans-serif;
+  color:#333;
+}
+
+/* HERO */
+
+.about-hero{
+  position:relative;
+  height:420px;
+  overflow:hidden;
+}
+
+.about-hero img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:brightness(70%);
+}
+
+.hero-text{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  color:white;
+  padding:30px 50px;
+  border-radius:10px;
+}
+
+.hero-text h1{
+  font-size:42px;
+  margin-bottom:15px;
+}
+
+.hero-text p{
+  font-size:18px;
+}
+
+/* TWO COLUMN */
+
+.about-two-column{
+  display:flex;
+  gap:50px;
+  padding:90px 12%;
+  align-items:center;
+}
+
+.about-two-column img{
+  width:450px;
+  border-radius:12px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  transition:0.4s;
+}
+
+.about-two-column img:hover{
+  transform:scale(1.05);
+}
+
+.about-two-column h2{
+  font-size:32px;
+  margin-bottom:15px;
+  color:#2e7d32;
+}
+
+.about-two-column p{
+  line-height:1.7;
+  font-size:17px;
+}
+
+.about-two-column.reverse{
+  flex-direction:row-reverse;
+}
+
+/* GRID */
+
+.about-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:40px;
+  padding:90px 12%;
+  background:#f5f7fa;
+}
+
+/* CARD */
+
+.about-card{
+  background:white;
+  padding:25px;
+  text-align:center;
+  border-radius:12px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.08);
+  transition:all 0.4s ease;
+  overflow:hidden;
+}
+
+.about-card:hover{
+  transform:translateY(-12px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.18);
+}
+
+.about-card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+  border-radius:10px;
+  transition:0.4s;
+}
+
+.about-card:hover img{
+  transform:scale(1.1);
+}
+
+.about-card h3{
+  margin-top:15px;
+  font-size:20px;
+  color:#2e7d32;
+}
+
+.about-card p{
+  font-size:15px;
+  margin-top:10px;
+  line-height:1.6;
+}
+
+/* VIDEO */
+
+.about-video{
+  text-align:center;
+  padding:90px 12%;
+}
+
+.about-video h2{
+  font-size:32px;
+  margin-bottom:30px;
+  color:#2e7d32;
+}
+
+.about-video iframe{
+  border-radius:12px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+
+  .about-two-column{
+    flex-direction:column;
+    text-align:center;
+  }
+
+  .about-two-column.reverse{
+    flex-direction:column;
+  }
+
+  .about-two-column img{
+    width:100%;
+  }
+
+  .about-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero-text h1{
+    font-size:28px;
+  }
+
+}

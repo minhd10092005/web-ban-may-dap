@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -49,6 +50,20 @@ function App() {
         <BackToTop />
       </div>
     </Router>
+=======
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import About from "./features/about/About";
+import Contact from "./features/contact/Contact";
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </BrowserRouter>
+>>>>>>> 01b581039d261a092ea10797170a4308931fac48
   );
 }
 
