@@ -1,17 +1,22 @@
-public class Category
+using System.ComponentModel.DataAnnotations;
+
+namespace Backend.Models.admin
 {
-    [Key]
-    public int CateId { get; set; }
-
-    [Required]
-    [MaxLength(50)]
-    public string CateName { get; set; } = string.Empty;
-
-    public Category(int cateId, string cateName)
+    public class Category : EntityClass
     {
-        this.CateId = cateId;
-        this.CateName = cateName;
-    }
+        [Key] public int? CateId { get; set; }
 
-    protected Category() { }
+        [Required] [MaxLength(50)] public string CateName { get; set; } = string.Empty;
+        public List<Product> Products { get; set; } = new();
+        public Category(int cateId, string cateName)
+        {
+            this.CateId = cateId;
+            this.CateName = cateName;
+        }
+
+        protected Category()
+        {
+        }
+        
+    }
 }

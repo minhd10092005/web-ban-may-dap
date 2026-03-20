@@ -1,27 +1,37 @@
-public class Product : EntityClass
+using System.ComponentModel.DataAnnotations;
+namespace Backend.Models.admin
 {
-    [Key]
-    public int Id { get; set; }
-    
-    [Required]
-    [MaxLength(100)]
-    public string ProductName { get; set; } = string.Empty;
 
-    [Required]
-    [MaxLength(20)]
-    public string ProductType { get; set; } = string.Empty;
+    public class Product : EntityClass
+    {
+        [Key]
+        public int Id { get; set; }
+        
+        [Required]
+        [MaxLength(100)]
+        public string ProductName { get; set; } = string.Empty;
 
-  
+        [Required]
+        [MaxLength(20)]
+        public string ProductType { get; set; } = string.Empty;
 
-    public Product(int Id, string ProductName, string ProductType ){
-        this.Id = Id;
-        this.ProductName = ProductName;
-        this.ProductType = ProductType;
-       
+        public List<ProductDetail> ProductDetails { get; set; } = new();
+
+        public Category? Category { get; set; } 
+        public ProductDetail? ProductDetail { get; set; }
+
+        public Product(int id, string productName, string productType ){
+            this.Id = id;
+            this.ProductName = productName;
+            this.ProductType = productType;
+        
+        }
+     
+
+        public Product()
+        {
+           
+        }
     }
-    protected Product() { }
-
-
-
 
 }
