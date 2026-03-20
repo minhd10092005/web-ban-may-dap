@@ -1,44 +1,75 @@
-﻿using Microsoft.EntityFrameworkCore;
-// using Backend.Data; // Tháo comment khi đã tạo file Data/AppDbContext.cs
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
+using System.Text;
+using Backend.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --- 1. Cấu hình Controller ---
+// ==========================================================
+// (SERVICES - BUILDER)
+// ==========================================================
+
 builder.Services.AddControllers();
 
-// --- 2. Cấu hình CORS (Mở cửa cho React) ---
+// 1. Gene Kết nối: Kết nối database 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// 2. Gene CORS: Mở cầu nối cho React
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowReact", policy => {
-        policy.WithOrigins("http://localhost:5173") // Cổng mặc định của Vite
+        policy.WithOrigins("http://localhost:5173") 
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
 
-// --- 3. Cấu hình Database (Entity Framework) ---
-// Tháo comment 3 dòng dưới khi đã tạo file AppDbContext.cs
-/*
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-*/
+// 3. Gene JWT: Thuê DI đọc mã vạch (Authentication)
+var jwtKey = builder.Configuration["Jwt:Key"] ?? "cc50fd77f8";
+builder.Services.AddAuthentication(options => {
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options => {
+    options.TokenValidationParameters = new TokenValidationParameters {
+        ValidateIssuer = false, // Tạm thời tắt để Duy dễ test
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+    };
+});
 
-builder.Services.AddOpenApi();
+// 4. Gene Phân quyền: Quy định quyền vào khu vực cấm (Authorization)
+builder.Services.AddAuthorization(options => {
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("CandidateOnly", policy => policy.RequireRole("Candidate"));
+});
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// ==========================================================
+// MIDDLEWARE - PIPELINE)
+// ==========================================================
+
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(); 
 }
 
 app.UseHttpsRedirection();
 
-// --- 4. Kích hoạt CORS ---
-app.UseCors("AllowReact");
+// QUAN TRỌNG:Các Middleware 
+app.UseCors("AllowReact"); // 1. Mở cửa cho React vào trước
 
-app.UseAuthorization();
+app.UseAuthentication();   // 2. Kiểm tra thẻ ID (Bạn là ai?)
+app.UseAuthorization();    // 3. Kiểm tra quyền (Bạn có được vào bể này không?)
 
-// --- 5. Tự động tìm các API trong thư mục Controllers ---
-app.MapControllers();
+app.MapControllers();      // 4. Dẫn nước ra các đầu vòi (API Endpoints)
 
-app.Run();
+app.Run(); // Bấm nút khởi động nhà máy (Đã thêm dấu ngoặc tròn)
