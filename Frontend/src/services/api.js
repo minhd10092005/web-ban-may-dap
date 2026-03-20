@@ -1,12 +1,20 @@
-﻿// File: Frontend/src/services/api.js
-import axios from 'axios';
+﻿// quoteService.js
 
-// Thay cổng 5000 bằng cổng thực tế của Back-end khi bro chạy .NET
-const api = axios.create({
-    baseURL: 'https://localhost:7001',
-    headers: {
-        'Content-Type': 'application/json'
-    }
-});
+const API_URL = "https://localhost:7263/api/quote"; // sửa nếu khác port
 
-export default api;
+export const getQuotes = async () => {
+    const res = await fetch(API_URL);
+    return await res.json();
+};
+
+export const createQuote = async (data) => {
+    const res = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+
+    return await res.json();
+};

@@ -1,44 +1,46 @@
 ﻿using Microsoft.EntityFrameworkCore;
-// using Backend.Data; // Tháo comment khi đã tạo file Data/AppDbContext.cs
+using Backend.Data;
+using Backend.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --- 1. Cấu hình Controller ---
+// Controllers
 builder.Services.AddControllers();
 
-// --- 2. Cấu hình CORS (Mở cửa cho React) ---
-builder.Services.AddCors(options => {
-    options.AddPolicy("AllowReact", policy => {
-        policy.WithOrigins("http://localhost:5173") // Cổng mặc định của Vite
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReact",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
 });
 
-// --- 3. Cấu hình Database (Entity Framework) ---
-// Tháo comment 3 dòng dưới khi đã tạo file AppDbContext.cs
-/*
+// ✅ MYSQL (Oracle provider)
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-*/
+    options.UseMySQL(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    ));
 
-builder.Services.AddOpenApi();
+// Repository
+builder.Services.AddScoped<IQuoteRepository, QuoteRepository>();
+
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
-
-// --- 4. Kích hoạt CORS ---
 app.UseCors("AllowReact");
-
 app.UseAuthorization();
 
-// --- 5. Tự động tìm các API trong thư mục Controllers ---
 app.MapControllers();
 
 app.Run();
