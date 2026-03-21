@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Repositories;
-<<<<<<< HEAD
+
 using Backend.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -68,7 +68,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
->>>>>>> 01b581039d261a092ea10797170a4308931fac48
+
 app.UseCors("AllowReact");
 app.UseAuthorization();
 
