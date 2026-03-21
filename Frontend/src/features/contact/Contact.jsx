@@ -17,6 +17,11 @@ function Contact() {
     const [filter, setFilter] = useState(0);
     const [showMessage, setShowMessage] = useState(false);
 
+    // 🔥 ANTI-SPAM
+    const [loading, setLoading] = useState(false);
+    const [lastSubmitTime, setLastSubmitTime] = useState(0);
+    const [formKey, setFormKey] = useState(0);
+
     const ratingLabels = {
         1: "😡 Tệ",
         2: "😐 Trung bình",
@@ -25,29 +30,28 @@ function Contact() {
         5: "😍 Tốt"
     };
 
-    // 🔥 LOAD DATA FROM BACKEND
+    // 🔥 LOAD DATA
     useEffect(() => {
-        fetchFeedbacks();
+        const loadData = async () => {
+            try {
+                const data = await getQuotes();
+
+                const mapped = data.map(item => ({
+                    name: item.fullName,
+                    email: item.email,
+                    message: item.comments,
+                    rating: item.rating || 0,
+                    status: item.status || ""
+                }));
+
+                setFeedbacks(mapped);
+            } catch (err) {
+                console.error("Lỗi load API:", err);
+            }
+        };
+
+        loadData();
     }, []);
-
-    const fetchFeedbacks = async () => {
-        try {
-            const data = await getQuotes();
-
-            // 🔥 MAP DATA từ backend → UI
-            const mapped = data.map(item => ({
-                name: item.fullName,
-                email: item.email,
-                message: item.comments,
-                rating: item.rating || 0,
-                status: item.status || ""
-            }));
-
-            setFeedbacks(mapped);
-        } catch (err) {
-            console.error("Lỗi load API:", err);
-        }
-    };
 
     // ⭐ trung bình
     const averageRating =
@@ -67,7 +71,7 @@ function Contact() {
         5: feedbacks.filter(f => f.rating === 5).length,
     };
 
-    // filter
+    // 🔥 FILTER
     const filteredFeedbacks =
         filter === 0
             ? feedbacks
@@ -80,16 +84,42 @@ function Contact() {
         });
     };
 
-    // 🔥 SUBMIT TO BACKEND
+    // 🔥 SUBMIT
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (loading) return;
 
         if (form.rating === 0) {
             alert("Vui lòng chọn số sao!");
             return;
         }
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(form.email)) {
+            alert("Email không hợp lệ!");
+            return;
+        }
+
+        const now = Date.now();
+        if (now - lastSubmitTime < 5000) {
+            alert("Bạn gửi quá nhanh! Đợi 5 giây.");
+            return;
+        }
+
+        const isDuplicate = feedbacks.some(f =>
+            f.email === form.email &&
+            f.message === form.message
+        );
+        if (isDuplicate) {
+            alert("Bạn đã gửi feedback này rồi!");
+            return;
+        }
+
         try {
+            setLoading(true);
+            setLastSubmitTime(now);
+
             await createQuote({
                 fullName: form.name,
                 email: form.email,
@@ -98,33 +128,40 @@ function Contact() {
                 status: ratingLabels[form.rating]
             });
 
-            // reload data từ DB
-            fetchFeedbacks();
+            const data = await getQuotes();
+            setFeedbacks(data.map(item => ({
+                name: item.fullName,
+                email: item.email,
+                message: item.comments,
+                rating: item.rating || 0,
+                status: item.status || ""
+            })));
 
-            // reset form
+            // 🔥 RESET FORM
             setForm({
                 name: "",
                 email: "",
                 message: "",
                 rating: 0
             });
+            setFormKey(prev => prev + 1);
 
-            // 🎉 message đẹp
             setShowMessage(true);
             setTimeout(() => setShowMessage(false), 3000);
 
         } catch (err) {
             console.error("Lỗi gửi feedback:", err);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <div className="contact-container">
 
-            {/* 🎉 SUCCESS MESSAGE */}
             {showMessage && (
                 <div className="success-message">
-                    🎉 Cảm ơn bạn đã góp ý! Chúng tôi sẽ ghi nhận ý kiến của bạn ❤️
+                    🎉 Cảm ơn bạn đã góp ý! ❤️
                 </div>
             )}
 
@@ -136,7 +173,6 @@ function Contact() {
                 ></iframe>
             </div>
 
-            {/* ROW */}
             <div className="contact-row">
 
                 {/* ADDRESS */}
@@ -153,7 +189,7 @@ function Contact() {
                 <div className="contact-form-box">
                     <h2>Send Feedback</h2>
 
-                    <form onSubmit={handleSubmit}>
+                    <form key={formKey} onSubmit={handleSubmit}>
                         <input
                             name="name"
                             placeholder="Your Name"
@@ -177,9 +213,8 @@ function Contact() {
                             onChange={handleChange}
                         />
 
-                        {/* STAR */}
                         <div className="stars">
-                            {[1,2,3,4,5].map(star => (
+                            {[1, 2, 3, 4, 5].map(star => (
                                 <span
                                     key={star}
                                     className={form.rating >= star ? "active" : ""}
@@ -196,10 +231,11 @@ function Contact() {
                                 : "Chưa chọn đánh giá"}
                         </p>
 
-                        <button type="submit">Send</button>
+                        <button type="submit" disabled={loading}>
+                            {loading ? "Sending..." : "Send"}
+                        </button>
                     </form>
                 </div>
-
             </div>
 
             {/* SUMMARY */}
@@ -207,7 +243,7 @@ function Contact() {
                 <h2>{averageRating} ★ ({feedbacks.length} reviews)</h2>
             </div>
 
-            {/* SHOPEE UI */}
+            {/* 🔥 SHOPEE RATING UI */}
             <div className="shopee-rating">
 
                 <div className="rating-overview">
@@ -216,7 +252,7 @@ function Contact() {
                 </div>
 
                 <div className="rating-bars">
-                    {[5,4,3,2,1].map(star => {
+                    {[5, 4, 3, 2, 1].map(star => {
                         const percent = feedbacks.length === 0
                             ? 0
                             : (ratingCount[star] / feedbacks.length) * 100;
@@ -239,7 +275,6 @@ function Contact() {
                         );
                     })}
                 </div>
-
             </div>
 
             {/* FILTER */}
@@ -251,7 +286,7 @@ function Contact() {
                     Tất cả ({feedbacks.length})
                 </button>
 
-                {[5,4,3,2,1].map(star => (
+                {[5, 4, 3, 2, 1].map(star => (
                     <button
                         key={star}
                         onClick={() => setFilter(star)}
@@ -262,7 +297,6 @@ function Contact() {
                 ))}
             </div>
 
-            {/* SLIDER */}
             <FeedbackSection feedbacks={filteredFeedbacks} />
 
         </div>
@@ -270,16 +304,12 @@ function Contact() {
 }
 
 //////////////////////////////////////////////////////
-// SLIDER (GIỮ NGUYÊN)
+// SLIDER
 //////////////////////////////////////////////////////
 
 function FeedbackSection({ feedbacks }) {
 
     const [index, setIndex] = useState(0);
-
-    useEffect(() => {
-        setIndex(0);
-    }, [feedbacks]);
 
     useEffect(() => {
         if (feedbacks.length === 0) return;
@@ -291,7 +321,7 @@ function FeedbackSection({ feedbacks }) {
         }, 3000);
 
         return () => clearInterval(interval);
-    }, [feedbacks, index]);
+    }, [feedbacks]);
 
     if (feedbacks.length === 0) {
         return <p className="no-feedback">Không có feedback</p>;
