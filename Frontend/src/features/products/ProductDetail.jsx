@@ -157,7 +157,7 @@ const ProductDetail = () => {
                 {/* Gắn ref vào cái khung này để JS biết đường mà trượt */}
                 <div className="related-grid" ref={relatedSliderRef}>
                     {relatedProducts.map(rel => (
-                        <Link to={`/products/${rel.id}`} key={rel.id} style={{ textDecoration: 'none' }}>
+<Link to={`/product/${rel.id}`} key={rel.id} style={{ textDecoration: 'none' }}>
                             <div className="related-item">
                                 <img
                                     src={rel.imageUrl || `https://placehold.co/180x180?text=${rel.name.replace(/ /g, '+')}`}

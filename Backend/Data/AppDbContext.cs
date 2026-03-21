@@ -16,7 +16,7 @@ namespace Backend.Data
         public DbSet<ProductDetail> ProductDetails { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
 
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        
 
         public DbSet<Quote> Quotes { get; set; }
 

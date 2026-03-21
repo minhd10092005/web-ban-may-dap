@@ -94,7 +94,7 @@ const FeaturedProducts = () => {
                                     </span>
                                     <h3>{item.name}</h3> 
                                     {/* Link nhảy sang trang Chi tiết */}
-                                    <Link to={`/products/${item.id}`} className="view-detail-btn">
+                                    <Link to={`/product/${item.id}`} className="view-detail-btn">
                                         XEM CHI TIẾT
                                     </Link>
                                 </div>
