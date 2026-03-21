@@ -335,14 +335,14 @@ function FeedbackSection({ feedbacks }) {
 
             </div>
 
-            <div className="dots">
+            {/* <div className="dots">
                 {feedbacks.map((_, i) => (
                     <span key={i}
                         className={i === index ? "active" : ""}
                         onClick={() => setIndex(i)}
                     ></span>
                 ))}
-            </div>
+            </div> */}
 
         </div>
     );

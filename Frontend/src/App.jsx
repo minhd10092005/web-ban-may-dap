@@ -1,18 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-
-// --- IMPORT GLOBAL COMPONENTS ---
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import BackToTop from './components/BackToTop';
 import FloatingContact from './components/FloatingContact';
-
-// --- IMPORT CÁC TRANG CỦA BRO (GIỮ LẠI TRANG HOME ĐẸP) ---
 import Home from './pages/Home';
 import ProductList from './features/products/ProductList';
 import ProductDetail from './features/products/ProductDetail';
-
-// --- IMPORT CÁC TRANG MỚI CỦA NHÓM TRƯỞNG (PULL VỀ) ---
 import About from "./features/about/About";
 import Contact from "./features/contact/Contact";
 
