@@ -14,7 +14,7 @@ namespace Backend.Models.admin
             this.CateName = cateName;
         }
 
-        protected Category()
+        public  Category()
         {
         }
         

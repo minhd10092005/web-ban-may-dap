@@ -71,7 +71,7 @@ namespace Backend.Services.Admin.Product
            if (product == null) return false;
 
            product.ProductName = dto.ProductName;
-           product.Category.CateId = dto.CateId;
+           product.Category!.CateId = dto.CateId;
 
            await _context.SaveChangesAsync();
            return true;

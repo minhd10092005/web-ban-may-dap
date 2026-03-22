@@ -48,6 +48,33 @@ namespace Backend.Data
                 .WithMany(p => p.ProductDetails)
                 .HasForeignKey(pd => pd.ProductId);
         }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker
+                .Entries()
+                .Where(e => e.Entity is EntityClass && ( 
+                    e.State == EntityState.Added ||
+                    e.State == EntityState.Modified));
+
+            foreach (var entityEntry in entries)
+            {
+                var entity = (EntityClass)entityEntry.Entity;
+
+                if (entityEntry.State == EntityState.Added)
+                {
+                    entity.CreatedAt = DateTime.Now;
+                    entity.IsDeleted = false;
+                }
+                else
+                {
+                    entity.UpdatedAt = DateTime.Now;
+                }
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
     }
 
+    
 }
