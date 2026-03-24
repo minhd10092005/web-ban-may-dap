@@ -16,13 +16,15 @@ namespace Backend.Services.Admin.Product
         public async Task<List<ProductDto>> GetAllAsync()
         {
             return await _context.Products
-                
                 .Select(p => new ProductDto
                 {
                     ProductId = p.Id,
                     ProductName = p.ProductName,
-                    CateId = p.Category!.CateId,
-                    CateName = p.Category.CateName
+                    ProductType = p.ProductType,
+                    CateId = p.ProductDetail != null ? p.ProductDetail.CateId : 0,
+                    CateName = p.ProductDetail != null && p.ProductDetail.Category != null
+                        ? p.ProductDetail.Category.CateName
+                        : "Chưa phân loại"
                 }).ToListAsync();
         }
 
@@ -34,47 +36,57 @@ namespace Backend.Services.Admin.Product
                 {
                     ProductId = p.Id,
                     ProductName = p.ProductName,
-                    CateId = p.Category!.CateId,
-                    CateName = p.Category.CateName
+                    ProductType = p.ProductType,
+                    CateId = p.ProductDetail != null ? p.ProductDetail.CateId : 0,
+                    CateName = p.ProductDetail != null && p.ProductDetail.Category != null
+                        ? p.ProductDetail.Category.CateName
+                        : "Chưa phân loại"
                 }).FirstOrDefaultAsync();
         }
 
         public async Task<ProductDto> CreateAsync(ProductCreateDto dto)
         {
-
             var product = new Models.admin.Product
             {
                 ProductName = dto.ProductName,
-                
+                ProductType = dto.ProductType,
                 ProductDetail = new Models.admin.ProductDetail
                 {
-                    CateId = dto.CateId
+                    CateId = dto.CateId,
+                    Description = "" // Tránh null cho cột description
                 }
-                    
             };
 
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
+
             return new ProductDto
             {
                 ProductId = product.Id,
                 ProductName = product.ProductName,
-                CateId = product.Category!.CateId
+                ProductType = product.ProductType,
+                CateId = product.ProductDetail.CateId
             };
-
-
         }
 
         public async Task<bool> UpdateAsync(int id, ProductUpdateDto dto)
         {
-           var product = await _context.Products.FindAsync(id);
-           if (product == null) return false;
+            var product = await _context.Products
+                .Include(p => p.ProductDetail)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
-           product.ProductName = dto.ProductName;
-           product.Category!.CateId = dto.CateId;
+            if (product == null) return false;
 
-           await _context.SaveChangesAsync();
-           return true;
+            product.ProductName = dto.ProductName;
+            product.ProductType = dto.ProductType;
+
+            if (product.ProductDetail != null)
+            {
+                product.ProductDetail.CateId = dto.CateId;
+            }
+
+            await _context.SaveChangesAsync();
+            return true;
         }
 
 

@@ -15,7 +15,7 @@ namespace Backend.Models.admin
         [MaxLength(20)]
         public string ProductType { get; set; } = string.Empty;
 
-        public List<ProductDetail> ProductDetails { get; set; } = new();
+     
 
         public Category? Category { get; set; } 
         public ProductDetail? ProductDetail { get; set; }

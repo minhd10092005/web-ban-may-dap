@@ -5,6 +5,8 @@ using System.Text;
 using Backend.Data;
 using Backend.Services.Admin.Product;
 using Backend.Services.Admin.Category;
+using Backend.Services.Admin.ProductDetail;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // ==========================================================
@@ -27,6 +29,7 @@ builder.Services.AddCors(options => {
 });
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICateService, CateService>();
+builder.Services.AddScoped<IProductDetailService,ProductDetailService>();
 // 3. Gene JWT: Thuê DI đọc mã vạch (Authentication)
 var jwtKey = builder.Configuration["Jwt:Key"] ?? "cc50fd77f8";
 builder.Services.AddAuthentication(options => {

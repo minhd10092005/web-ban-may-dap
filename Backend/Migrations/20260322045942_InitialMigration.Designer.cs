@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260321050705_AddAuditFieldsToCategory")]
-    partial class AddAuditFieldsToCategory
+    [Migration("20260322045942_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -196,11 +196,8 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.admin.ProductDetail", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CateId")
                         .HasColumnType("int");
@@ -210,21 +207,12 @@ namespace Backend.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProductId1")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("ProductId");
 
                     b.HasIndex("CateId");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("ProductId1")
-                        .IsUnique()
-                        .HasFilter("[ProductId1] IS NOT NULL");
 
                     b.ToTable("ProductDetails");
                 });
@@ -361,7 +349,7 @@ namespace Backend.Migrations
             modelBuilder.Entity("Backend.Models.admin.Product", b =>
                 {
                     b.HasOne("Backend.Models.admin.Category", "Category")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("CategoryCateId");
 
                     b.Navigation("Category");
@@ -370,20 +358,16 @@ namespace Backend.Migrations
             modelBuilder.Entity("Backend.Models.admin.ProductDetail", b =>
                 {
                     b.HasOne("Backend.Models.admin.Category", "Category")
-                        .WithMany()
+                        .WithMany("ProductDetails")
                         .HasForeignKey("CateId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Backend.Models.admin.Product", "Product")
-                        .WithMany("ProductDetails")
-                        .HasForeignKey("ProductId")
+                        .WithOne("ProductDetail")
+                        .HasForeignKey("Backend.Models.admin.ProductDetail", "ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Backend.Models.admin.Product", null)
-                        .WithOne("ProductDetail")
-                        .HasForeignKey("Backend.Models.admin.ProductDetail", "ProductId1");
 
                     b.Navigation("Category");
 
@@ -392,14 +376,12 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.admin.Category", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("ProductDetails");
                 });
 
             modelBuilder.Entity("Backend.Models.admin.Product", b =>
                 {
                     b.Navigation("ProductDetail");
-
-                    b.Navigation("ProductDetails");
                 });
 #pragma warning restore 612, 618
         }
