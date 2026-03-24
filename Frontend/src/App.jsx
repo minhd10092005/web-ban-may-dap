@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -9,6 +10,9 @@ import ProductList from './features/products/ProductList';
 import ProductDetail from './features/products/ProductDetail';
 import About from "./features/about/About";
 import Contact from "./features/contact/Contact";
+import Login from "./features/login/Login";
+import Register from "./features/login/Register";
+
 
 function App() {
   return (
@@ -18,6 +22,8 @@ function App() {
         <Navbar />
         <FloatingContact />
         <BackToTop />
+        <Login />
+        <Register />
 
         <Routes>
           {/* 1. Trang chủ của bro (Giữ đúng path "/") */}

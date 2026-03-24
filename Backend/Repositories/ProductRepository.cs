@@ -54,10 +54,16 @@ namespace Backend.Repositories
                 .Take(pageSize)
                 .Select(x => new ProductListDTO
                 {
+<<<<<<< HEAD
                     Id = x.Product.ProductId,
                     Name = x.Product.ProductName,
                     ModelNumber = "N/A", // Giữ nguyên để React không lỗi giao diện cũ
                     ImageUrl = x.Product.ImageUrl ?? "https://placehold.co/250x220?text=No+Image"
+=======
+                    Id = p.Id,
+                    Name = p.Name,
+                    ImageUrl = p.ImageUrl // Đã đổi từ ModelNumber sang ImageUrl
+>>>>>>> 63e53f2d11e14889da4629cc6978c27bb7be35a8
                 })
                 .ToListAsync();
 
@@ -75,12 +81,33 @@ namespace Backend.Repositories
         // =========================================================================
         public async Task<ProductDetailDTO> GetProductById(int id)
         {
+<<<<<<< HEAD
             // Thực hiện JOIN 3 bảng: products, product_details, category
             var query = from p in _context.Products
                         join pd in _context.ProductDetails on p.ProductId equals pd.ProductId into pdJoin
                         from pd in pdJoin.DefaultIfEmpty() // LEFT JOIN
                         where p.ProductId == id
                         select new { p, pd };
+=======
+            var product = await _context.Products
+                .Where(p => p.Id == id)
+                .Select(p => new ProductDetailDTO
+                {
+                    Name = p.Name,
+                    ImageUrl = p.ImageUrl, // Đã đổi từ ModelNumber sang ImageUrl
+
+                    // Đoạn code xử lý Specs của bạn viết rất chuẩn, tôi giữ nguyên:
+                    Specs = _context.ProductSpecs
+                        .Where(s => s.ProductId == p.Id)
+                        .Select(s => new ProductSpecDTO
+                        {
+                            SpecName = s.SpecName,
+                            SpecValue = s.SpecValue,
+                            Unit = s.Unit
+                        }).ToList()
+                })
+                .FirstOrDefaultAsync();
+>>>>>>> 63e53f2d11e14889da4629cc6978c27bb7be35a8
 
             var result = await query.FirstOrDefaultAsync();
 

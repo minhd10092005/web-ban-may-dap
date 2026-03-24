@@ -8,7 +8,11 @@ namespace Backend.DTOs
         // Thêm dấu ? vào để C# không cằn nhằn lỗi Nullable nữa
         public string? Name { get; set; }
 
+<<<<<<< HEAD
         public string? ModelNumber { get; set; }
+=======
+        public string ImageUrl { get; set; }
+>>>>>>> 63e53f2d11e14889da4629cc6978c27bb7be35a8
 
         public string? ImageUrl { get; set; }
 

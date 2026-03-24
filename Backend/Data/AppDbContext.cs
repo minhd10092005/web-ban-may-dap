@@ -16,6 +16,7 @@ namespace Backend.Data
         public DbSet<ProductDetail> ProductDetails { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
 
+<<<<<<< HEAD
         
 
         public DbSet<Quote> Quotes { get; set; }
@@ -24,5 +25,12 @@ namespace Backend.Data
         {
             modelBuilder.Entity<Quote>().ToTable("quotes");
         }
+=======
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<Admin> Admins { get; set; }
+
+        public DbSet<ProductSpec> ProductSpecs { get; set; }
+>>>>>>> 63e53f2d11e14889da4629cc6978c27bb7be35a8
     }
 }
