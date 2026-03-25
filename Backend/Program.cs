@@ -9,36 +9,32 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-<<<<<<< HEAD
-// 1. Add Controllers
+// 1. CẤU HÌNH CONTROLLERS & API EXPLORER
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
 
-// 2. Add CORS
-=======
-// --- 1. CẤU HÌNH CORS (Gộp chung cả 2 link Frontend vào đây cho gọn) ---
->>>>>>> 63e53f2d11e14889da4629cc6978c27bb7be35a8
+
+// 2. CẤU HÌNH CORS (Cho phép React/Vite gọi API)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        // Cho phép cả localhost:3000 và localhost:5173 gọi API
         policy.WithOrigins("http://localhost:3000", "http://localhost:5173")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
 
-<<<<<<< HEAD
-// 3. Add Database Context (MySQL)
+// 3. CẤU HÌNH DATABASE (MySQL)
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySQL(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    )
+    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// 4. Add Repositories
-=======
-// --- 2. CẤU HÌNH ĐỌC TOKEN JWT ---
+// 4. CẤU HÌNH REPOSITORIES
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IQuoteRepository, QuoteRepository>();
+builder.Services.AddScoped<ICandidateRepository, CandidateRepository>();
+// 5. CẤU HÌNH ĐỌC TOKEN JWT
 var jwtKey = builder.Configuration["Jwt:Key"]!;
 var keyBytes = Encoding.ASCII.GetBytes(jwtKey);
 
@@ -46,8 +42,7 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
+}).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;
     options.SaveToken = true;
@@ -60,10 +55,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-
-// --- 3. CẤU HÌNH SWAGGER (CÓ Ổ KHÓA) ---
+// 6. CẤU HÌNH SWAGGER (CÓ Ổ KHÓA BẢO MẬT)
 builder.Services.AddSwaggerGen(c =>
 {
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -82,39 +74,17 @@ builder.Services.AddSwaggerGen(c =>
             {
                 Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
             },
-            new string[] {}
+            Array.Empty<string>()
         }
     });
 });
 
-// --- 4. CẤU HÌNH DATABASE & REPOSITORY ---
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
->>>>>>> 63e53f2d11e14889da4629cc6978c27bb7be35a8
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IQuoteRepository, QuoteRepository>();
-
-// 5. Add Swagger
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// --- Build the App ---
+// ============================================================
+// BUILD THÀNH APP VÀ CẤU HÌNH PIPELINE (MIDDLEWARES)
+// ============================================================
 var app = builder.Build();
 
-<<<<<<< HEAD
-// 6. Configure the HTTP request pipeline
-app.UseSwagger();
-app.UseSwaggerUI();
-
-app.UseHttpsRedirection();
-
-// IMPORTANT: CORS must be called before Authorization
-app.UseCors("AllowReact");
-
-app.UseAuthorization();
-=======
-// --- 5. PIPELINE XỬ LÝ REQUEST CỦA ỨNG DỤNG ---
+// Chỉ hiện Swagger khi ở chế độ lập trình (Dev)
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -124,10 +94,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // THỨ TỰ 3 DÒNG NÀY CỰC KỲ QUAN TRỌNG - KHÔNG ĐƯỢC ĐỔI CHỖ
-app.UseCors("AllowFrontend"); // 1. Cho phép Frontend đi qua cổng
-app.UseAuthentication();      // 2. Trạm kiểm tra vé (Token)
-app.UseAuthorization();       // 3. Trạm cấp quyền vào xem dữ liệu
->>>>>>> 63e53f2d11e14889da4629cc6978c27bb7be35a8
+app.UseCors("AllowFrontend");   // 1. Mở cửa cho Frontend vào
+app.UseAuthentication();        // 2. Trạm soát vé (Kiểm tra Token)
+app.UseAuthorization();         // 3. Trạm cấp quyền (Quyết định được xem dữ liệu gì)
 
 app.MapControllers();
 

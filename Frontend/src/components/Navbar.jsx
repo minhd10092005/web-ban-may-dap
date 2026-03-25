@@ -1,6 +1,7 @@
 import React from 'react';
 import './NavBar.css';
 import { FaHome, FaSearch } from 'react-icons/fa';
+import { Link } from 'react-router-dom'; // Đã thêm thư viện Link
 
 const NavBar = () => {
     return (
@@ -10,7 +11,8 @@ const NavBar = () => {
                     <span>TIN TỨC</span>
                     <span>QUY TẮC ỨNG XỬ</span>
                     <span>MUA HÀNG</span>
-                    <span>TUYỂN DỤNG</span>
+                    {/* Đã sửa thành Link trỏ tới form Đăng nhập */}
+                    <Link to="/login" className="hover:text-sky-500 transition cursor-pointer">TUYỂN DỤNG</Link>
                 </div>
                 <div className="flags">
                     <span>🇻🇳</span>
@@ -29,9 +31,9 @@ const NavBar = () => {
                     </div>
                 </div>
                 <nav className="nav-menu">
-                    <a href="/" className="home-icon"><FaHome /></a>
+                    <Link to="/" className="home-icon"><FaHome /></Link>
                     <div className="nav-item has-dropdown">
-                        <a href="/about" className="main-link">VỀ CHÚNG TÔI</a>
+                        <Link to="/about" className="main-link">VỀ CHÚNG TÔI</Link>
                         <div className="dropdown-menu">
                             <a href="#"><span>&rsaquo;</span> Giới thiệu chung</a>
                             <a href="#"><span>&rsaquo;</span> Quá trình phát triển</a>
@@ -40,9 +42,9 @@ const NavBar = () => {
                         </div>
                     </div>
 
-                    <a href="/services" className="nav-item main-link">DỊCH VỤ</a>
+                    <Link to="/services" className="nav-item main-link">DỊCH VỤ</Link>
                     <div className="nav-item has-dropdown">
-                        <a href="/products" className="main-link">SẢN PHẨM</a>
+                        <Link to="/products" className="main-link">SẢN PHẨM</Link>
                         <div className="dropdown-menu">
                             <a href="#"><span>&rsaquo;</span> Xử lý nguyên liệu</a>
                             <a href="#"><span>&rsaquo;</span> Tạo hạt cốm</a>
@@ -57,7 +59,7 @@ const NavBar = () => {
                             <a href="#"><span>&rsaquo;</span> Giải pháp trọn gói</a>
                         </div>
                     </div>
-                    <a href="/contact" className="nav-item main-link">LIÊN HỆ</a>
+                    <Link to="/contact" className="nav-item main-link">LIÊN HỆ</Link>
                     <FaSearch className="search-icon" />
                 </nav>
             </div>
