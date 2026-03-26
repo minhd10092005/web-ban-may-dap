@@ -85,6 +85,9 @@ export default function CandidateDashboard() {
 
   return (
     <div className="dashboard-container">
+      <button onClick={handleLogout} className="btn btn-danger-light">
+        Đăng xuất
+      </button>
       <div className="dashboard-card">
         
         {/* HEADER */}

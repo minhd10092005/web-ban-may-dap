@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 // 1. CẤU HÌNH CONTROLLERS & API EXPLORER
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-
+builder.Services.AddMemoryCache(); // 👈 THÊM DÒNG NÀY ĐỂ TÍNH NĂNG GỬI OTP KHÔNG BỊ LỖI 500
 
 // 2. CẤU HÌNH CORS (Cho phép React/Vite gọi API)
 builder.Services.AddCors(options =>
@@ -34,11 +34,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IQuoteRepository, QuoteRepository>();
 builder.Services.AddScoped<ICandidateRepository, CandidateRepository>();
-
 builder.Services.AddScoped<Backend.Services.IEmailService, Backend.Services.EmailService>();
+
 // 5. CẤU HÌNH ĐỌC TOKEN JWT
 var jwtKey = builder.Configuration["Jwt:Key"]!;
-var keyBytes = Encoding.ASCII.GetBytes(jwtKey);
+var keyBytes = Encoding.UTF8.GetBytes(jwtKey); // 👈 ĐÃ ĐỔI TỪ ASCII SANG UTF8 CHUẨN BÀI!
 
 builder.Services.AddAuthentication(options =>
 {
