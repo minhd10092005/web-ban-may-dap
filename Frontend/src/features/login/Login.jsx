@@ -21,21 +21,25 @@ export default function Login() {
         },
       );
 
+      // React nay đã nhận được Token từ C#
       const token = response.data.token;
       localStorage.setItem("token", token);
 
+      // Giải mã an toàn và lấy quyền (Role)
       const decoded = jwtDecode(token);
       const userRole =
         decoded[
           "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
         ] || decoded.role;
 
+      // Chia nhánh mượt mà
       if (userRole === "Admin" || userRole === "admin") {
         navigate("/admin");
       } else {
         navigate("/candidate");
       }
     } catch (error) {
+      // 👈 BẠN ĐÃ VÔ TÌNH XÓA MẤT KHÚC NÀY TRƯỚC ĐÓ
       const errorMsg =
         error.response?.data?.message ||
         "❌ Đăng nhập thất bại. Vui lòng kiểm tra lại!";

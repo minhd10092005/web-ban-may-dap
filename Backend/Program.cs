@@ -8,7 +8,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddMemoryCache();
 // --- 1. CẤU HÌNH CORS (Gộp chung cả 2 link Frontend vào đây cho gọn) ---
 builder.Services.AddCors(options =>
 {
