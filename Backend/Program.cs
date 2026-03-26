@@ -34,6 +34,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IQuoteRepository, QuoteRepository>();
 builder.Services.AddScoped<ICandidateRepository, CandidateRepository>();
+
+builder.Services.AddScoped<Backend.Services.IEmailService, Backend.Services.EmailService>();
 // 5. CẤU HÌNH ĐỌC TOKEN JWT
 var jwtKey = builder.Configuration["Jwt:Key"]!;
 var keyBytes = Encoding.ASCII.GetBytes(jwtKey);
