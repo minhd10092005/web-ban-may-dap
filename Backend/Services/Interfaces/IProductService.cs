@@ -1,6 +1,6 @@
 using Backend.DTOs.Product;
 
-namespace Backend.Services.Admin.Product
+namespace Backend.Services.Interfaces
 {
     public interface IProductService
     {

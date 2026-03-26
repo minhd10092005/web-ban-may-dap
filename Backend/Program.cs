@@ -3,9 +3,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using Backend.Data;
-using Backend.Services.Admin.Product;
-using Backend.Services.Admin.Category;
-using Backend.Services.Admin.ProductDetail;
+using Backend.Services.Implementations;
+using Backend.Services.Interfaces;
+using Backend.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,13 +67,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(); 
 }
 
-app.UseHttpsRedirection();
+app.UseMiddleware<ExceptionMiddleware>();
 
-// QUAN TRỌNG:Các Middleware 
-app.UseCors("AllowReact"); // 1. Mở cửa cho React vào trước
+app.UseMiddleware<LoggingMiddleware>();
 
-app.UseAuthentication();   // 2. Kiểm tra thẻ ID (Bạn là ai?)
-app.UseAuthorization();    // 3. Kiểm tra quyền (Bạn có được vào bể này không?)
+app.UseMiddleware<PerformanceMiddleware>();
+
+app.UseMiddleware<RateLimitingMiddleware>();
+
+app.UseMiddleware<SecurityHeadersMiddleware>();
+
+// app.UseMiddleware<ResponseWrapperMiddleware>(); // optional
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();      // 4. Dẫn nước ra các đầu vòi (API Endpoints)
 

@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-namespace Backend.Models.admin
+namespace Backend.Models
 {
 
     public class User : EntityClass

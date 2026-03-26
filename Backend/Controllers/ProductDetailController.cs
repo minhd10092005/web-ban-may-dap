@@ -1,5 +1,6 @@
 using Backend.DTOs.ProductDetail;
-using Backend.Services.Admin.ProductDetail;
+using Backend.Services.Implementations;
+using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers

@@ -1,8 +1,8 @@
 using Backend.DTOs.Product;
 using Backend.Data;
 using Microsoft.EntityFrameworkCore;
-
-namespace Backend.Services.Admin.Product
+using Backend.Services.Interfaces;
+namespace Backend.Services.Implementations
 {
     public class ProductService : IProductService
     {
@@ -46,11 +46,11 @@ namespace Backend.Services.Admin.Product
 
         public async Task<ProductDto> CreateAsync(ProductCreateDto dto)
         {
-            var product = new Models.admin.Product
+            var product = new Models.Product
             {
                 ProductName = dto.ProductName,
                 ProductType = dto.ProductType,
-                ProductDetail = new Models.admin.ProductDetail
+                ProductDetail = new Models.ProductDetail
                 {
                     CateId = dto.CateId,
                     Description = "" // Tránh null cho cột description

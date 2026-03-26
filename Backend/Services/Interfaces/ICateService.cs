@@ -1,6 +1,6 @@
 using Backend.DTOs.Category;
 
-namespace Backend.Services.Admin.Category
+namespace Backend.Services.Interfaces
 {
 
 

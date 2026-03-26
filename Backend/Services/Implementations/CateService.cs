@@ -1,9 +1,9 @@
 using Backend.Data;
 using Backend.DTOs.Category;
-
+using Backend.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Backend.Services.Admin.Category
+namespace Backend.Services.Implementations
 {
 
 
@@ -43,7 +43,7 @@ namespace Backend.Services.Admin.Category
 
         public async Task<CateDto> CreateAsync(CateCreateDto dto)
         {
-            var category = new Models.admin.Category
+            var category = new Models.Category
             {
                 CateName = dto.CateName
             };

@@ -1,8 +1,9 @@
 using Backend.Data;
 using Backend.DTOs.ProductDetail;
 using Microsoft.EntityFrameworkCore;
+using Backend.Services.Interfaces;
 
-namespace Backend.Services.Admin.ProductDetail
+namespace Backend.Services.Implementations
 {
     public class ProductDetailService : IProductDetailService
     {
@@ -44,7 +45,7 @@ namespace Backend.Services.Admin.ProductDetail
 
         public async Task<ProductDetailDto> CreateAsync(PrdDetailCreateDto dto)
         {
-            var productDetail = new Models.admin.ProductDetail
+            var productDetail = new Models.ProductDetail
             {
                 ProductId = dto.ProductId,
                 CateId = dto.CateId,

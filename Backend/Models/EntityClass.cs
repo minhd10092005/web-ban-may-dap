@@ -1,4 +1,4 @@
-namespace Backend.Models.admin
+namespace Backend.Models
 {
 
     public abstract class EntityClass
