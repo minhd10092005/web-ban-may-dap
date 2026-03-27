@@ -9,53 +9,35 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// =================================================
 // 1. CONTROLLERS + CACHE
-// =================================================
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddMemoryCache();
 
-
-// =================================================
 // 2. CORS (CHO PHÉP FRONTEND)
-// =================================================
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins(
-                "http://localhost:3000",
-                "http://localhost:5173"
-              )
+        policy.WithOrigins("http://localhost:3000", "http://localhost:5173")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
 
-
-// =================================================
 // 3. DATABASE (MYSQL)
-// =================================================
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySQL(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    )
+    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")!)
 );
 
-
-// =================================================
 // 4. REPOSITORY
-// =================================================
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IQuoteRepository, QuoteRepository>();
 builder.Services.AddScoped<ICandidateRepository, CandidateRepository>();
-builder.Services.AddScoped<Backend.Services.IEmailService, Backend.Services.EmailService>();
+// Mở lại dòng này nếu bạn đã có file EmailService, nếu chưa có thì tạm comment lại (//) nhé
+// builder.Services.AddScoped<Backend.Services.IEmailService, Backend.Services.EmailService>();
 
-
-// =================================================
-// 5. JWT AUTHENTICATION
-// =================================================
+// 5. JWT AUTHENTICATION (ÔNG BẢO VỆ XÓT VÉ)
 var jwtKey = builder.Configuration["Jwt:Key"]!;
 var keyBytes = Encoding.UTF8.GetBytes(jwtKey);
 
@@ -63,8 +45,7 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
+}).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;
     options.SaveToken = true;
@@ -72,15 +53,18 @@ builder.Services.AddAuthentication(options =>
     {
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
-        ValidateIssuer = false,
-        ValidateAudience = false
+
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+
+        ClockSkew = TimeSpan.Zero
     };
 });
 
-
-// =================================================
 // 6. SWAGGER
-// =================================================
 builder.Services.AddSwaggerGen(c =>
 {
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -97,27 +81,15 @@ builder.Services.AddSwaggerGen(c =>
         {
             new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
             },
-            new string[] {}
+            Array.Empty<string>()
         }
     });
 });
 
-
-// =================================================
-// BUILD APP
-// =================================================
 var app = builder.Build();
 
-
-// =================================================
-// PIPELINE
-// =================================================
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -125,12 +97,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseCors("AllowFrontend");
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

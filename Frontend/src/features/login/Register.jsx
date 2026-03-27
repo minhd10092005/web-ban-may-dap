@@ -48,7 +48,7 @@ export default function Register() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
+await axios.post(
         "https://localhost:7263/api/Auth/register",
         {
           email: email,
