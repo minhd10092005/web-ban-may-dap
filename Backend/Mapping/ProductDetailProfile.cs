@@ -8,18 +8,16 @@ namespace Backend.Mapping
     {
         public ProductDetailProfile()
         {
-            // Entity → DTO
             CreateMap<ProductDetail, ProductDetailDto>()
                 .ForMember(dest => dest.ProductName,
-                    opt => opt.MapFrom(src => src.Product!.ProductName))
+                    opt => opt.MapFrom(src => src.Product != null ? src.Product.ProductName : "Máy không tên"))
                 .ForMember(dest => dest.CateName,
-                    opt => opt.MapFrom(src => src.Category!.CateName));
+                    opt => opt.MapFrom(src => src.Category != null ? src.Category.CateName : "Chưa phân loại"));
 
-            // DTO → Entity (Create)
             CreateMap<PrdDetailCreateDto, ProductDetail>();
 
-            // DTO → Entity (Update)
-            CreateMap<PrdDetailUpdateDto, ProductDetail>();
+            CreateMap<PrdDetailUpdateDto, ProductDetail>()
+                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
 }

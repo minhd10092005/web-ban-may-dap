@@ -8,7 +8,7 @@ namespace Backend.Mapping
     {
         public CategoryProfile()
         {
-            //Entity → DTO (chi tiết)
+            //Entity → DTO 
             CreateMap<Category, CateDto>();
 
 

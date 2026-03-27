@@ -1,5 +1,4 @@
-using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
+using Backend.Mapping;
 
 namespace Backend.Extensions
 {
@@ -7,7 +6,7 @@ namespace Backend.Extensions
     {
         public static IServiceCollection AddMapping(this IServiceCollection services)
         {
-            services.AddAutoMapper(_ => { }, Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(typeof(ProductProfile));
             return services;
         }
     }

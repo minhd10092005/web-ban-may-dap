@@ -32,7 +32,7 @@ builder.Services.AddCors(options =>
 // Swagger
 builder.Services.AddSwaggerDocumentation();
 
-// 🔥 Extensions (cốt lõi hệ thống)
+// Extensions (cốt lõi hệ thống)
 builder.Services.AddApplicationServices();
 builder.Services.AddMapping();
 builder.Services.AddJwtAuth(builder.Configuration);
@@ -48,7 +48,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-// 🔥 Custom middleware (Exception, Logging, Performance...)
+//  Custom middleware (Exception, Logging, Performance...)
 app.UseCustomMiddleware();
 
 // HTTPS

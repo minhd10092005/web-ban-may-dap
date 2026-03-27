@@ -4,23 +4,27 @@ using Backend.Models;
 
 namespace Backend.Mapping
 {
-    public class ProductProfile : Profile
+public class ProductProfile : Profile
+{
+    public ProductProfile()
     {
-        public ProductProfile()
-        {
-            // Entity → DTO
-            CreateMap<Product, ProductDto>()
-                .ForMember(dest => dest.ProductName,
-                    opt => opt.MapFrom(src => src.Category!=null?src.Category:null));
-                
-            
+        // 1. Entity → DTO 
+        CreateMap<Product, ProductDto>()
+            .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id)) 
+            .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.ProductName))
+            .ForMember(dest => dest.CateName, opt => opt.MapFrom(src =>
+                (src.ProductDetail != null && src.ProductDetail.Category != null)
+                    ? src.ProductDetail.Category.CateName
+                    : "Chưa phân loại"))
+            .ForMember(dest => dest.CateId, opt => opt.MapFrom(src =>
+                src.ProductDetail != null ? src.ProductDetail.CateId : 0));
 
-            // DTO → Entity (Create)
-            CreateMap<ProductCreateDto, Product>();
+        // 2. DTO → Entity 
+        CreateMap<ProductCreateDto, Product>();
 
-            // DTO → Entity (Update)
-            CreateMap<ProductUpdateDto, Product>()
-                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
-        }
+        // 3. DTO → Entity 
+        CreateMap<ProductUpdateDto, Product>()
+            .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
     }
+}
 }
