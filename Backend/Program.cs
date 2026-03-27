@@ -9,42 +9,62 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. CẤU HÌNH CONTROLLERS & API EXPLORER
+// =================================================
+// 1. CONTROLLERS + CACHE
+// =================================================
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddMemoryCache(); // 👈 THÊM DÒNG NÀY ĐỂ TÍNH NĂNG GỬI OTP KHÔNG BỊ LỖI 500
+builder.Services.AddMemoryCache();
 
-// 2. CẤU HÌNH CORS (Cho phép React/Vite gọi API)
+
+// =================================================
+// 2. CORS (CHO PHÉP FRONTEND)
+// =================================================
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:3000", "http://localhost:5173")
+        policy.WithOrigins(
+                "http://localhost:3000",
+                "http://localhost:5173"
+              )
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
 
-// 3. CẤU HÌNH DATABASE (MySQL)
+
+// =================================================
+// 3. DATABASE (MYSQL)
+// =================================================
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options.UseMySQL(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    )
 );
 
-// 4. CẤU HÌNH REPOSITORIES
+
+// =================================================
+// 4. REPOSITORY
+// =================================================
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IQuoteRepository, QuoteRepository>();
 builder.Services.AddScoped<ICandidateRepository, CandidateRepository>();
 builder.Services.AddScoped<Backend.Services.IEmailService, Backend.Services.EmailService>();
 
-// 5. CẤU HÌNH ĐỌC TOKEN JWT
+
+// =================================================
+// 5. JWT AUTHENTICATION
+// =================================================
 var jwtKey = builder.Configuration["Jwt:Key"]!;
-var keyBytes = Encoding.UTF8.GetBytes(jwtKey); // 👈 ĐÃ ĐỔI TỪ ASCII SANG UTF8 CHUẨN BÀI!
+var keyBytes = Encoding.UTF8.GetBytes(jwtKey);
 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
+})
+.AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;
     options.SaveToken = true;
@@ -57,12 +77,15 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// 6. CẤU HÌNH SWAGGER (CÓ Ổ KHÓA BẢO MẬT)
+
+// =================================================
+// 6. SWAGGER
+// =================================================
 builder.Services.AddSwaggerGen(c =>
 {
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "Nhập Token theo cú pháp: Bearer {chuỗi_token_của_bạn}",
+        Description = "Nhập Token: Bearer {token}",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
@@ -74,19 +97,27 @@ builder.Services.AddSwaggerGen(c =>
         {
             new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
             },
-            Array.Empty<string>()
+            new string[] {}
         }
     });
 });
 
-// ============================================================
-// BUILD THÀNH APP VÀ CẤU HÌNH PIPELINE (MIDDLEWARES)
-// ============================================================
+
+// =================================================
+// BUILD APP
+// =================================================
 var app = builder.Build();
 
-// Chỉ hiện Swagger khi ở chế độ lập trình (Dev)
+
+// =================================================
+// PIPELINE
+// =================================================
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -95,10 +126,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// THỨ TỰ 3 DÒNG NÀY CỰC KỲ QUAN TRỌNG - KHÔNG ĐƯỢC ĐỔI CHỖ
-app.UseCors("AllowFrontend");   // 1. Mở cửa cho Frontend vào
-app.UseAuthentication();        // 2. Trạm soát vé (Kiểm tra Token)
-app.UseAuthorization();         // 3. Trạm cấp quyền (Quyết định được xem dữ liệu gì)
+app.UseCors("AllowFrontend");
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

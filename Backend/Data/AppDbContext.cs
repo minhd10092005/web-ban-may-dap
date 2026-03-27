@@ -16,9 +16,6 @@ namespace Backend.Data
         public DbSet<ProductDetail> ProductDetails { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
 
-
-        
-
         public DbSet<Quote> Quotes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,11 +24,9 @@ namespace Backend.Data
         }
 
         public DbSet<User> Users { get; set; }
-
         public DbSet<Admin> Admins { get; set; }
 
         public DbSet<ProductSpec> ProductSpecs { get; set; }
-
         public DbSet<CandidateProfile> CandidateProfiles { get; set; }
 
     }

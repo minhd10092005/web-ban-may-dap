@@ -1,13 +1,15 @@
 ﻿using Backend.Data;
-using Backend.DTOs;
 using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BCrypt.Net;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Caching.Memory;
+using System.Net;
+using System.Net.Mail;
+// 4 thư viện mới thêm vào để làm Token:
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Backend.Controllers
 {
@@ -16,94 +18,131 @@ namespace Backend.Controllers
     public class AuthController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private readonly IConfiguration _configuration; // Khai báo thêm cái này để đọc appsettings.json
+        private readonly IMemoryCache _cache;
+        private readonly IConfiguration _config; // Dùng để đọc appsettings.json
 
-        // Cập nhật lại Constructor
-        public AuthController(AppDbContext context, IConfiguration configuration)
+        // Cập nhật lại Constructor để nhận thêm IConfiguration
+        public AuthController(AppDbContext context, IMemoryCache cache, IConfiguration config)
         {
             _context = context;
-            _configuration = configuration;
+            _cache = cache;
+            _config = config;
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDTO request)
+        public class SendOtpDto { public string Email { get; set; } }
+        public class RegisterOtpDto { public string Email { get; set; } public string Password { get; set; } public string Otp { get; set; } }
+        public class LoginDto { public string Email { get; set; } public string Password { get; set; } }
+
+        // =====================================
+        // API 1: GỬI MÃ OTP VỀ EMAIL (Giữ nguyên)
+        // =====================================
+        [HttpPost("send-otp")]
+        public async Task<IActionResult> SendOtp([FromBody] SendOtpDto request)
         {
-            // ... (Đoạn code Register vẫn giữ nguyên như cũ) ...
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (await _context.Users.AnyAsync(u => u.Email == request.Email))
+                return BadRequest(new { message = "❌ Email này đã tồn tại trên hệ thống!" });
 
-            var userExists = await _context.Users.AnyAsync(u => u.Email == request.Email);
-            if (userExists) return BadRequest(new { message = "Email này đã được sử dụng!" });
+            string otp = new Random().Next(100000, 999999).ToString();
+            _cache.Set(request.Email, otp, TimeSpan.FromMinutes(5));
 
-            string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
+            try
+            {
+                var smtpClient = new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential("quocprodad@gmail.com", "opneivmxzaialeme"),
+                    EnableSsl = true,
+                };
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress("quocprodad@gmail.com", "Hệ thống Tuyển Dụng"),
+                    Subject = "Mã xác nhận đăng ký tài khoản",
+                    Body = $"<h3>Chào bạn,</h3><p>Mã xác nhận (OTP) của bạn là: <b><span style='font-size:24px;color:blue;'>{otp}</span></b></p>",
+                    IsBodyHtml = true,
+                };
+                mailMessage.To.Add(request.Email);
+                await smtpClient.SendMailAsync(mailMessage);
+                return Ok(new { message = "✅ Mã OTP đã được gửi đến email của bạn!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "❌ Lỗi hệ thống: " + ex.Message });
+            }
+        }
 
+        // =====================================
+        // API 2: XÁC NHẬN OTP & TẠO TÀI KHOẢN (Giữ nguyên)
+        // =====================================
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterWithOtp([FromBody] RegisterOtpDto request)
+        {
+            if (!_cache.TryGetValue(request.Email, out string savedOtp))
+                return BadRequest(new { message = "❌ Mã OTP đã hết hạn hoặc chưa gửi!" });
+
+            if (savedOtp != request.Otp)
+                return BadRequest(new { message = "❌ Mã OTP không chính xác!" });
+
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
             var newUser = new User
             {
                 Email = request.Email,
-                PasswordHash = passwordHash,
+                PasswordHash = hashedPassword,
                 CreatedAt = DateTime.Now
+                // Nếu User của bạn có cột Role, bạn có thể gán mặc định ở đây: Role = "Candidate"
             };
 
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
+            _cache.Remove(request.Email);
 
-            return Ok(new { message = "Đăng ký tài khoản thành công!" });
+            return Ok(new { message = "✅ Đăng ký thành công!" });
         }
 
-        // --- THÊM TÍNH NĂNG LOGIN VÀO ĐÂY ---
+        // =====================================
+        // API 3: ĐĂNG NHẬP VÀ CẤP TOKEN JWT
+        // =====================================
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDTO request)
+        public async Task<IActionResult> Login([FromBody] LoginDto request)
         {
-            // --- 1. KIỂM TRA TRONG SỔ ADMIN TRƯỚC ---
-            var admin = await _context.Admins.FirstOrDefaultAsync(a => a.Email == request.Email);
-            if (admin != null)
-            {
-                bool isAdminPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, admin.PasswordHash);
-                if (!isAdminPasswordValid) return BadRequest(new { message = "Email hoặc mật khẩu không đúng!" });
-
-                // Đúng là Admin -> Cấp Token có Role là "Admin"
-                string token = GenerateJwtToken(admin.AdminId.ToString(), admin.Email, "Admin");
-                return Ok(new { message = "Đăng nhập Admin thành công!", token = token });
-            }
-
-            // --- 2. NẾU KHÔNG PHẢI ADMIN, KIỂM TRA SỔ USERS (CANDIDATE) ---
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
-            if (user != null)
-            {
-                bool isUserPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
-                if (!isUserPasswordValid) return BadRequest(new { message = "Email hoặc mật khẩu không đúng!" });
 
-                // Đúng là Candidate -> Cấp Token có Role là "Candidate"
-                string token = GenerateJwtToken(user.UserId.ToString(), user.Email, "Candidate");
-                return Ok(new { message = "Đăng nhập Candidate thành công!", token = token });
+            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+            {
+                return BadRequest(new { message = "❌ Email hoặc mật khẩu không đúng!" });
             }
 
-            // --- 3. KHÔNG CÓ TRONG CẢ 2 SỔ ---
-            return BadRequest(new { message = "Email hoặc mật khẩu không đúng!" });
-        }
+            // --- QUÁ TRÌNH TẠO TOKEN BẮT ĐẦU TỪ ĐÂY ---
+            // 1. Lấy chìa khóa bí mật từ appsettings.json
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        // ==========================================
-        // HÀM HỖ TRỢ: CHUYÊN ĐÚC TOKENS MANG THEO ROLE
-        // (Copy hàm này dán vào bên trong class AuthController, dưới hàm Login nhé)
-        // ==========================================
-        private string GenerateJwtToken(string id, string email, string role)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
+            // 2. Gói gém thông tin của User vào Token (Gọi là Claims)
+            var claims = new[]
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, id),
-                    new Claim(ClaimTypes.Email, email),
-                    new Claim(ClaimTypes.Role, role) // NHÉT CHỨC VỤ VÀO ĐÂY!
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                // Gắn quyền cho User (Phục vụ cho hàm jwtDecode bên React)
+                // Hiện tại ta gán cứng là Candidate. Sau này nếu DB có cột Quyền thì thay bằng user.Role nhé
+                new Claim(ClaimTypes.Role, "Candidate")
             };
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            // 3. Tiến hành đóng dấu và xuất xưởng Token
+            var token = new JwtSecurityToken(
+                issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddHours(2), // Thẻ có hạn 2 tiếng
+                signingCredentials: credentials);
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            // 4. Trả Token về cho React
+            return Ok(new
+            {
+                message = "✅ Đăng nhập thành công!",
+                token = tokenString // 👈 React đang chờ cái này đây!
+            });
         }
     }
 }
