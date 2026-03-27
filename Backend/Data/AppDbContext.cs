@@ -1,6 +1,6 @@
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
-using Backend.Models.admin;
+using Backend.Models;
 
 namespace Backend.Data
 {
