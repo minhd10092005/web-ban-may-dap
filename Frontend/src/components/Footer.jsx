@@ -1,25 +1,30 @@
 import React from 'react';
 import { FaMapMarkerAlt, FaEnvelope, FaPhoneAlt, FaGlobe, FaYoutube, FaTwitter, FaFacebookF, FaLinkedinIn, FaVk } from 'react-icons/fa';
 import './Footer.css';
+// 1. Import hook dịch thuật
+import { useTranslation } from 'react-i18next';
 
-// Bro tải cái logo Bộ Công Thương (tick xanh) về lưu vào thư mục imgs nhé
+// Nhớ kiểm tra đường dẫn ảnh bct.png nhé bro
 import bctLogo from '../assets/imgs/bct.png';
 
 const Footer = () => {
+    // 2. Khai báo hàm t
+    const { t } = useTranslation();
+
     return (
         <footer className="footer-section">
             {/* Thanh xám đen: Đăng ký nhận tin & Mạng xã hội */}
             <div className="footer-top">
                 <div className="newsletter">
-                    <span className="newsletter-label">Đăng ký nhận tin</span>
+                    <span className="newsletter-label">{t('footer.newsletterLabel')}</span>
                     <div className="input-group">
                         <input type="email" placeholder="" />
-                        <button type="button">Gửi</button>
+                        <button type="button">{t('footer.btnSend')}</button>
                     </div>
                 </div>
 
                 <div className="social-links">
-                    <span className="social-label">FOLLOW US</span>
+                    <span className="social-label">{t('footer.followUs')}</span>
                     <a href="#" className="social-icon"><FaYoutube /></a>
                     <a href="#" className="social-icon"><FaTwitter /></a>
                     <a href="#" className="social-icon"><FaFacebookF /></a>
@@ -31,29 +36,33 @@ const Footer = () => {
             {/* Phần thông tin công ty nền trắng */}
             <div className="footer-main">
                 <div className="company-info">
-                    <h3>CÔNG TY TNHH CHẾ TẠO MÁY DƯỢC PHẨM TIẾN TUẤN</h3>
+                    {/* 3. Thay text bằng hàm t() */}
+                    <h3>{t('footer.companyName')}</h3>
                     <ul>
-                        <li><FaMapMarkerAlt className="info-icon" /> Lô IV-19 (KCN Tân Bình) Đường Tây Thạnh, Phường Tây Thạnh, TP. Hồ Chí Minh</li>
-                        <li><FaEnvelope className="info-icon" /> ttp@tientuan.com.vn</li>
-                        <li><FaPhoneAlt className="info-icon" /> Hotline kinh doanh: 0903 849 121</li>
-                        <li><FaPhoneAlt className="info-icon" /> Kinh doanh: 0902 314 079 - 0906 859 300 - 0934 098 856</li>
-                        <li><FaPhoneAlt className="info-icon" /> Nhân sự: 028 38 152 951 (Ext: 200, 202)</li>
-                        <li><FaPhoneAlt className="info-icon" /> Mua hàng: 028 38 152 951 (Ext: 604, 602)</li>
-                        <li><FaGlobe className="info-icon" /> +84 28 38 152 953</li>
-                        <li><FaGlobe className="info-icon" /> http://tientuan.com.vn</li>
+                        <li><FaMapMarkerAlt className="info-icon" /> {t('footer.address')}</li>
+                        <li><FaEnvelope className="info-icon" /> ttp@XYZ.com.vn</li>
+                        <li><FaPhoneAlt className="info-icon" /> {t('footer.hotlineSales')} 0123456789</li>
+                        <li><FaPhoneAlt className="info-icon" /> {t('footer.sales')} 0987654321 - 0123456789 - 09999999999</li>
+                        <li><FaPhoneAlt className="info-icon" /> {t('footer.hr')} 0987654321 (Ext: 200, 202)</li>
+                        <li><FaPhoneAlt className="info-icon" /> {t('footer.purchasing')} 0987654322 (Ext: 604, 602)</li>
+                        <li><FaGlobe className="info-icon" /> +84 23456789</li>
+                        <li><FaGlobe className="info-icon" /> http://XYZ.com.vn</li>
                     </ul>
                 </div>
 
                 <div className="bct-logo">
-                    {/* Tạm thời dùng thẻ img, bro nhớ thay ảnh thật nhé */}
-                    <img src={bctLogo} alt="Đã thông báo Bộ Công Thương" onError={(e) => e.target.style.display = 'none'} />
+                    <img
+                        src={bctLogo}
+                        alt={t('footer.bctAlt')}
+                        onError={(e) => e.target.style.display = 'none'}
+                    />
                 </div>
             </div>
 
             {/* Dòng Copyright dưới cùng */}
             <div className="footer-bottom">
-                <p>Copyrights © 2006 Tien Tuan Pharmaceutical Machinery Co.Ltd . All right reserved</p>
-                <p>Mã số Doanh Nghiệp: 03 01 47 86 32 - Cấp ngày 31/08/1998</p>
+                <p>{t('footer.copyright')}</p>
+                <p>{t('footer.businessLicense')}</p>
             </div>
         </footer>
     );

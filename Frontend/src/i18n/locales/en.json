@@ -1,0 +1,113 @@
+{
+    "home": {
+        "aboutSection": {
+            "titleLine1": "PROVIDING",
+            "titleLine2": "TURNKEY SOLUTIONS",
+            "quoteText": "Consulting - Designing - Manufacturing - Providing solutions for solid dosage production lines in the pharmaceutical industry.",
+            "mainDesc": "XYZ Pharmaceutical Machinery Manufacturing Co., Ltd. specializes in consulting, designing, manufacturing automatic machinery and equipment, and providing turnkey solutions for pharmaceutical solid dosage manufacturing plants according to cGMP, GAMP, EU-GMP, PIC/S standards.",
+            "subDesc": "With the quality policy \"German standards - Made in Vietnam\", modern and advanced design, strict manufacturing and product testing processes...",
+            "btnViewMore": "VIEW MORE"
+        },
+        "featuredProducts": {
+            "loading": "Loading machinery...",
+            "title": "FEATURED MACHINERY",
+            "subtitle": "XYZ - \"German Standards\" in every pharmaceutical equipment",
+            "modelLabel": "Model:",
+            "updating": "Updating",
+            "viewDetail": "VIEW DETAILS"
+        },
+        "heroSlider": {
+            "slide1": {
+                "title": "GERMAN STANDARDS",
+                "desc": "Made in Vietnam - Leading pharmaceutical technology solutions."
+            },
+            "slide2": {
+                "title": "MODERN TECHNOLOGY",
+                "desc": "GMP-compliant automatic tablet pressing and packaging systems."
+            },
+            "slide3": {
+                "title": "PROFESSIONAL SERVICES",
+                "desc": "24/7 technical support and maintenance nationwide."
+            },
+            "slide4": {
+                "title": "RELIABLE PARTNER",
+                "desc": "Accompanying the development of the Vietnamese pharmaceutical industry."
+            },
+            "slide5": {
+                "title": "GLOBAL EXPORT",
+                "desc": "XYZ products are present in over 20 countries."
+            },
+            "btnDetail": "VIEW DETAILS"
+        },
+        "newsEvents": {
+            "title": "NEWS & EVENTS",
+            "readMore": "Read more",
+            "news1": {
+                "category": "Events & Exhibitions",
+                "title": "INVITATION TO PHARMA ASIA 2025",
+                "desc": "One of the most important international exhibitions on pharmaceutical manufacturing and processing solutions in Pakistan."
+            },
+            "news2": {
+                "category": "Events & Exhibitions",
+                "title": "XYZ COMPLETED FAT FOR CP-250 AUTOMATIC BLISTER PACKAGING MACHINE",
+                "desc": "The most popular machine line today in the pharmaceutical industry, at XYZ Pharmaceutical Machinery Co. Ltd factory..."
+            },
+            "news3": {
+                "category": "Events & Exhibitions",
+                "title": "SUCCESSFUL FAT FOR FM-800I HAMMER MILL – MEETING STRICT REQUIREMENTS...",
+                "desc": "XYZ has completed the FAT for the FM-800i hammer mill specialized for grinding sugar in pharmaceutical production..."
+            },
+            "news4": {
+                "category": "Company News",
+                "title": "2026 ANNUAL GENERAL MEETING OF SHAREHOLDERS",
+                "desc": "XYZ Company successfully held the annual general meeting of shareholders, setting out new development directions..."
+            }
+        },
+        "productLine": {
+            "watermark": "PRODUCTS",
+            "title": "PRODUCTION LINES",
+            "subtitle1": "XYZ is proud to provide high-quality products \"German Standards - Made in Vietnam\"",
+            "subtitle2": "worldwide",
+            "categories": {
+                "cat1": "Raw Materials",
+                "cat2": "Granulation",
+                "cat3": "Pellets",
+                "cat4": "Tablets",
+                "cat5": "Capsules",
+                "cat6": "Blister - Carton"
+            }
+        },
+        "qualitySystem": {
+            "title": "QUALITY MANAGEMENT SYSTEM",
+            "certs": {
+                "ped": "PED Certification",
+                "ex": "EX Certification",
+                "tuv": "TUV Certification",
+                "ce": "CE Certification"
+            }
+        }
+    },
+    "navbar": {
+        "recruitment": "RECRUITMENT",
+        "sloganLine1": "German Standards",
+        "sloganLine2": "Made in Vietnam",
+        "menuAbout": "ABOUT US",
+        "menuServices": "SERVICES",
+        "menuProducts": "PRODUCTS",
+        "menuContact": "CONTACT"
+    },
+    "footer": {
+        "newsletterLabel": "Subscribe to our newsletter",
+        "btnSend": "Send",
+        "followUs": "FOLLOW US",
+        "companyName": "XYZ PHARMACEUTICAL MACHINERY CO., LTD",
+        "address": "285 Đội Cấn Ba Đình, Hà Nội",
+        "hotlineSales": "Sales Hotline:",
+        "sales": "Sales:",
+        "hr": "HR:",
+        "purchasing": "Purchasing:",
+        "bctAlt": "Notified to the Ministry of Industry and Trade",
+        "copyright": "Copyrights © 2006 XYZ Pharmaceutical Machinery Co.Ltd . All right reserved",
+        "businessLicense": "Business License: 03 01 47 86 32 - Issued on 31/08/1998"
+    }
+}

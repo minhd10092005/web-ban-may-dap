@@ -1,41 +1,48 @@
 import React from 'react';
 import './AboutSection.css';
 import factoryImg from '../../../assets/imgs/building.jpg';
+// 1. Import hook useTranslation
+import { useTranslation } from 'react-i18next';
 
 const AboutSection = () => {
+    // 2. Khởi tạo hàm t
+    const { t } = useTranslation();
+
     return (
         <section className="about-section">
             <div className="about-content">
                 {/* Khối chữ màu xám bị vát góc */}
                 <div className="text-side">
                     <h2 className="about-title">
-                        CUNG CẤP <br />
-                        GIẢI PHÁP TRỌN GÓI
+                        {/* 3. Thay text cứng bằng hàm t() dựa trên file vi.json của bro */}
+                        {t('home.aboutSection.titleLine1')} <br />
+                        {t('home.aboutSection.titleLine2')}
                     </h2>
 
                     <div className="quote-box">
                         <span className="quote-mark left">“</span>
                         <p>
-                            Tư vấn - Thiết kế - Sản xuất - Cung cấp giải pháp cho dây chuyền sản xuất thuốc viên rắn trong ngành dược.
+                            {t('home.aboutSection.quoteText')}
                         </p>
                         <span className="quote-mark right">”</span>
                     </div>
 
                     <p className="main-desc">
-                        Công ty TNHH Chế Tạo Máy Dược Phẩm Tiến Tuấn chuyên tư vấn - thiết kế - chế tạo máy móc thiết bị tự động và cung cấp giải pháp trọn gói cho nhà máy sản xuất thuốc viên theo tiêu chuẩn cGMP, GAMP, EU-GMP, PIC/S của ngành dược.
+                        {t('home.aboutSection.mainDesc')}
                     </p>
 
                     <p className="sub-desc">
-                        Với chính sách chất lượng "Tiêu chuẩn Đức - chế tạo tại Việt Nam" thiết kế hiện đại, tiên tiến, quy trình sản xuất và kiểm tra sản phẩm nghiêm ngặt...
+                        {t('home.aboutSection.subDesc')}
                     </p>
 
                     <button className="btn-view-more">
-                        <span className="arrow-icon">▶</span> XEM THÊM
+                        <span className="arrow-icon">▶</span> {t('home.aboutSection.btnViewMore')}
                     </button>
                 </div>
 
                 {/* Khối hình ảnh nhà máy */}
                 <div className="image-side">
+                    {/* Bro có thể dịch nốt thẻ alt nếu muốn chuẩn SEO quốc tế */}
                     <img src={factoryImg} alt="Tiến Tuấn Factory" />
                 </div>
             </div>

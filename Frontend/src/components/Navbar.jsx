@@ -3,18 +3,32 @@ import './NavBar.css';
 import { FaHome, FaSearch } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
+// 1. CHỈ CẦN import hook useTranslation từ react-i18next
+import { useTranslation } from 'react-i18next';
+
 const NavBar = () => {
+    // 2. Khai báo t và i18n từ hook
+    const { t, i18n } = useTranslation();
+
+    // 3. Hàm xử lý đổi ngôn ngữ
+    const changeLanguage = (lng) => {
+        i18n.changeLanguage(lng);
+    };
+
     return (
         <header className="header-wrapper">
             <div className="top-bar">
                 <div className="top-links">
-                    {/* Đã xóa 3 mục Tin tức, Quy tắc ứng xử, Mua hàng. Chỉ giữ lại Tuyển dụng (Login) */}
-                    <Link to="/login" className="hover:text-sky-500 transition cursor-pointer">TUYỂN DỤNG</Link>
+                    {/* 4. Sử dụng t() để lấy nội dung từ file json */}
+                    <Link to="/login" className="hover:text-sky-500 transition cursor-pointer">
+                        {t('navbar.recruitment')}
+                    </Link>
                 </div>
                 <div className="flags">
-                    <span>🇻🇳</span>
-                    <span>🇬🇧</span>
-                    <span>🇷🇺</span>
+                    {/* 5. Sự kiện onClick gọi hàm changeLanguage */}
+                    <span onClick={() => changeLanguage('vi')} style={{ cursor: 'pointer', margin: '0 5px' }} title="Tiếng Việt">🇻🇳</span>
+                    <span onClick={() => changeLanguage('en')} style={{ cursor: 'pointer', margin: '0 5px' }} title="English">🇬🇧</span>
+                    <span onClick={() => changeLanguage('hi')} style={{ cursor: 'pointer', margin: '0 5px' }} title="हिन्दी">🇮🇳</span>
                 </div>
             </div>
             <div className="main-nav">
@@ -23,19 +37,18 @@ const NavBar = () => {
                         TTP
                     </div>
                     <div className="slogan">
-                        <p>Tiêu chuẩn Đức</p>
-                        <p>Chế tạo tại Việt Nam</p>
+                        <p>{t('navbar.sloganLine1')}</p>
+                        <p>{t('navbar.sloganLine2')}</p>
                     </div>
                 </div>
                 <nav className="nav-menu">
                     <Link to="/" className="home-icon"><FaHome /></Link>
-                    
-                    {/* Đã xóa menu thả xuống, biến thành link bình thường */}
-                    <Link to="/about" className="nav-item main-link">VỀ CHÚNG TÔI</Link>
-                    <Link to="/services" className="nav-item main-link">DỊCH VỤ</Link>
-                    <Link to="/products" className="nav-item main-link">SẢN PHẨM</Link>
-                    <Link to="/contact" className="nav-item main-link">LIÊN HỆ</Link>
-                    
+
+                    <Link to="/about" className="nav-item main-link">{t('navbar.menuAbout')}</Link>
+                    <Link to="/services" className="nav-item main-link">{t('navbar.menuServices')}</Link>
+                    <Link to="/products" className="nav-item main-link">{t('navbar.menuProducts')}</Link>
+                    <Link to="/contact" className="nav-item main-link">{t('navbar.menuContact')}</Link>
+
                     <FaSearch className="search-icon" />
                 </nav>
             </div>
