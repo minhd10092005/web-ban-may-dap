@@ -1,6 +1,7 @@
 ﻿using Backend.Data;
 using Backend.Repositories;
 using Backend.Repositories.Interfaces;
+using Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -34,6 +35,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IQuoteRepository, QuoteRepository>();
 builder.Services.AddScoped<ICandidateRepository, CandidateRepository>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 // Mở lại dòng này nếu bạn đã có file EmailService, nếu chưa có thì tạm comment lại (//) nhé
 // builder.Services.AddScoped<Backend.Services.IEmailService, Backend.Services.EmailService>();
 

@@ -5,7 +5,7 @@ import "./CandidateDashboard.css";
 
 export default function CandidateDashboard() {
   const [formData, setFormData] = useState({
-    email: "", // Lưu email để hiển thị
+    email: "", 
     full_name: "",
     phone: "",
     address: "",
@@ -54,7 +54,7 @@ export default function CandidateDashboard() {
     fetchProfile();
   }, [navigate]);
 
-  // 2. XỬ LÝ NHẬP LIỆU (Dùng chung cho tất cả các ô)
+  // 2. XỬ LÝ NHẬP LIỆU
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -78,6 +78,22 @@ export default function CandidateDashboard() {
     }
   };
 
+  // 4. HÀM GIẢ LẬP GỬI CV (Chưa gọi API)
+  const handleSendCVToAdmin = () => {
+    if (!formData.resume_url) {
+      setMessage("⚠️ Bạn cần cập nhật Link CV trước khi gửi cho Admin!");
+      setTimeout(() => setMessage(""), 3000); 
+      return;
+    }
+
+    const isConfirm = window.confirm("Bạn có chắc chắn muốn nộp CV này cho Admin xét duyệt không?");
+    if (isConfirm) {
+      // Tạm thời chỉ hiển thị thông báo giả lập thành công
+      setMessage("✅ Đã ghi nhận yêu cầu gửi CV (Đang chờ gắn API thực tế)!");
+      setTimeout(() => setMessage(""), 5000); 
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -93,7 +109,7 @@ export default function CandidateDashboard() {
         </div>
 
         {message && (
-          <div className={`alert-message ${message.includes("✅") ? "alert-success" : "alert-error"}`}>
+          <div className={`alert-message ${message.includes("✅") ? "alert-success" : (message.includes("⚠️") ? "alert-warning" : "alert-error")}`}>
             {message}
           </div>
         )}
@@ -128,8 +144,19 @@ export default function CandidateDashboard() {
                 ) : <span className="text-danger">Chưa cập nhật link CV</span>}
               </div>
             </div>
+            
             <div className="button-group">
               <button onClick={() => setIsEditing(true)} className="btn btn-dark">Chỉnh sửa hồ sơ</button>
+              
+              {/* NÚT "GỬI CV" NẰM Ở ĐÂY */}
+              <button 
+                onClick={handleSendCVToAdmin} 
+                className="btn btn-primary" 
+                style={{ backgroundColor: '#10b981', color: 'white', border: 'none' }} 
+              >
+                Gửi CV cho Admin
+              </button>
+
               <button onClick={handleLogout} className="btn btn-danger-light">Đăng xuất</button>
             </div>
           </div>

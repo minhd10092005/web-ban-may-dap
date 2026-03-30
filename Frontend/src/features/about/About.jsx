@@ -87,14 +87,18 @@ function About() {
       </section>
 
       {/* VIDEO SECTION */}
+  {/* VIDEO SECTION */}
       <section className="about-video">
         <h2>Video giới thiệu công ty</h2>
 
-        <iframe
-          width="900"
-          height="500"
-          src="https://www.youtube.com/embed/5qap5aO4i9A"
-          title="Video giới thiệu"
+        <iframe 
+          width="900" 
+          height="500" 
+          src="https://www.youtube.com/embed/NoKH3E4MXhc?si=uQAq9Tfh-Bdg-HLK" 
+          title="YouTube video player" 
+          frameBorder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          referrerPolicy="strict-origin-when-cross-origin" 
           allowFullScreen
         ></iframe>
 
