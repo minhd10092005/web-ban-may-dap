@@ -1,0 +1,133 @@
+.about-section {
+    width: 100%;
+    background-color: #fff;
+    padding: 60px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.about-content {
+    display: flex;
+    width: 90%;
+    max-width: 1250px;
+    margin: 0 auto;
+}
+
+.text-side {
+    width: 50%;
+    box-sizing: border-box;
+    background-color: #7b7e81;
+    padding: 60px 50px 60px 60px;
+    color: white;
+    clip-path: polygon(80px 0, 100% 0, 100% calc(100% - 80px), calc(100% - 80px) 100%, 0 100%, 0 80px);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.about-title {
+    font-size: 42px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 30px;
+}
+
+.quote-box {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 25px;
+}
+
+.quote-box p {
+    font-size: 22px;
+    font-weight: bold;
+    color: #fff;
+    line-height: 1.5;
+    margin: 0 10px;
+}
+
+.quote-mark {
+    color: #ffcc00;
+    font-size: 70px;
+    line-height: 0.6;
+    font-family: Georgia, serif;
+}
+
+.quote-mark.right {
+    align-self: flex-end;
+}
+
+.main-desc,
+.sub-desc {
+    font-size: 15px;
+    color: #e0e0e0;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+.btn-view-more {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 12px 30px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s ease;
+}
+
+.arrow-icon {
+    color: #ffcc00;
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.btn-view-more:hover {
+    background-color: #ffcc00;
+    color: #000;
+    border-color: #ffcc00;
+}
+
+.btn-view-more:hover .arrow-icon {
+    color: #000;
+}
+.image-side {
+    width: 50%;
+    box-sizing: border-box;
+}
+
+.image-side img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+@media (max-width: 992px) {
+    .about-content {
+        flex-direction: column;
+        width: 95%;
+    }
+
+    .text-side,
+    .image-side {
+        width: 100%;
+    }
+
+    .text-side {
+        padding: 50px 30px;
+        /* Giảm độ vát góc đi một chút cho màn hình nhỏ đỡ bị mất chữ */
+        clip-path: polygon(50px 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%, 0 100%, 0 50px);
+    }
+
+    .image-side {
+        height: 400px;
+    }
+}

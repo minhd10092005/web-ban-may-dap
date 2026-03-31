@@ -1,0 +1,173 @@
+.product-line-section {
+    position: relative;
+    width: 100%;
+    padding: 80px 0;
+    background-color: #f9f9f9;
+    /* Màu nền xám thật nhạt */
+    /* Bro có thể thêm background-image là ảnh xưởng mờ mờ vào đây nếu muốn giống 100% bản gốc */
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
+    overflow: hidden;
+    /* Không cho chữ in chìm tràn ra ngoài gây thanh cuộn ngang */
+}
+
+/* Chữ in chìm khổng lồ */
+.watermark-text {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 150px;
+    font-weight: 900;
+    color: rgba(0, 0, 0, 0.03);
+    /* Màu đen trong suốt cực mờ */
+    z-index: 0;
+    white-space: nowrap;
+    letter-spacing: 5px;
+    pointer-events: none;
+}
+
+.product-line-container {
+    position: relative;
+    z-index: 1;
+    /* Nổi lên trên chữ in chìm */
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header tiêu đề */
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-header h2 {
+    font-size: 36px;
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Đường gạch ngang nhỏ dưới tiêu đề */
+.title-line {
+    width: 60px;
+    height: 3px;
+    background-color: #ffcc00;
+    /* Màu vàng Tiến Tuấn */
+    margin: 0 auto 20px auto;
+}
+
+.section-header p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Lưới Grid hiển thị 6 sản phẩm */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 cột bằng nhau */
+    gap: 30px;
+}
+
+/* Khối từng sản phẩm */
+.product-card {
+    position: relative;
+    background-color: #fff;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+}
+.product-card-wrapper {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.product-card:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-image {
+    width: 100%;
+    height: 250px;
+    /* Độ cao cố định cho ảnh */
+    overflow: hidden;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+/* Hiệu ứng zoom ảnh khi trỏ chuột */
+.product-card:hover .card-image img {
+    transform: scale(1.08);
+}
+
+/* Thanh tên sản phẩm dưới đáy ảnh */
+.card-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    height: 50px;
+}
+
+.card-footer h3 {
+    flex: 1;
+    /* Chiếm phần lớn không gian */
+    background-color: #fff;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+}
+
+/* Nút mũi tên vuông vức */
+.arrow-btn {
+    width: 50px;
+    background-color: #ffcc00;
+    /* Màu vàng mặc định */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+/* Khi trỏ chuột vào cả cái card, nút mũi tên đổi màu đỏ */
+.product-card:hover .arrow-btn {
+    background-color: #cc0000;
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 992px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 cột cho Tablet */
+    }
+}
+
+@media (max-width: 576px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+        /* 1 cột cho Mobile */
+    }
+
+    .watermark-text {
+        font-size: 80px;
+        top: 80px;
+    }
+}
