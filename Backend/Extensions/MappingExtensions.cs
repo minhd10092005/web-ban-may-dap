@@ -6,7 +6,7 @@ namespace Backend.Extensions
     {
         public static IServiceCollection AddMapping(this IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(ProductProfile));
+            services.AddAutoMapper(cfg => { }, typeof(ProductProfile));
             return services;
         }
     }

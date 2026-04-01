@@ -32,11 +32,11 @@ builder.Services.AddCors(options =>
 // Swagger
 builder.Services.AddSwaggerDocumentation();
 
-// Extensions (cốt lõi hệ thống)
+// Extensions 
 builder.Services.AddApplicationServices();
 builder.Services.AddMapping();
 builder.Services.AddJwtAuth(builder.Configuration);
-builder.Services.AddCustomAuthorization(); // nếu bạn đã có file này
+builder.Services.AddCustomAuthorization(); 
 
 var app = builder.Build();
 

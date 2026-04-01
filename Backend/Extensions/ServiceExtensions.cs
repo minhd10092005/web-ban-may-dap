@@ -10,6 +10,11 @@ namespace Backend.Extensions
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICateService, CateService>();
             services.AddScoped<IProductDetailService, ProductDetailService>();
+            services.AddScoped<IProductImageService, ProductImageService>();
+            services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IQuoteService, QuoteService>();
+            services.AddScoped<ICandidateProfileService, CandidateProfileService>();
 
             return services;
         }

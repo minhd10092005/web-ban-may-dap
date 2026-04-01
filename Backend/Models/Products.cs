@@ -19,6 +19,7 @@ namespace Backend.Models
 
         public Category? Category { get; set; } 
         public ProductDetail? ProductDetail { get; set; }
+        public ICollection<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
 
         public Product(int id, string productName, string productType ){
             this.Id = id;

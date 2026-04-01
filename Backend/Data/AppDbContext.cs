@@ -16,6 +16,7 @@ namespace Backend.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<ProductDetail> ProductDetails { get; set; }
         public DbSet<Quote> Quotes { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -70,9 +71,21 @@ namespace Backend.Data
                     .IsRequired(false);
             });
 
+            // Cấu hình ProductImage (1-nhiều với Product)
+            modelBuilder.Entity<ProductImage>(entity =>
+            {
+                entity.HasOne(pi => pi.Product)
+                    .WithMany(p => p.ProductImages)
+                    .HasForeignKey(pi => pi.ProductId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.Property(pi => pi.ImageUrl).HasMaxLength(500).IsRequired();
+            });
+
             // Lọc dữ liệu "Xóa ảo" (Soft Delete) - Khi lấy dữ liệu sẽ tự bỏ qua các dòng IsDeleted = true
             modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsDeleted);
             modelBuilder.Entity<Category>().HasQueryFilter(c => !c.IsDeleted);
+            modelBuilder.Entity<ProductImage>().HasQueryFilter(pi => !pi.IsDeleted);
         }
 
         // Tự động cập nhật ngày giờ Audit

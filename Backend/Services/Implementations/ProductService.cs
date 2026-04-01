@@ -1,7 +1,7 @@
-using AutoMapper;
 using Backend.DTOs.Product;
 using Backend.Data;
 using Backend.DTOs.Common;
+using Backend.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Backend.Services.Interfaces;
 
@@ -10,7 +10,6 @@ namespace Backend.Services.Implementations
     
     public class ProductService : IProductService
     {
-        private readonly IMapper _mapper;
         private readonly AppDbContext _context;
 
         public ProductService(AppDbContext context)
@@ -18,17 +17,38 @@ namespace Backend.Services.Implementations
             _context = context;
         }
 
-        public async Task<PagedResult<ProductDto>> GetAllAsync(int pageNumber, int pageSize)
+        public async Task<PagedResult<ProductDto>> GetAllAsync(int pageNumber, int pageSize, string? searchTerm = null, int? cateId = null)
         {
-            // 1. Khởi tạo Query (Chưa thực thi xuống SQL)
             var query = _context.Products
-                .OrderByDescending(p => p.Id) // BẮT BUỘC: Phải sắp xếp trước khi phân trang
-                .ProjectTo<ProductDto>(_mapper.ConfigurationProvider); // Thay thế hoàn toàn cho .Select(...)
+                .Include(p => p.ProductDetail)
+                    .ThenInclude(pd => pd!.Category)
+                .AsQueryable();
 
-            // 2. Gọi hàm mở rộng phân trang Duy đã viết ở Extensions
-            // Hàm này sẽ tự động thực hiện CountAsync() và Skip/Take
-            return await query.ToPagedListAsync(pageNumber, pageSize);
+            // Lọc theo tên sản phẩm (case-insensitive)
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+                query = query.Where(p => p.ProductName.Contains(searchTerm));
+
+            // Lọc theo danh mục
+            if (cateId.HasValue)
+                query = query.Where(p => p.ProductDetail != null && p.ProductDetail.CateId == cateId.Value);
+
+            var projected = query
+                .OrderByDescending(p => p.Id)
+                .Select(p => new ProductDto
+                {
+                    ProductId   = p.Id,
+                    ProductName = p.ProductName,
+                    ProductType = p.ProductType,
+                    CateId      = p.ProductDetail != null ? p.ProductDetail.CateId : null,
+                    CateName    = p.ProductDetail != null && p.ProductDetail.Category != null
+                        ? p.ProductDetail.Category.CateName
+                        : "Chưa phân loại"
+                });
+
+            return await projected.ToPagedListAsync(pageNumber, pageSize);
         }
+
+
 
         public async Task<ProductDto?> GetByIdAsync(int id)
         {

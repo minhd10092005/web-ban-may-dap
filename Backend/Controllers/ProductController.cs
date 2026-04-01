@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Backend.Services.Implementations;
 using Backend.Services.Interfaces;
 using Backend.DTOs.Product;
@@ -16,11 +16,15 @@ namespace Backend.Controllers
             _service = service;
         }
 
-        // GET: api/product
+        // GET: api/product?pageNumber=1&pageSize=10&searchTerm=may&cateId=2
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize   = 10,
+            [FromQuery] string? searchTerm = null,
+            [FromQuery] int? cateId = null)
         {
-            var data = await _service.GetAllAsync();
+            var data = await _service.GetAllAsync(pageNumber, pageSize, searchTerm, cateId);
             return Ok(data);
         }
 
