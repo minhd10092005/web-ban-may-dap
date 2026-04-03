@@ -1,46 +1,49 @@
-﻿// Controllers/QuoteController.cs
+using Backend.DTOs.Quote;
+using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Backend.DTOs;
-using Backend.Models;
-using Backend.Repositories;
 
 namespace Backend.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class QuoteController : ControllerBase
     {
-        private readonly IQuoteRepository _repo;
+        private readonly IQuoteService _quoteService;
 
-        public QuoteController(IQuoteRepository repo)
+        public QuoteController(IQuoteService quoteService)
         {
-            _repo = repo;
+            _quoteService = quoteService;
         }
 
-        // GET
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? searchTerm = null)
         {
-            var data = await _repo.GetAllAsync();
-            return Ok(data);
+            var result = await _quoteService.GetAllAsync(pageNumber, pageSize, searchTerm);
+            return Ok(result);
         }
 
-        // POST
-        [HttpPost]
-        public async Task<IActionResult> Create(QuoteDTO dto)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var quote = new Quote
-            {
-                FullName = dto.FullName,
-                Email = dto.Email,
-                Comments = dto.Comments,
-                Rating = dto.Rating,
-                Status = dto.Status,
-                CreatedAt = DateTime.Now
-            };
-
-            var result = await _repo.AddAsync(quote);
+            var result = await _quoteService.GetByIdAsync(id);
+            if (result == null) return NotFound("Quote not found.");
             return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] QuoteCreateDto dto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var result = await _quoteService.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deleted = await _quoteService.DeleteAsync(id);
+            if (!deleted) return NotFound("Quote not found.");
+            return NoContent();
         }
     }
 }

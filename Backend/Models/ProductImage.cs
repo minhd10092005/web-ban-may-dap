@@ -1,18 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Models
 {
-    [Table("product_images")]
-    public class ProductImage
+    public class ProductImage : EntityClass
     {
         [Key]
         public int Id { get; set; }
 
-        [Column("product_id")]
+        [Required]
         public int ProductId { get; set; }
 
-        [Column("image_url")]
-        public string ImageUrl { get; set; }
+        [Required]
+        [MaxLength(500)]
+        public string ImageUrl { get; set; } = string.Empty;
+
+        [ForeignKey("ProductId")]
+        public virtual Product? Product { get; set; }
     }
 }
