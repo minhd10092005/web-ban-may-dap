@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import './css/ProductList.css';
 
@@ -12,7 +12,7 @@ const ProductList = () => {
     const [totalPages, setTotalPages] = useState(1);
 
     // 1. Tách hàm gọi API riêng biệt
-    const fetchProductsData = async () => {
+    const fetchProductsData = useCallback(async () => {
         setLoading(true);
         try {
             const url = `https://localhost:7263/api/products?search=${searchTerm}&categoryId=${categoryId}&page=${currentPage}&pageSize=6`;
@@ -31,7 +31,7 @@ const ProductList = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [searchTerm, categoryId, currentPage]);
 
     // 2. Tự động reset trang về 1 khi từ khóa hoặc danh mục thay đổi
     useEffect(() => {
@@ -46,7 +46,7 @@ const ProductList = () => {
         }, 400); // Đợi 0.4 giây sau khi ngừng gõ mới gọi API
 
         return () => clearTimeout(delayDebounceFn);
-    }, [searchTerm, categoryId, currentPage]);
+    }, [fetchProductsData]);
 
     return (
         <div className="product-catalog-container">
