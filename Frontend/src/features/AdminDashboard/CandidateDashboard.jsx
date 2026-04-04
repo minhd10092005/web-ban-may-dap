@@ -30,16 +30,25 @@ export default function CandidateDashboard() {
         );
 
         const data = response.data;
-        setFormData({
-          email: data.email || "",
-          full_name: data.full_name || "",
-          phone: data.phone || "",
-          address: data.address || "",
-          resume_url: data.resume_url || "",
-        });
+        console.log("Dữ liệu thực tế Backend trả về:", data); // Bro bật F12 xem cái này sẽ thấy nó viết HOA
 
-        // Nếu là tài khoản mới (chưa có tên), bắt mở Form sửa luôn
-        if (!data.full_name) setIsEditing(true);
+        // CHUẨN HÓA DỮ LIỆU TẠI ĐÂY (Hứng cả Hoa và Thường)
+        const fetchedData = {
+          email: data.email || data.Email || "",
+          full_name: data.fullName || data.FullName || data.full_name || "",
+          phone: data.phone || data.Phone || "",
+          address: data.address || data.Address || "",
+          resume_url: data.resumeUrl || data.ResumeUrl || data.resume_url || "",
+        };
+
+        setFormData(fetchedData);
+
+        // NẾU ĐÃ CÓ TÊN -> TẮT CHẾ ĐỘ SỬA, HIỆN BẢNG THÔNG TIN
+        if (fetchedData.full_name) {
+          setIsEditing(false);
+        } else {
+          setIsEditing(true);
+        }
 
       } catch (error) {
         if (error.response?.status === 401) {
@@ -64,16 +73,26 @@ export default function CandidateDashboard() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
+
+    // TẠO OBJECT MỚI VỚI KEY VIẾT HOA ĐỂ KHỚP VỚI DTO BACKEND
+    const dataToSubmit = {
+      FullName: formData.full_name,
+      Phone: formData.phone,
+      Address: formData.address,
+      ResumeUrl: formData.resume_url
+    };
+
     try {
       await axios.post(
         "https://localhost:7263/api/Candidate/update-profile",
-        formData,
+        dataToSubmit, // Gửi cái dataToSubmit này thay vì formData
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMessage("✅ Cập nhật hồ sơ thành công!");
       setIsEditing(false);
-      setTimeout(() => setMessage(""), 3000); 
-    } catch  {
+      setTimeout(() => setMessage(""), 3000);
+    } catch (error) {
+      console.error(error.response?.data); // In lỗi chi tiết ra console để check nếu vẫn tạch
       setMessage("❌ Lưu thất bại. Vui lòng thử lại.");
     }
   };

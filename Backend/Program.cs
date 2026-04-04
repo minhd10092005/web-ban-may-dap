@@ -32,8 +32,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 // 4. REPOSITORY
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IQuoteRepository, QuoteRepository>();
 builder.Services.AddScoped<ICandidateRepository, CandidateRepository>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 // Mở lại dòng này nếu bạn đã có file EmailService, nếu chưa có thì tạm comment lại (//) nhé

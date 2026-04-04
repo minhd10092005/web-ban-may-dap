@@ -1,28 +1,43 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Models
 {
-    [Table("candidate_profiles")]
-    public class CandidateProfile
+    public class CandidateProfile : EntityClass
     {
-        [Key]
-        [Column("candidate_id")]
-        public int CandidateId { get; set; }
+        [Key] public int Id { get; set; }
 
-        [Column("user_id")]
         public int UserId { get; set; }
+        public virtual User User { get; set; } = null!;
+        [Required][MaxLength(100)] public string FullName { get; set; } = string.Empty;
 
-        [Column("full_name")]
-        public string? FullName { get; set; }
+        [MaxLength(20)] public string Phone { get; set; } = string.Empty;
 
-        [Column("phone")]
-        public string? Phone { get; set; }
+        [MaxLength(200)] public string Address { get; set; } = string.Empty;
 
-        [Column("address")]
-        public string? Address { get; set; }
+        [MaxLength(300)] public string ResumeUrl { get; set; } = string.Empty;
 
-        [Column("resume_url")]
-        public string? ResumeUrl { get; set; }
+
+        public CandidateProfile(
+            int id,
+            int userId,
+            User user,
+            string fullName,
+            string phone,
+            string address,
+            string resumeUrl
+        )
+        {
+            Id = id;
+            UserId = userId;
+            User = user;
+            FullName = fullName;
+            Phone = phone;
+            Address = address;
+            ResumeUrl = resumeUrl;
+        }
+
+        public CandidateProfile()
+        {
+        }
     }
 }

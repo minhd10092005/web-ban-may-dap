@@ -1,5 +1,5 @@
 ﻿using Backend.Data;
-using Backend.DTOs;
+using Backend.DTOs.CandidateProfile; // 1. Đã sửa namespace khớp với DTO
 using Backend.Models;
 using Backend.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -15,9 +15,8 @@ namespace Backend.Controllers
     public class CandidateController : ControllerBase
     {
         private readonly ICandidateRepository _candidateRepo;
-        private readonly AppDbContext _context; // Đã thêm cửa vào Database
+        private readonly AppDbContext _context;
 
-        // Đã cập nhật hàm tạo để nhận AppDbContext
         public CandidateController(ICandidateRepository candidateRepo, AppDbContext context)
         {
             _candidateRepo = candidateRepo;
@@ -31,24 +30,22 @@ namespace Backend.Controllers
             if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
                 return Unauthorized();
 
-            // 1. Lấy hồ sơ từ bảng CandidateProfiles
             var profile = await _candidateRepo.GetProfileByUserIdAsync(userId);
-
-            // 2. Lấy Email từ bảng Users (Cái này không đổi được nên lấy trực tiếp từ User)
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId); // Giữ nguyên Model User.Id
 
             return Ok(new
             {
-                email = user?.Email, // Trả email về đây
-                full_name = profile?.FullName,
-                phone = profile?.Phone,
-                address = profile?.Address,
-                resume_url = profile?.ResumeUrl
+                Email = user?.Email,
+                FullName = profile?.FullName,
+                Phone = profile?.Phone,
+                Address = profile?.Address,
+                ResumeUrl = profile?.ResumeUrl
             });
         }
 
         [HttpPost("update-profile")]
-        public async Task<IActionResult> UpdateProfile([FromBody] CandidateProfileDto dto)
+        // 2. Dùng CandidateProfileUpdateDto cho đúng mục đích update
+        public async Task<IActionResult> UpdateProfile([FromBody] CandidateProfileUpdateDto dto)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier) ?? User.FindFirst("id");
             if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
@@ -57,10 +54,11 @@ namespace Backend.Controllers
             var newProfile = new CandidateProfile
             {
                 UserId = userId,
-                FullName = dto.full_name,
-                Phone = dto.phone,
-                Address = dto.address,
-                ResumeUrl = dto.resume_url
+                // 3. Đã sửa lại viết HOA cho khớp với DTO bro gửi
+                FullName = dto.FullName,
+                Phone = dto.Phone,
+                Address = dto.Address,
+                ResumeUrl = dto.ResumeUrl
             };
 
             await _candidateRepo.UpdateOrCreateProfileAsync(newProfile);

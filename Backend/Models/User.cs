@@ -1,23 +1,38 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace Backend.Models
 {
-    [Table("users")]
-    public class User
+
+    public class User : EntityClass
     {
         [Key]
-        [Column("user_id")]
-        public int UserId { get; set; }
 
-        [Column("email")]
-        public string Email { get; set; }
+        public int Id { get; set; }
 
-        [Column("password_hash")]
-        public string PasswordHash { get; set; }
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
+        [MaxLength(150)]
+        public string Email { get; set; } = string.Empty;
 
-        // Cột này có trong DB của bạn nên khai báo luôn cho an toàn
-        [Column("created_at")]
-        public DateTime? CreatedAt { get; set; }
+        [Required]
+        [MaxLength(20)]
+        public string PhoneNumber { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Password is required")]
+        [MaxLength(255)]
+        public string PasswordHash { get; set; } = string.Empty;
+
+
+
+        // Constructor cho lập trình viên dùng
+        public User(string email, string phoneNumber, string passwordHash)
+        {
+            Email = email;
+            PhoneNumber = phoneNumber;
+            PasswordHash = passwordHash;
+
+        }
+
+        // Constructor cho EF Core dùng 
+        public User() { }
     }
 }

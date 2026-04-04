@@ -26,10 +26,10 @@ namespace Backend.Controllers
         {
             // 1. JOIN Bảng để lấy Email và Tên ứng viên
             var candidateInfo = await _context.Users
-                .Where(u => u.UserId == dto.UserId)
+                .Where(u => u.Id == dto.UserId)
                 .Join(_context.CandidateProfiles,
-                    u => u.UserId,
-                    cp => cp.UserId,
+                    u => u.Id,
+                    cp => cp.Id,
                     (u, cp) => new { u.Email, cp.FullName })
                 .FirstOrDefaultAsync();
 

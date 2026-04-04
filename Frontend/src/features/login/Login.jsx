@@ -16,34 +16,29 @@ export default function Login() {
       const response = await axios.post(
         "https://localhost:7263/api/Auth/login",
         {
-          email: email,
-          password: password,
-        },
+          Email: email,    // Chắc chắn dùng viết Hoa cho Backend
+          Password: password,
+        }
       );
 
-      // React nay đã nhận được Token từ C#
       const token = response.data.token;
       localStorage.setItem("token", token);
 
-      // Giải mã an toàn và lấy quyền (Role)
+      // Giải mã Token để lấy Role
       const decoded = jwtDecode(token);
-      const userRole =
-        decoded[
-          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-        ] || decoded.role;
+      const userRole = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || decoded.role;
 
-      // Chia nhánh mượt mà
+      // CHUYỂN TRANG NGAY LẬP TỨC TẠI ĐÂY
       if (userRole === "Admin" || userRole === "admin") {
         navigate("/admin");
       } else {
+        // Tài khoản đã có hồ sơ -> Nhảy thẳng vào trang ứng viên
         navigate("/candidate");
       }
+
     } catch (error) {
-      // 👈 BẠN ĐÃ VÔ TÌNH XÓA MẤT KHÚC NÀY TRƯỚC ĐÓ
-      const errorMsg =
-        error.response?.data?.message ||
-        "❌ Đăng nhập thất bại. Vui lòng kiểm tra lại!";
-      setMessage(errorMsg);
+      console.error("Lỗi đăng nhập:", error);
+      setMessage("❌ Đăng nhập thất bại. Kiểm tra lại Email/Mật khẩu!");
     }
   };
 

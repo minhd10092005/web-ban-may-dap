@@ -111,7 +111,7 @@ namespace Backend.Controllers
             var claims = new[]
             {
                 // Thay user.Id thành user.UserId (Chữ U viết hoa nhé)
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
 
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
