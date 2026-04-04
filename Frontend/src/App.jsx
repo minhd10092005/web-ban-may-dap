@@ -17,6 +17,7 @@ import About from "./features/about/About";
 // import Contact from "./features/contact/Contact";
 import Login from "./features/login/Login";
 import Register from "./features/login/Register";
+import ChangePassword from "./features/login/ChangePassword";
 
 // Import Dashboard đúng đường dẫn thư mục
 import AdminDashboard from "./features/AdminDashboard/AdminDashboard";
@@ -44,6 +45,7 @@ function App() {
 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/change-password" element={<ChangePassword />} />
 
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/candidate" element={<CandidateDashboard />} />

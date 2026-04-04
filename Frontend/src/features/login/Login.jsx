@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; // Gom chung useState và useEffect vào đây
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
@@ -10,13 +10,34 @@ export default function Login() {
 
   const navigate = useNavigate();
 
+  // 1. Kiểm tra Token ngay khi trang Login vừa load
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        const userRole = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || decoded.role;
+
+        if (userRole === "Admin" || userRole === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/candidate");
+        }
+      } catch (e) {
+        // Nếu token lỗi hoặc hết hạn thì xóa để user đăng nhập lại
+        localStorage.removeItem("token");
+      }
+    }
+  }, [navigate]);
+
+  // 2. Hàm xử lý Đăng nhập
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         "https://localhost:7263/api/Auth/login",
         {
-          Email: email,    // Chắc chắn dùng viết Hoa cho Backend
+          Email: email,
           Password: password,
         }
       );
@@ -24,15 +45,12 @@ export default function Login() {
       const token = response.data.token;
       localStorage.setItem("token", token);
 
-      // Giải mã Token để lấy Role
       const decoded = jwtDecode(token);
       const userRole = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || decoded.role;
 
-      // CHUYỂN TRANG NGAY LẬP TỨC TẠI ĐÂY
       if (userRole === "Admin" || userRole === "admin") {
         navigate("/admin");
       } else {
-        // Tài khoản đã có hồ sơ -> Nhảy thẳng vào trang ứng viên
         navigate("/candidate");
       }
 

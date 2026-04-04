@@ -21,6 +21,7 @@ export default function CandidateDashboard() {
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
+      console.log("Token hiện tại khi vào trang:", token);
       if (!token) { navigate("/login"); return; }
 
       try {
@@ -175,6 +176,14 @@ export default function CandidateDashboard() {
               >
                 Gửi CV cho Admin
               </button>
+              
+                <button
+                  onClick={() => navigate("/change-password")}
+                  className="btn btn-secondary"
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}
+                >
+                  🔒 Đổi mật khẩu
+                </button>
 
               <button onClick={handleLogout} className="btn btn-danger-light">Đăng xuất</button>
             </div>
