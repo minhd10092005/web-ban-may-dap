@@ -15,6 +15,11 @@ namespace Backend.Models
         [MaxLength(500)]
         public string ImageUrl { get; set; } = string.Empty;
 
+        // DÙNG NOTMAPPED: Để code C# vẫn thấy thuộc tính này (hết lỗi gạch đỏ)
+        // Nhưng Entity Framework sẽ KHÔNG tìm cột này trong Database (hết lỗi SQL)
+        [NotMapped]
+        public new DateTime? DeletedAt { get; set; }
+
         [ForeignKey("ProductId")]
         public virtual Product? Product { get; set; }
     }

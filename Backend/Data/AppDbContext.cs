@@ -5,9 +5,7 @@ namespace Backend.Data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-        {
-        }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Admin> Admins { get; set; }
@@ -22,94 +20,107 @@ namespace Backend.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Cấu hình User: Email là duy nhất
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.HasIndex(u => u.Email).IsUnique();
-                entity.Property(u => u.Email).HasMaxLength(150).IsRequired();
-            });
-
-            // Cấu hình Admin: Email là duy nhất
-            modelBuilder.Entity<Admin>(entity =>
-            {
-                entity.HasIndex(a => a.Email).IsUnique();
-                entity.Property(a => a.Email).HasMaxLength(150).IsRequired();
-            });
-
-            // Quan hệ 1-1 giữa User và CandidateProfile
-            modelBuilder.Entity<CandidateProfile>()
-                .HasOne(cp => cp.User)
-                .WithOne()
-                .HasForeignKey<CandidateProfile>(cp => cp.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // Cấu hình Category
-            modelBuilder.Entity<Category>(entity =>
-            {
-                entity.Property(c => c.CateName).HasMaxLength(100).IsRequired();
-            });
-
-            // Cấu hình ProductDetail (QUAN TRỌNG NHẤT)
-            modelBuilder.Entity<ProductDetail>(entity =>
-            {
-                // 1. Xác định ProductId vừa là Khóa ngoại vừa là Khóa chính
-                entity.HasKey(pd => pd.ProductId);
-
-                // 2. Cấu hình Quan hệ 1-1 với Product (Xóa sạch bóng ma ProductId1)
-                entity.HasOne(pd => pd.Product)
-                    .WithOne(p =>
-                        p.ProductDetail) // Đảm bảo Class Product dùng thuộc tính: public ProductDetail? ProductDetail {get;set;}
-                    .HasForeignKey<ProductDetail>(pd => pd.ProductId)
-                    .OnDelete(DeleteBehavior.Cascade);
-
-                // 3. Quan hệ 1-Nhiều với Category (Một Category có nhiều ProductDetail)
-                entity.HasOne(pd => pd.Category)
-                    .WithMany(c =>
-                        c.ProductDetails) // Đảm bảo Class Category có: public ICollection<ProductDetail> ProductDetails {get;set;}
-                    .HasForeignKey(pd => pd.CateId)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .IsRequired(false);
-            });
-
-            // Cấu hình ProductImage (1-nhiều với Product)
+            // 1. Cấu hình bảng ProductImage (Khóa chặt 2 cột ma)
             modelBuilder.Entity<ProductImage>(entity =>
             {
+                entity.ToTable("productimages");
+                entity.HasKey(pi => pi.Id);
+
+                // Chỉ map những cột CÓ THẬT trong Database thực tế của ông
+                entity.Property(pi => pi.Id).HasColumnName("Id");
+                entity.Property(pi => pi.ProductId).HasColumnName("ProductId");
+                entity.Property(pi => pi.ImageUrl).HasColumnName("ImageUrl");
+                entity.Property(pi => pi.CreatedAt).HasColumnName("CreatedAt");
+                entity.Property(pi => pi.IsDeleted).HasColumnName("IsDeleted");
+
+                // THẦN CHÚ DIỆT LỖI Ở ĐÂY:
+                // Ép EF Core lờ đi 2 cột này vì DB thực tế của ông không có
+                entity.Ignore(pi => pi.UpdatedAt);
+                entity.Ignore(pi => pi.DeletedAt);
+
                 entity.HasOne(pi => pi.Product)
                     .WithMany(p => p.ProductImages)
                     .HasForeignKey(pi => pi.ProductId)
                     .OnDelete(DeleteBehavior.Cascade);
-
-                entity.Property(pi => pi.ImageUrl).HasMaxLength(500).IsRequired();
             });
 
-            // Lọc dữ liệu "Xóa ảo" (Soft Delete) - Khi lấy dữ liệu sẽ tự bỏ qua các dòng IsDeleted = true
-            modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsDeleted);
-            modelBuilder.Entity<Category>().HasQueryFilter(c => !c.IsDeleted);
-            modelBuilder.Entity<ProductImage>().HasQueryFilter(pi => !pi.IsDeleted);
+            // 2. Cấu hình bảng Product
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.ToTable("products");
+                entity.HasKey(p => p.Id);
+
+                entity.Property(p => p.Id).HasColumnName("Id");
+                entity.Property(p => p.ProductName).HasColumnName("ProductName");
+                entity.Property(p => p.ProductType).HasColumnName("ProductType");
+                entity.Property(p => p.CreatedAt).HasColumnName("CreatedAt");
+                entity.Property(p => p.UpdatedAt).HasColumnName("UpdatedAt");
+                entity.Property(p => p.IsDeleted).HasColumnName("IsDeleted");
+                entity.Property(p => p.DeletedAt).HasColumnName("DeletedAt");
+
+                entity.HasQueryFilter(p => !p.IsDeleted);
+            });
+
+            // 3. Cấu hình bảng ProductDetail (Map kỹ để tránh lỗi Id hay ProductId)
+            modelBuilder.Entity<ProductDetail>(entity =>
+            {
+                entity.ToTable("productdetails");
+
+                // Khóa chính thực sự trong DB là ProductId
+                entity.HasKey(pd => pd.ProductId);
+
+                entity.Property(pd => pd.ProductId).HasColumnName("ProductId");
+
+                // CHẶN ĐỨNG LỖI p0.Id Ở ĐÂY
+                entity.Ignore(pd => pd.Id);
+
+                entity.Property(pd => pd.CateId).HasColumnName("CateId");
+                entity.Property(pd => pd.Description).HasColumnName("Description");
+            });
+
+            // 4. Cấu hình bảng Category
+            modelBuilder.Entity<Category>(entity =>
+            {
+                entity.ToTable("categories");
+                entity.HasKey(c => c.CateId);
+                entity.Property(c => c.CateId).HasColumnName("CateId");
+                entity.Property(c => c.CateName).HasColumnName("CateName");
+                entity.Property(c => c.CreatedAt).HasColumnName("CreatedAt");
+                entity.Property(c => c.UpdatedAt).HasColumnName("UpdatedAt");
+                entity.Property(c => c.IsDeleted).HasColumnName("IsDeleted");
+                entity.Property(c => c.DeletedAt).HasColumnName("DeletedAt");
+            });
         }
 
-        // Tự động cập nhật ngày giờ Audit
+        // Tự động gán thời gian khi lưu
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var entries = ChangeTracker.Entries()
-                .Where(e => e.Entity is EntityClass &&
-                            (e.State == EntityState.Added || e.State == EntityState.Modified));
+                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
 
             foreach (var entityEntry in entries)
             {
-                var entity = (EntityClass)entityEntry.Entity;
-                var now = DateTime.UtcNow; // Dùng UtcNow để đồng bộ múi giờ quốc tế
+                var entity = entityEntry.Entity;
+                var now = DateTime.Now;
 
                 if (entityEntry.State == EntityState.Added)
                 {
-                    entity.CreatedAt = now;
-                    entity.IsDeleted = false;
+                    TrySetProperty(entity, "CreatedAt", now);
+                    TrySetProperty(entity, "IsDeleted", false);
                 }
-
-                entity.UpdatedAt = now;
+                TrySetProperty(entity, "UpdatedAt", now);
             }
 
             return base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void TrySetProperty(object entity, string propertyName, object value)
+        {
+            var prop = entity.GetType().GetProperty(propertyName);
+            if (prop != null && prop.CanWrite)
+            {
+                prop.SetValue(entity, value);
+            }
         }
     }
 }

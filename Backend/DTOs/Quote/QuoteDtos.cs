@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace Backend.DTOs.Quote
 {
@@ -15,7 +16,7 @@ namespace Backend.DTOs.Quote
         public string EmailAddress { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public string Comments { get; set; } = string.Empty;
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
     }
 
     public class QuoteCreateDto
@@ -52,5 +53,9 @@ namespace Backend.DTOs.Quote
 
         [MaxLength(1000)]
         public string Comments { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Vui lòng chọn số sao đánh giá")]
+        [Range(1, 5, ErrorMessage = "Đánh giá phải từ 1 đến 5 sao")]
+        public int Rating { get; set; }
     }
 }
