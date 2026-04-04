@@ -84,7 +84,13 @@ namespace Backend.Services.Implementations
                 CompanyName = quote.CompanyName,
                 EmailAddress = quote.EmailAddress,
                 Phone = quote.Phone,
-                CreatedAt = DateTime.UtcNow // Fake since EF will populate it from SaveChangesAsync
+                Address = quote.Address,
+                City = quote.City,
+                State = quote.State,
+                PostalCode = quote.PostalCode,
+                Country = quote.Country,
+                Comments = quote.Comments,
+                CreatedAt = quote.CreatedAt
             };
         }
 
