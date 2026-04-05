@@ -7,5 +7,7 @@ namespace Backend.Services.Interfaces
     {
         // CHỈ GIỮ DUY NHẤT DÒNG NÀY, XÓA HẾT CÁC DÒNG GETALL, GETBYID, DELETE ĐI
         Task<QuoteDto> CreateQuoteAsync(QuoteCreateDto quoteCreateDto);
+
+        Task<IEnumerable<QuoteDto>> GetAllQuotesAsync();
     }
 }

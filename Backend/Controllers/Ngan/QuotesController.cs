@@ -40,5 +40,12 @@ namespace Backend.Controllers
                 return StatusCode(500, "Lỗi hệ thống: " + ex.Message);
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> GetQuotes()
+        {
+            // Lấy toàn bộ danh sách, lọc những cái có dữ liệu và trả về
+            var quotes = await _quoteService.GetAllQuotesAsync(); // Bạn cần thêm hàm này vào Service
+            return Ok(quotes);
+        }
     }
 }

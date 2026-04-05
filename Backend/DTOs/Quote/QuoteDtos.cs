@@ -16,6 +16,8 @@ namespace Backend.DTOs.Quote
         public string EmailAddress { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public string Comments { get; set; } = string.Empty;
+
+        public int Rating { get; set; }
         public DateTime? CreatedAt { get; set; }
     }
 
