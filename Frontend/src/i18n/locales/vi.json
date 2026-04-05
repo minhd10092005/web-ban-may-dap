@@ -1,0 +1,113 @@
+{
+    "home": {
+        "aboutSection": {
+            "titleLine1": "CUNG CẤP",
+            "titleLine2": "GIẢI PHÁP TRỌN GÓI",
+            "quoteText": "Tư vấn - Thiết kế - Sản xuất - Cung cấp giải pháp cho dây chuyền sản xuất thuốc viên rắn trong ngành dược.",
+            "mainDesc": "Công ty TNHH Chế Tạo Máy Dược Phẩm XYZ chuyên tư vấn - thiết kế - chế tạo máy móc thiết bị tự động và cung cấp giải pháp trọn gói cho nhà máy sản xuất thuốc viên theo tiêu chuẩn cGMP, GAMP, EU-GMP, PIC/S của ngành dược.",
+            "subDesc": "Với chính sách chất lượng \"Tiêu chuẩn Đức - chế tạo tại Việt Nam\" thiết kế hiện đại, tiên tiến, quy trình sản xuất và kiểm tra sản phẩm nghiêm ngặt...",
+            "btnViewMore": "XEM THÊM"
+        },
+        "featuredProducts": {
+            "loading": "Đang tải máy móc...",
+            "title": "MÁY MÓC TIÊU BIỂU",
+            "subtitle": "XYZ - \"Tiêu chuẩn Đức\" trong từng thiết bị dược phẩm",
+            "modelLabel": "Model:",
+            "updating": "Đang cập nhật",
+            "viewDetail": "XEM CHI TIẾT"
+        },
+        "heroSlider": {
+            "slide1": {
+                "title": "TIÊU CHUẨN ĐỨC",
+                "desc": "Chế tạo tại Việt Nam - Giải pháp công nghệ dược phẩm hàng đầu."
+            },
+            "slide2": {
+                "title": "CÔNG NGHỆ HIỆN ĐẠI",
+                "desc": "Hệ thống máy dập viên và đóng gói tự động đạt chuẩn GMP."
+            },
+            "slide3": {
+                "title": "DỊCH VỤ CHUYÊN NGHIỆP",
+                "desc": "Hỗ trợ kỹ thuật và bảo trì 24/7 trên toàn quốc."
+            },
+            "slide4": {
+                "title": "ĐỐI TÁC TIN CẬY",
+                "desc": "Đồng hành cùng sự phát triển của ngành dược Việt Nam."
+            },
+            "slide5": {
+                "title": "XUẤT KHẨU TOÀN CẦU",
+                "desc": "Sản phẩm Tiến Tuấn đã có mặt tại hơn 20 quốc gia."
+            },
+            "btnDetail": "XEM CHI TIẾT"
+        },
+        "newsEvents": {
+            "title": "TIN TỨC & SỰ KIỆN",
+            "readMore": "Xem thêm",
+            "news1": {
+                "category": "Sự kiện & Hội chợ",
+                "title": "LỜI MỜI THAM DỰ PHARMA ASIA 2025",
+                "desc": "Một trong những triển lãm quốc tế quan trọng nhất về giải pháp sản xuất và chế biến dược phẩm tại Pakistan."
+            },
+            "news2": {
+                "category": "Sự kiện & Hội chợ",
+                "title": "TIẾN TUẤN ĐÃ HOÀN THÀNH KIỂM TRA FAT CHO MÁY ÉP VỈ TỰ ĐỘNG CP-250",
+                "desc": "Dòng máy được ưa chuộng nhất hiện nay trong ngành dược phẩm, tại nhà máy Tiến Tuấn Pharmaceutical Machinery Co. Ltd..."
+            },
+            "news3": {
+                "category": "Sự kiện & Hội chợ",
+                "title": "FAT THÀNH CÔNG MÁY NGHIỀN BÚA FM-800I – ĐÁP ỨNG YÊU CẦU NGHIÊM NGẶT...",
+                "desc": "Tiến Tuấn đã hoàn tất buổi FAT cho máy nghiền búa FM-800i chuyên dùng để xay đường trong sản xuất dược phẩm..."
+            },
+            "news4": {
+                "category": "Tin tức công ty",
+                "title": "ĐẠI HỘI CỔ ĐÔNG THƯỜNG NIÊN NĂM 2026",
+                "desc": "Công ty Tiến Tuấn tổ chức thành công đại hội cổ đông thường niên, đề ra phương hướng phát triển mới..."
+            }
+        },
+        "productLine": {
+            "watermark": "PRODUCTS",
+            "title": "DÂY CHUYỀN SẢN XUẤT",
+            "subtitle1": "Tiến Tuấn tự hào cung cấp sản phẩm chất lượng cao \"Tiêu chuẩn Đức - chế tạo tại Việt Nam\"",
+            "subtitle2": "đi khắp thế giới",
+            "categories": {
+                "cat1": "Cốm nguyên liệu",
+                "cat2": "Cốm tạo hạt",
+                "cat3": "Hạt pellet",
+                "cat4": "Viên nén",
+                "cat5": "Viên nang",
+                "cat6": "Vỉ - Hộp"
+            }
+        },
+        "qualitySystem": {
+            "title": "HỆ THỐNG QUẢN LÝ CHẤT LƯỢNG",
+            "certs": {
+                "ped": "Chứng nhận PED",
+                "ex": "Chứng nhận EX",
+                "tuv": "Chứng nhận TUV",
+                "ce": "Chứng nhận CE"
+            }
+        }
+    },
+    "navbar": {
+        "recruitment": "TUYỂN DỤNG",
+        "sloganLine1": "Tiêu chuẩn Đức",
+        "sloganLine2": "Chế tạo tại Việt Nam",
+        "menuAbout": "VỀ CHÚNG TÔI",
+        "menuServices": "DỊCH VỤ",
+        "menuProducts": "SẢN PHẨM",
+        "menuContact": "LIÊN HỆ"
+    },
+    "footer": {
+        "newsletterLabel": "Đăng ký nhận tin",
+        "btnSend": "Gửi",
+        "followUs": "FOLLOW US",
+        "companyName": "CÔNG TY TNHH CHẾ TẠO MÁY DƯỢC PHẨM XYZ",
+        "address": "285 Đội Cấn Ba Đình, Hà Nội",
+        "hotlineSales": "Hotline kinh doanh:",
+        "sales": "Kinh doanh:",
+        "hr": "Nhân sự:",
+        "purchasing": "Mua hàng:",
+        "bctAlt": "Đã thông báo Bộ Công Thương",
+        "copyright": "Copyrights © 2006 XYZ Pharmaceutical Machinery Co.Ltd . All right reserved",
+        "businessLicense": "Mã số Doanh Nghiệp: 03 01 47 86 32 - Cấp ngày 31/08/1998"
+    }
+}

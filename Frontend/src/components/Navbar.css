@@ -1,0 +1,190 @@
+.header-wrapper {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    background-color: #ffffff;
+    font-family: Arial, sans-serif;
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.top-bar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 10% 0px 10%;
+}
+
+.top-links {
+    display: flex;
+    gap: 20px;
+    font-size: 11px;
+    color: #666;
+}
+
+.top-links span {
+    cursor: pointer;
+}
+
+.top-links span:hover {
+    color: #cc0000;
+}
+
+.flags {
+    display: flex;
+    gap: 8px;
+    margin-left: 20px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 10% 20px 10%;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo-placeholder {
+    font-size: 36px;
+    font-weight: 900;
+    color: #000;
+    position: relative;
+}
+
+.slogan {
+    font-size: 15px;
+    color: #222;
+    line-height: 1.4;
+    border-left: 1px solid #ccc;
+    padding-left: 20px;
+}
+
+.slogan p {
+    margin: 0;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #333;
+}
+
+.nav-menu a:hover {
+    color: #cc0000;
+}
+
+.home-icon {
+    color: #cc0000 !important;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    color: #cc0000;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+
+/* Bao bọc thẻ cha để làm điểm tựa cho menu con */
+.nav-item.has-dropdown {
+    position: relative;
+    /* Rất quan trọng: Tạo một vùng đệm (bridge) phía dưới để khi kéo chuột từ chữ xuống menu không bị mất hover */
+    padding-bottom: 20px;
+    margin-bottom: -20px;
+}
+
+/* Kiểu dáng cho chữ VỀ CHÚNG TÔI */
+.main-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.nav-item.has-dropdown:hover .main-link {
+    color: #cc0000;
+    /* Đổi màu đỏ khi hover */
+}
+
+/* ==== BẮT ĐẦU CSS CHO MENU THẢ XUỐNG ==== */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    /* Đẩy xuống ngay mép dưới của chữ VỀ CHÚNG TÔI */
+    left: 0;
+    width: 240px;
+    /* Độ rộng của menu con */
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+
+    /* Ban đầu ẩn đi và đẩy xuống 10px để tạo hiệu ứng trượt */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+/* Khi di chuột vào cha thì hiện con */
+.nav-item.has-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    /* Trượt về vị trí cũ */
+}
+
+/* CSS cho từng dòng chữ trong menu con */
+.dropdown-menu a {
+    text-decoration: none;
+    color: #222;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: normal;
+    border-bottom: 1px solid #eaeaea;
+    /* Đường kẻ xám mỏng ngăn cách */
+    display: flex;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+/* Cái mũi tên nhỏ > */
+.dropdown-menu a span {
+    font-size: 18px;
+    margin-right: 10px;
+    color: #666;
+    transition: color 0.3s;
+}
+
+/* Hiệu ứng trỏ chuột vào menu con: Đổi màu chữ và thụt đầu dòng một chút cho "xịn" */
+.dropdown-menu a:hover {
+    color: #cc0000;
+    /* Màu đỏ Tiến Tuấn */
+    padding-left: 25px;
+    /* Thụt vào trong một tí */
+}
+
+.dropdown-menu a:hover span {
+    color: #cc0000;
+    /* Mũi tên cũng đổi màu đỏ */
+}

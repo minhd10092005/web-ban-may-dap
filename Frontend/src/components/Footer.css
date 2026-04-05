@@ -1,0 +1,173 @@
+.footer-section {
+    width: 100%;
+    font-family: Arial, sans-serif;
+}
+
+/* ==== THANH XÁM TRÊN CÙNG ==== */
+.footer-top {
+    background-color: #666666;
+    /* Màu xám đặc trưng */
+    padding: 15px 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Form nhận tin */
+.newsletter {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.newsletter-label {
+    color: #fff;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.input-group {
+    display: flex;
+}
+
+.input-group input {
+    padding: 8px 15px;
+    border: none;
+    width: 250px;
+    outline: none;
+    border-radius: 3px 0 0 3px;
+    /* Bo góc trái */
+}
+
+.input-group button {
+    background-color: #ffcc00;
+    /* Màu vàng Tiến Tuấn */
+    color: #000;
+    border: none;
+    padding: 8px 25px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 0 3px 3px 0;
+    /* Bo góc phải */
+    transition: 0.3s;
+}
+
+.input-group button:hover {
+    background-color: #cc0000;
+    color: #fff;
+}
+
+/* Icon mạng xã hội */
+.social-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.social-label {
+    color: #fff;
+    font-size: 14px;
+}
+
+.social-icon {
+    width: 32px;
+    height: 32px;
+    background-color: #999;
+    /* Xám nhạt hơn nền một chút */
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    /* Tròn xoe */
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.social-icon:hover {
+    background-color: #ffcc00;
+    color: #000;
+}
+
+/* ==== PHẦN NỘI DUNG CHÍNH (NỀN TRẮNG CÓ BẢN ĐỒ) ==== */
+.footer-main {
+    background-color: #fafafa;
+    padding: 50px 10%;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    /* Bro có thể tải ảnh bản đồ mờ lưu vào máy rồi dùng background-image ở đây */
+    /* background-image: url('../assets/imgs/world-map-bg.png'); */
+    background-position: center right;
+    background-repeat: no-repeat;
+    background-size: 50%;
+}
+
+.company-info {
+    max-width: 700px;
+}
+
+.company-info h3 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.company-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.company-info li {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+    line-height: 1.5;
+}
+
+.info-icon {
+    margin-top: 3px;
+    margin-right: 10px;
+    color: #777;
+    min-width: 14px;
+}
+
+.bct-logo img {
+    max-width: 180px;
+}
+
+/* ==== DÒNG BẢN QUYỀN CUỐI CÙNG ==== */
+.footer-bottom {
+    background-color: #fafafa;
+    padding: 20px 10%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #333;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .footer-top {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .footer-main {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+}
