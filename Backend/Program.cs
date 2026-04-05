@@ -1,7 +1,7 @@
 ﻿using Backend.Data;
 using Backend.Extensions;
-using Backend.Services.Implementations;
-using Backend.Services.Interfaces;
+using Backend.Services.Implementations.Cua_ngan;
+using Backend.Services.Interfaces.Ngan;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -50,32 +50,32 @@
 // export default App;
 
 
-// import { BrowserRouter, Routes, Route } from 'react-router-dom';
-// import { ToastContainer } from 'react-toastify';
-// import ProductList from './features/products/ProductList';
-// import ProductDetail from './features/products/ProductDetail';
-
-// function App() {
-//   return (
-//     <BrowserRouter>
-//       <Routes>
-//         <Route path="/" element={<ProductList />} />
-//         <Route path="/product/:id" element={<ProductDetail />} />
-//       </Routes>
-//     </BrowserRouter>
-//   );
-// }
-
-// export default App;
-
-import QuoteForm from './features/quotes/QuoteForm';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import ProductList from './features/products/ProductList';
+import ProductDetail from './features/products/ProductDetail';
 
 function App() {
   return (
-    <div>
-      <QuoteForm />
-    </div>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<ProductList />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
+
+// import QuoteForm from './features/quotes/QuoteForm';
+
+// function App() {
+//   return (
+//     <div>
+//       <QuoteForm />
+//     </div>
+//   )
+// }
+
+// export default App;

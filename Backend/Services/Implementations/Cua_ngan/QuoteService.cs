@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Backend.Services.Implementations
+namespace Backend.Services.Implementations.Cua_ngan
 {
     public class QuoteService_cuangan : IQuoteService_cuangan
     {
