@@ -2,22 +2,34 @@ import React, { useState, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
 import quoteApi from "../../../api/quoteApi";
 
-const IconSearch  = () => <span style={{fontSize:15}}>🔍</span>;
-const IconTrash   = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>;
-const IconEye     = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>;
+const IconSearch       = () => <span style={{fontSize:15}}>🔍</span>;
+const IconPlus         = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
+const IconTrash        = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>;
+const IconEye          = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>;
 const IconChevronLeft  = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>;
 const IconChevronRight = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><polyline points="9 18 15 12 9 6"/></svg>;
 
+const EMPTY_FORM = {
+    fullName: "", companyName: "", address: "", city: "",
+    state: "", postalCode: "", country: "", emailAddress: "",
+    phone: "", comments: ""
+};
+
 const QuoteManager = () => {
-    const [dataList, setDataList]   = useState([]);
-    const [loading, setLoading]     = useState(false);
-    const [meta, setMeta]           = useState({ totalPages: 0, totalCount: 0 });
+    const [dataList, setDataList]       = useState([]);
+    const [loading, setLoading]         = useState(false);
+    const [meta, setMeta]               = useState({ totalPages: 0, totalCount: 0 });
     const [searchInput, setSearchInput] = useState("");
-    const [filters, setFilters] = useState({ pageNumber: 1, pageSize: 10, searchTerm: "" });
-    const [modalOpen, setModalOpen]   = useState(false);
-    const [viewItem, setViewItem] = useState(null);
+    const [filters, setFilters]         = useState({ pageNumber: 1, pageSize: 10, searchTerm: "" });
+
+    // Modal states
+    const [createOpen, setCreateOpen]   = useState(false);
+    const [viewItem, setViewItem]       = useState(null);
     const [deleteTarget, setDeleteTarget] = useState(null);
-    const [deleting, setDeleting]     = useState(false);
+    const [deleting, setDeleting]       = useState(false);
+    const [saving, setSaving]           = useState(false);
+    const [formData, setFormData]       = useState(EMPTY_FORM);
+    const [formErrors, setFormErrors]   = useState({});
 
     const loadData = useCallback(async () => {
         setLoading(true);
@@ -36,6 +48,32 @@ const QuoteManager = () => {
 
     useEffect(() => { loadData(); }, [loadData]);
 
+    // Validate form
+    const validate = () => {
+        const errs = {};
+        if (!formData.fullName.trim())      errs.fullName     = "Họ tên không được để trống";
+        if (!formData.emailAddress.trim())  errs.emailAddress = "Email không được để trống";
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.emailAddress))
+            errs.emailAddress = "Email không hợp lệ";
+        return errs;
+    };
+
+    const handleCreate = async (e) => {
+        e.preventDefault();
+        const errs = validate();
+        if (Object.keys(errs).length) { setFormErrors(errs); return; }
+        setSaving(true);
+        try {
+            await quoteApi.create(formData);
+            toast.success("Tạo báo giá thành công!");
+            setCreateOpen(false);
+            setFormData(EMPTY_FORM);
+            setFormErrors({});
+            loadData();
+        } catch (err) {
+            toast.error(err?.response?.data || "Tạo thất bại!");
+        } finally { setSaving(false); }
+    };
 
     const handleDelete = async () => {
         if (!deleteTarget) return;
@@ -49,8 +87,10 @@ const QuoteManager = () => {
         finally { setDeleting(false); setDeleteTarget(null); }
     };
 
-    const openView = (item) => { setViewItem(item); setModalOpen(true); };
-    const goPage   = (n) => setFilters((p) => ({ ...p, pageNumber: n }));
+    const openCreate = () => { setFormData(EMPTY_FORM); setFormErrors({}); setCreateOpen(true); };
+    const openView   = (item) => setViewItem(item);
+    const goPage     = (n) => setFilters((p) => ({ ...p, pageNumber: n }));
+    const setField   = (key, val) => { setFormData(p => ({ ...p, [key]: val })); setFormErrors(p => ({ ...p, [key]: undefined })); };
 
     const buildPages = () => {
         const { pageNumber: cur } = filters;
@@ -70,6 +110,11 @@ const QuoteManager = () => {
                 <div>
                     <h1 className="page-title">Yêu cầu Báo Giá (Quotes)</h1>
                     <p className="page-subtitle">{meta.totalCount > 0 ? `${meta.totalCount} báo giá trong hệ thống` : "Chưa có dữ liệu"}</p>
+                </div>
+                <div className="header-actions">
+                    <button className="btn btn-primary" onClick={openCreate}>
+                        <IconPlus /> Thêm Báo Giá
+                    </button>
                 </div>
             </div>
 
@@ -108,7 +153,7 @@ const QuoteManager = () => {
                                         <td>{item.fullName}</td>
                                         <td>{item.companyName}</td>
                                         <td>{item.emailAddress}</td>
-                                        <td>{new Date(item.createdAt).toLocaleDateString()}</td>
+                                        <td>{new Date(item.createdAt).toLocaleDateString("vi-VN")}</td>
                                         <td className="col-actions">
                                             <div className="row-actions">
                                                 <button className="btn btn-sm btn-ghost" onClick={() => openView(item)}><IconEye /> Xem</button>
@@ -133,33 +178,97 @@ const QuoteManager = () => {
                 )}
             </div>
 
-            {modalOpen && viewItem && (
-                <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && setModalOpen(false)}>
+            {/* ===== Modal Tạo mới ===== */}
+            {createOpen && (
+                <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && !saving && setCreateOpen(false)}>
+                    <div className="modal" role="dialog" aria-modal="true" style={{maxWidth: 640}}>
+                        <div className="modal-header">
+                            <h2 className="modal-title">Tạo Báo Giá Mới</h2>
+                            <button className="modal-close" onClick={() => setCreateOpen(false)} disabled={saving} aria-label="Đóng">✕</button>
+                        </div>
+                        <form onSubmit={handleCreate}>
+                            <div className="modal-body" style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0 16px"}}>
+                                <div className="field" style={{gridColumn:"1/-1"}}>
+                                    <label className="field-label">Họ tên <span className="req">*</span></label>
+                                    <input type="text" className={`field-input${formErrors.fullName ? " input-error" : ""}`} value={formData.fullName} onChange={e => setField("fullName", e.target.value)} autoFocus placeholder="Nhập họ và tên" />
+                                    {formErrors.fullName && <p className="field-error">{formErrors.fullName}</p>}
+                                </div>
+                                <div className="field">
+                                    <label className="field-label">Email <span className="req">*</span></label>
+                                    <input type="email" className={`field-input${formErrors.emailAddress ? " input-error" : ""}`} value={formData.emailAddress} onChange={e => setField("emailAddress", e.target.value)} placeholder="example@email.com" />
+                                    {formErrors.emailAddress && <p className="field-error">{formErrors.emailAddress}</p>}
+                                </div>
+                                <div className="field">
+                                    <label className="field-label">Số điện thoại</label>
+                                    <input type="text" className="field-input" value={formData.phone} onChange={e => setField("phone", e.target.value)} placeholder="0901 234 567" />
+                                </div>
+                                <div className="field" style={{gridColumn:"1/-1"}}>
+                                    <label className="field-label">Tên công ty</label>
+                                    <input type="text" className="field-input" value={formData.companyName} onChange={e => setField("companyName", e.target.value)} placeholder="Tên công ty (nếu có)" />
+                                </div>
+                                <div className="field" style={{gridColumn:"1/-1"}}>
+                                    <label className="field-label">Địa chỉ</label>
+                                    <input type="text" className="field-input" value={formData.address} onChange={e => setField("address", e.target.value)} placeholder="Số nhà, tên đường..." />
+                                </div>
+                                <div className="field">
+                                    <label className="field-label">Thành phố</label>
+                                    <input type="text" className="field-input" value={formData.city} onChange={e => setField("city", e.target.value)} placeholder="TP. Hồ Chí Minh" />
+                                </div>
+                                <div className="field">
+                                    <label className="field-label">Tỉnh / Bang</label>
+                                    <input type="text" className="field-input" value={formData.state} onChange={e => setField("state", e.target.value)} placeholder="Tỉnh / Bang" />
+                                </div>
+                                <div className="field">
+                                    <label className="field-label">Mã bưu chính</label>
+                                    <input type="text" className="field-input" value={formData.postalCode} onChange={e => setField("postalCode", e.target.value)} placeholder="700000" />
+                                </div>
+                                <div className="field">
+                                    <label className="field-label">Quốc gia</label>
+                                    <input type="text" className="field-input" value={formData.country} onChange={e => setField("country", e.target.value)} placeholder="Việt Nam" />
+                                </div>
+                                <div className="field" style={{gridColumn:"1/-1"}}>
+                                    <label className="field-label">Nội dung yêu cầu</label>
+                                    <textarea className="field-input" rows={4} value={formData.comments} onChange={e => setField("comments", e.target.value)} placeholder="Mô tả yêu cầu báo giá của bạn..." style={{resize:"vertical"}} />
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-ghost" onClick={() => setCreateOpen(false)} disabled={saving}>Hủy</button>
+                                <button type="submit" className="btn btn-primary" disabled={saving}>{saving ? "Đang lưu…" : "Tạo báo giá"}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* ===== Modal Xem chi tiết ===== */}
+            {viewItem && (
+                <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && setViewItem(null)}>
                     <div className="modal" role="dialog" aria-modal="true">
                         <div className="modal-header">
-                            <h2 className="modal-title">Chi tiết Báo Giá</h2>
-                            <button className="modal-close" onClick={() => setModalOpen(false)} aria-label="Đóng">✕</button>
+                            <h2 className="modal-title">Chi tiết Báo Giá #{viewItem.id}</h2>
+                            <button className="modal-close" onClick={() => setViewItem(null)} aria-label="Đóng">✕</button>
                         </div>
                         <div className="modal-body">
                             <div className="field"><p><strong>Họ tên:</strong> {viewItem.fullName}</p></div>
-                            <div className="field"><p><strong>Công ty:</strong> {viewItem.companyName}</p></div>
+                            <div className="field"><p><strong>Công ty:</strong> {viewItem.companyName || "—"}</p></div>
                             <div className="field"><p><strong>Email:</strong> {viewItem.emailAddress}</p></div>
-                            <div className="field"><p><strong>SĐT:</strong> {viewItem.phone}</p></div>
-                            <div className="field"><p><strong>Địa chỉ:</strong> {viewItem.address}, {viewItem.city}, {viewItem.state}, {viewItem.country}</p></div>
-                            <div className="field"><p><strong>Postal Code:</strong> {viewItem.postalCode}</p></div>
+                            <div className="field"><p><strong>SĐT:</strong> {viewItem.phone || "—"}</p></div>
+                            <div className="field"><p><strong>Địa chỉ:</strong> {[viewItem.address, viewItem.city, viewItem.state, viewItem.country].filter(Boolean).join(", ") || "—"}</p></div>
+                            {viewItem.postalCode && <div className="field"><p><strong>Postal Code:</strong> {viewItem.postalCode}</p></div>}
                             <div className="field">
-                                <p><strong>Lời nhắn:</strong></p>
-                                <p style={{background: "var(--bg-secondary)", padding: 10, borderRadius: 6}}>{viewItem.comments}</p>
+                                <p><strong>Nội dung:</strong></p>
+                                <p style={{background: "var(--bg-secondary)", padding: 10, borderRadius: 6, whiteSpace:"pre-wrap"}}>{viewItem.comments || "—"}</p>
                             </div>
-                            <div className="field"><p><strong>Ngày gửi:</strong> {new Date(viewItem.createdAt).toLocaleString()}</p></div>
+                            <div className="field"><p><strong>Ngày gửi:</strong> {new Date(viewItem.createdAt).toLocaleString("vi-VN")}</p></div>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-ghost" onClick={() => setModalOpen(false)}>Đóng</button>
+                            <button type="button" className="btn btn-ghost" onClick={() => setViewItem(null)}>Đóng</button>
                         </div>
                     </div>
                 </div>
             )}
 
+            {/* ===== Confirm Delete ===== */}
             {deleteTarget && (
                 <div className="modal-overlay" onClick={() => !deleting && setDeleteTarget(null)}>
                     <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
