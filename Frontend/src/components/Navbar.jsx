@@ -47,7 +47,7 @@ const NavBar = () => {
                     <Link to="/about" className="nav-item main-link">{t('navbar.menuAbout')}</Link>
                     <Link to="/services" className="nav-item main-link">{t('navbar.menuServices')}</Link>
                     <Link to="/products" className="nav-item main-link">{t('navbar.menuProducts')}</Link>
-                    <Link to="/contact" className="nav-item main-link">{t('navbar.menuContact')}</Link>
+                    <Link to="/quote" className="nav-item main-link">{t('navbar.menuContact')}</Link>
 
                     <FaSearch className="search-icon" />
                 </nav>

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -37,6 +37,10 @@ import UserManager from './features/admin/pages/UserManager';
 import QuoteManager from './features/admin/pages/QuoteManager';
 import CandidateProfileManager from './features/admin/pages/CandidateProfileManager';
 
+// ===== Candidate Dashboard (Trang hồ sơ sau khi Login) =====
+// Chú ý: Nếu dòng này báo lỗi màu đen "Failed to resolve", bro hãy kiểm tra lại tên folder AdminDashboard
+import CandidateDashboard from './features/AdminDashboard/CandidateDashboard';
+
 function App() {
   return (
     <Router>
@@ -49,23 +53,26 @@ function App() {
 
         <Routes>
 
-          {/* ===== PUBLIC ===== */}
+          {/* ===== PUBLIC ROUTES ===== */}
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
 
-          {/* ===== PRODUCT ===== */}
-          <Route path="/products" element={<ProductList />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-
-          {/* ===== QUOTE ===== */}
-          <Route path="/quote" element={<QuoteForm />} />
-
-          {/* ===== AUTH ===== */}
+          {/* Khi nhấn "Tuyển dụng" ở Navbar, nó sẽ nhảy vào Route /login này */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/change-password" element={<ChangePassword />} />
 
-          {/* ===== ADMIN ===== */}
+          {/* ===== PRIVATE/USER ROUTES ===== */}
+          {/* Trang hồ sơ cá nhân của ứng viên sau khi đăng nhập thành công */}
+          <Route path="/candidates" element={<CandidateDashboard />} />
+          <Route path="/candidate" element={<CandidateDashboard />} />
+
+          {/* ===== PRODUCT & QUOTE ===== */}
+          <Route path="/products" element={<ProductList />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/quote" element={<QuoteForm />} />
+
+          {/* ===== ADMIN ROUTES (Chỉ dành cho Admin) ===== */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<Navigate to="products" replace />} />
             <Route path="products" element={<ProductManager />} />
@@ -78,8 +85,8 @@ function App() {
             <Route path="candidate-profiles" element={<CandidateProfileManager />} />
           </Route>
 
-          {/* ===== FALLBACK ===== */}
-          <Route path="*" element={<Navigate to="/" />} />
+          {/* ===== FALLBACK (Tránh trang trắng) ===== */}
+          {/* <Route path="*" element={<Navigate to="/" />} /> */}
 
         </Routes>
 
