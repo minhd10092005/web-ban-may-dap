@@ -27,6 +27,7 @@ import ProductDetail from './features/products/ProductDetail';
 import QuoteForm from './features/quotes/QuoteForm';
 
 // ===== Admin =====
+import LoginAdmin from './features/admin/pages/LoginAdmin';
 import AdminLayout from './features/admin/components/AdminLayout';
 import ProductManager from './features/admin/pages/ProductManager';
 import CategoryManager from './features/admin/pages/CategoryManager';
@@ -71,9 +72,10 @@ function App() {
           <Route path="/products" element={<ProductList />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/quote" element={<QuoteForm />} />
-
+          <Route path="/loginAdmin" element={<LoginAdmin />} />
           {/* ===== ADMIN ROUTES (Chỉ dành cho Admin) ===== */}
           <Route path="/admin" element={<AdminLayout />}>
+
             <Route index element={<Navigate to="products" replace />} />
             <Route path="products" element={<ProductManager />} />
             <Route path="categories" element={<CategoryManager />} />

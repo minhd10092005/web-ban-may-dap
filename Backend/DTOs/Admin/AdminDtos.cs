@@ -49,4 +49,26 @@ namespace Backend.DTOs.Admin
         [MaxLength(100)]
         public string? Password { get; set; } 
     }
+    
+    public class AdminLoginDto
+    {
+       
+
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
+        [MaxLength(150)]
+        public string Email { get; set; } = string.Empty;
+  
+        [MaxLength(100)]
+        public string? Password { get; set; } 
+    }
+    public class AdminLoginResponseDto
+    {
+      
+        public string Token { get; set; } = string.Empty;
+
+        public DateTime ExpiresAt { get; set; }
+
+        public AdminDto Admin { get; set; } = null!;
+    }
 }

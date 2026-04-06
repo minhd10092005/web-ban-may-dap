@@ -54,5 +54,6 @@ namespace Backend.Controllers
             if (!deleted) return NotFound("Admin not found.");
             return NoContent();
         }
+        
     }
 }

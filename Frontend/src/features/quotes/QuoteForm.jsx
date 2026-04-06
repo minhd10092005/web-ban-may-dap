@@ -111,107 +111,129 @@ const QuoteForm = () => {
     // ==========================================
     // PHẦN 4: GIAO DIỆN (JSX)
     // ==========================================
-
     return (
-        <div className="contact-container">
-
-            {/* 4.1 TIÊU ĐỀ TRANG */}
-            <div className="contact-header">
-                <h1>Liên hệ</h1>
-                <p className="description">Chào mừng bạn đến với Tiến Tuấn. Mọi đóng góp của bạn là động lực để chúng tôi phát triển.</p>
+        <div className="page-wrapper">
+            {/* Tiêu đề trang sử dụng Page Header chuẩn của bạn */}
+            <div className="page-header">
+                <div>
+                    <h1 className="page-title">Liên hệ & Góp ý</h1>
+                    <p className="page-subtitle">Chào mừng bạn đến với Tiến Tuấn. Mọi đóng góp của bạn là động lực để chúng tôi phát triển.</p>
+                </div>
             </div>
 
-            {/* 2. BẢN ĐỒ (CÓ GHIM ĐỎ TIẾN TUẤN) */}
-            <div className="map-section">
+            {/* Bản đồ bọc trong Card để có Radius và Shadow đẹp */}
+            <div className="card" style={{ marginBottom: 'var(--sp-8)', overflow: 'hidden', height: '400px' }}>
                 <iframe
-                    title="Công ty TNHH Chế Tạo Máy Dược Phẩm Tiến Tuấn"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.923249137846!2d105.81641017504418!3d21.03575678061529!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab0d127a01e7%3A0xab069cd4eaa76ff2!2zMjg1IMSQ4buZaSBD4bqlbiwgTGnhu4V1IEdpYWksIE5n4buNYyBIw6AsIEjDoCBO4buZaSAxMDAwMDAsIFZpZXRuYW0!5e0!3m2!1sen!2s!4v1775385469622!5m2!1sen!2s1"
+                    title="Bản đồ"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.066487504368!2d106.6111306!3d10.8062323!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752be351336187%3A0x6335134700d89f8!2sTi%E1%BA%BFn%20Tu%E1%BA%A5n%20Pharmaceutical%20Machinery!5e0!3m2!1svi!2s!4v1712410000000!5m2!1svi!2s"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
                     allowFullScreen=""
                     loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
                 ></iframe>
             </div>
 
-            <div className="contact-content">
-                {/* 4.3 CỘT TRÁI: THÔNG TIN CÔNG TY */}
-                <div className="info-card">
-                    <h2>Thông tin liên hệ</h2>
-                    <div className="info-item">📍 Lô IV-19 (KCN Tân Bình), Quận Tân Phú, TP. HCM</div>
-                    <div className="info-item text-red">📞 Hotline: 0903 849 121</div>
-                    <div className="info-item">📠 Fax: +84 28 38 152 953</div>
-                    <div className="info-item">✉️ ttp@tientuan.com.vn</div>
+            <div className="toolbar" style={{ alignItems: 'stretch', gap: 'var(--sp-6)' }}>
+                {/* Cột Trái: Thông tin liên hệ (Dùng Card) */}
+                <div className="card" style={{ flex: '1', padding: 'var(--sp-6)', background: 'var(--accent)', color: 'white' }}>
+                    <h2 style={{ marginBottom: 'var(--sp-4)', fontSize: '1.25rem' }}>Thông tin liên hệ</h2>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-3)' }}>
+                        <p>📍 Lô IV-19 (KCN Tân Bình), Quận Tân Phú, TP. HCM</p>
+                        <p style={{ fontWeight: 'bold' }}>📞 Hotline: 0903 849 121</p>
+                        <p>📠 Fax: +84 28 38 152 953</p>
+                        <p>✉️ ttp@tientuan.com.vn</p>
+                    </div>
                 </div>
 
-                {/* 4.4 CỘT PHẢI: FORM GỬI PHẢN HỒI */}
-                <div className="feedback-form">
-                    <h2><span>✉</span> Gửi ý kiến của bạn</h2>
-                    <form onSubmit={handleSubmit}>
-                        <div className="form-group-row">
-                            <input required placeholder="Họ và tên *" value={formData.fullName} onChange={e => setFormData({ ...formData, fullName: e.target.value })} />
-                            <input required placeholder="Số điện thoại *" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} />
+                {/* Cột Phải: Form (Dùng Card và Field chuẩn) */}
+                <div className="card" style={{ flex: '1.5', padding: 'var(--sp-6)' }}>
+                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-4)' }}>
+                        <div style={{ display: 'flex', gap: 'var(--sp-4)' }}>
+                            <div className="field" style={{ flex: 1 }}>
+                                <label className="field-label">Họ và tên <span className="req">*</span></label>
+                                <input className="field-input" required value={formData.fullName} onChange={e => setFormData({ ...formData, fullName: e.target.value })} />
+                            </div>
+                            <div className="field" style={{ flex: 1 }}>
+                                <label className="field-label">Số điện thoại <span className="req">*</span></label>
+                                <input className="field-input" required value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} />
+                            </div>
                         </div>
-                        <input required type="email" placeholder="Email *" value={formData.emailAddress} onChange={e => setFormData({ ...formData, emailAddress: e.target.value })} />
 
-                        <div className="rating-box">
-                            <span>Bạn thấy dịch vụ thế nào?</span>
-                            <div className="stars">
+                        <div className="field">
+                            <label className="field-label">Email <span className="req">*</span></label>
+                            <input className="field-input" type="email" required value={formData.emailAddress} onChange={e => setFormData({ ...formData, emailAddress: e.target.value })} />
+                        </div>
+
+                        <div className="field">
+                            <label className="field-label">Đánh giá dịch vụ</label>
+                            <div style={{ display: 'flex', gap: 'var(--sp-2)', fontSize: '1.5rem' }}>
                                 {[1, 2, 3, 4, 5].map(s => (
-                                    <button key={s} type="button" onClick={() => setFormData({ ...formData, rating: s })} className={formData.rating >= s ? 'active' : ''}>★</button>
+                                    <span
+                                        key={s}
+                                        onClick={() => setFormData({ ...formData, rating: s })}
+                                        style={{ cursor: 'pointer', color: formData.rating >= s ? '#fbbf24' : '#e5e7eb' }}
+                                    >★</span>
                                 ))}
                             </div>
                         </div>
 
-                        <textarea required placeholder="Nhập nội dung góp ý tại đây..." rows="4" value={formData.comments} onChange={e => setFormData({ ...formData, comments: e.target.value })}></textarea>
+                        <div className="field">
+                            <label className="field-label">Nội dung góp ý <span className="req">*</span></label>
+                            <textarea className="field-input field-textarea" required rows="4" value={formData.comments} onChange={e => setFormData({ ...formData, comments: e.target.value })}></textarea>
+                        </div>
 
-                        {/* HIỂN THỊ THÔNG BÁO STATUS (Đã fix lỗi gạch đỏ) */}
-                        {status.msg && <p style={{ color: status.isError ? '#e11d48' : '#10b981', fontWeight: 'bold', textAlign: 'center', marginBottom: '10px' }}>{status.msg}</p>}
+                        {status.msg && (
+                            <div className={status.isError ? "field-error" : ""} style={{ color: status.isError ? 'var(--danger)' : 'var(--success)' }}>
+                                {status.msg}
+                            </div>
+                        )}
 
-                        <button disabled={loading} type="submit" className="btn-submit">
-                            {loading ? 'ĐANG GỬI...' : 'GỬI PHẢN HỒI NGAY'}
+                        <button disabled={loading} type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>
+                            {loading ? <div className="spinner" style={{ width: '18px', height: '18px', margin: 0 }}></div> : 'GỬI PHẢN HỒI'}
                         </button>
                     </form>
                 </div>
             </div>
 
-            {/* 4.5 PHẦN BÌNH LUẬN KHÁCH HÀNG (CÓ LỌC & PHÂN TRANG) */}
-            <div className="comments-section" id="comments-area">
-                <div className="comments-header-row">
-                    <h2 className="comments-title">Ý kiến khách hàng Gần Đây</h2>
-
-                    {/* NÚT LỌC SAO */}
-                    <div className="filter-bar">
-                        <span>Lọc:</span>
+            {/* Phần Bình luận khách hàng */}
+            <div style={{ marginTop: 'var(--sp-10)' }}>
+                <div className="page-header">
+                    <h2 className="page-title">Ý kiến khách hàng gần đây</h2>
+                    <div className="header-actions">
                         {[5, 4, 3, 2, 1].map(s => (
-                            <button key={s} className={`filter-btn ${filterRating === s ? 'active' : ''}`} onClick={() => setFilterRating(filterRating === s ? null : s)}>{s} ★</button>
+                            <button
+                                key={s}
+                                className={`page-btn ${filterRating === s ? 'active' : ''}`}
+                                onClick={() => setFilterRating(filterRating === s ? null : s)}
+                            >{s} ★</button>
                         ))}
                     </div>
                 </div>
 
-                {/* LƯỚI HIỂN THỊ CÁC CARD BÌNH LUẬN */}
-                <div className="comments-grid">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 'var(--sp-4)' }}>
                     {currentItems.map(item => (
-                        <div key={item.id} className="comment-card-display">
-                            <div className="comment-header">
-                                <span className="comment-name">{item.fullName}</span>
-                                <span className="comment-stars">{'★'.repeat(item.rating)}{'☆'.repeat(5 - item.rating)}</span>
+                        <div key={item.id} className="card" style={{ padding: 'var(--sp-5)' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--sp-2)' }}>
+                                <span className="col-name">{item.fullName}</span>
+                                <span style={{ color: '#fbbf24' }}>{'★'.repeat(item.rating)}</span>
                             </div>
-                            <p className="comment-text">{item.comments}</p>
-                            <span className="comment-date">{item.createdAt ? new Date(item.createdAt).toLocaleDateString('vi-VN') : ''}</span>
+                            <p className="td-description" style={{ color: 'var(--text-secondary)', marginBottom: 'var(--sp-3)' }}>{item.comments}</p>
+                            <span className="state-hint">{item.createdAt ? new Date(item.createdAt).toLocaleDateString('vi-VN') : ''}</span>
                         </div>
                     ))}
                 </div>
 
-                {/* CÁC NÚT BẤM CHUYỂN TRANG */}
+                {/* Pagination sử dụng Class chuẩn của bạn */}
                 {totalPages > 1 && (
-                    <div className="pagination">
-                        <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)} className="page-nav">Trước</button>
-                        {[...Array(totalPages)].map((_, i) => (
-                            <button key={i + 1} onClick={() => setCurrentPage(i + 1)} className={`page-number ${currentPage === i + 1 ? 'active' : ''}`}>{i + 1}</button>
-                        ))}
-                        <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)} className="page-nav">Sau</button>
+                    <div className="pagination-bar" style={{ marginTop: 'var(--sp-6)' }}>
+                        <div className="pagination-controls">
+                            <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)} className="page-btn">‹</button>
+                            {[...Array(totalPages)].map((_, i) => (
+                                <button key={i + 1} onClick={() => setCurrentPage(i + 1)} className={`page-btn ${currentPage === i + 1 ? 'active' : ''}`}>{i + 1}</button>
+                            ))}
+                            <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)} className="page-btn">›</button>
+                        </div>
                     </div>
                 )}
             </div>

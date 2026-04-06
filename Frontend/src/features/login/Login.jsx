@@ -78,40 +78,41 @@ export default function Login() {
       setMessage("❌ Đăng nhập thất bại. Kiểm tra lại Email/Mật khẩu!");
     }
   };
-
   return (
-<div className="min-h-screen pt-24 bg-gradient-to-br from-sky-100 via-white to-blue-200 flex items-center justify-center px-4">
+    <div className="page-wrapper" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="card" style={{ width: '100%', maxWidth: '400px', padding: 'var(--sp-8)' }}>
 
-      <div className="w-full max-w-md bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-white/30">
+        {/* Title Section */}
+        <div className="page-header" style={{ textAlign: 'center', marginBottom: 'var(--sp-8)', display: 'block' }}>
+          <h2 className="page-title" style={{ fontSize: '1.75rem', textAlign: 'center' }}>
+            Đăng nhập hệ thống
+          </h2>
+          <p className="page-subtitle" style={{ textAlign: 'center' }}>
+            Vui lòng nhập thông tin để truy cập quản trị
+          </p>
+        </div>
 
-        {/* Title */}
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
-          Đăng nhập hệ thống
-        </h2>
+        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-5)' }}>
 
-        <form onSubmit={handleLogin} className="space-y-5">
-
-          {/* Email */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
+          {/* Email Field */}
+          <div className="field">
+            <label className="field-label">
+              Email <span className="req">*</span>
             </label>
             <input
               type="email"
-              placeholder="Nhập email..."
+              placeholder="Nhập email của bạn..."
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white/70
-            focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500
-            transition shadow-sm"
+              className="field-input"
             />
           </div>
 
-          {/* Password */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Mật khẩu
+          {/* Password Field */}
+          <div className="field">
+            <label className="field-label">
+              Mật khẩu <span className="req">*</span>
             </label>
             <input
               type="password"
@@ -119,41 +120,58 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white/70
-            focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500
-            transition shadow-sm"
+              className="field-input"
             />
           </div>
 
-          {/* Button */}
+          {/* Error Message - Sử dụng style danger của bạn */}
+          {message && (
+            <div className="field-error" style={{
+              background: 'var(--danger-bg)',
+              padding: 'var(--sp-3)',
+              borderRadius: 'var(--r-md)',
+              border: '1px solid #fca5a5'
+            }}>
+              <span style={{ fontSize: '1.2rem' }}>⚠️</span>
+              {message}
+            </div>
+          )}
+
+          {/* Login Button */}
           <button
             type="submit"
-            className="w-full py-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 
-          text-white font-semibold text-lg shadow-lg
-          hover:from-sky-600 hover:to-blue-700
-          active:scale-[0.97] transition-all"
+            className="btn btn-primary"
+            style={{ width: '100%', justifyContent: 'center', marginTop: 'var(--sp-2)', padding: '12px' }}
           >
-            Đăng nhập
+            Đăng nhập vào hệ thống
           </button>
+          <Link 
+          to="/loginAdmin" 
+          className="btn btn-ghost" 
+          style={{ width: '100%', justifyContent: 'center', fontSize: '0.875rem' }}
+        >
+          🔑 Truy cập quyền Quản trị
+        </Link>
         </form>
 
-        {/* Error */}
-        {message && (
-          <div className="mt-5 text-center bg-red-100 text-red-700 py-2 px-3 rounded-lg text-sm">
-            {message}
-          </div>
-        )}
-
-        {/* Register */}
-        <p className="mt-6 text-center text-sm text-gray-600">
-          Chưa có tài khoản?{" "}
-          <Link
-            to="/register"
-            className="text-sky-600 font-semibold hover:underline"
-          >
-            Đăng ký ngay
-          </Link>
-        </p>
+        {/* Register Link */}
+        <div style={{ marginTop: 'var(--sp-6)', textAlign: 'center' }}>
+          <p className="page-subtitle">
+            Chưa có tài khoản?{" "}
+            <Link
+              to="/register"
+              style={{
+                color: 'var(--accent)',
+                fontWeight: '600',
+                textDecoration: 'none'
+              }}
+              onMouseOver={(e) => e.target.style.textDecoration = 'underline'}
+              onMouseOut={(e) => e.target.style.textDecoration = 'none'}
+            >
+              Đăng ký ngay
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

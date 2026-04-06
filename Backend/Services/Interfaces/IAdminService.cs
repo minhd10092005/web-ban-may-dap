@@ -10,5 +10,8 @@ namespace Backend.Services.Interfaces
         Task<AdminDto> CreateAsync(AdminCreateDto dto);
         Task<bool> UpdateAsync(int id, AdminUpdateDto dto);
         Task<bool> DeleteAsync(int id);
+
+
+        Task<AdminLoginResponseDto?> AuthenticateAsync(AdminLoginDto dto);
     }
 }
