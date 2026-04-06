@@ -1,8 +1,9 @@
 ﻿using Backend.DTOs.Product;
 using Backend.Models;
 using Backend.Repositories;
+using Backend.Services.Interfaces.minh;
 
-namespace Backend.Services
+namespace Backend.Services.Implementations.Implementations_cuaminh
 {
     public class ProductService_cuaminh : IProductService_cuaminh
     {

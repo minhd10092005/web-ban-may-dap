@@ -1,11 +1,11 @@
 ﻿using Backend.DTOs.Quote;
-using Backend.Services.Interfaces;
+using Backend.Services.Interfaces.Ngan;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 // LƯU Ý: Namespace phải viết đúng thế này để App.MapControllers() tìm thấy
-namespace Backend.Controllers
+namespace Backend.Controllers.Ngan
 {
     [ApiController]
     [Route("api/NganQuotes")] // Hoặc [Route("api/NganQuotes")]

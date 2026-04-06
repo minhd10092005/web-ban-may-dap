@@ -1,7 +1,7 @@
 ﻿using Backend.Data;
 using Backend.DTOs.Quote;
 using Backend.Models;
-using Backend.Services.Interfaces;
+using Backend.Services.Interfaces.Ngan;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

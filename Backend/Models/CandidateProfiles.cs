@@ -8,7 +8,7 @@ namespace Backend.Models
 
         public int UserId { get; set; }
         public virtual User User { get; set; } = null!;
-        [Required] [MaxLength(100)] public string FullName { get; set; } = string.Empty;
+        [Required][MaxLength(100)] public string FullName { get; set; } = string.Empty;
 
         [MaxLength(20)] public string Phone { get; set; } = string.Empty;
 
@@ -36,8 +36,17 @@ namespace Backend.Models
             ResumeUrl = resumeUrl;
         }
 
-        protected CandidateProfile()
+        public CandidateProfile()
         {
+        }
+
+        public CandidateProfile(int userId, string fullName, string phone, string address, string resumeUrl)
+        {
+            UserId = userId;
+            FullName = fullName;
+            Phone = phone;
+            Address = address;
+            ResumeUrl = resumeUrl;
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Backend.DTOs.Product;
-using Backend.Services;
+using Backend.Services.Interfaces.minh;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Backend.Controllers
+namespace Backend.Controllers.Controllers_cuaminh
 {
     [Route("api/Products")]
     [ApiController]

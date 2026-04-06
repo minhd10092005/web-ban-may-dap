@@ -1,7 +1,7 @@
 ﻿using Backend.DTOs.Quote;
 using System.Threading.Tasks;
 
-namespace Backend.Services.Interfaces
+namespace Backend.Services.Interfaces.Ngan
 {
     public interface IQuoteService_cuangan
     {

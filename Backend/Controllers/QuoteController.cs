@@ -8,9 +8,9 @@ namespace Backend.Controllers
    [ApiController]
    public class QuoteController : ControllerBase
    {
-       private readonly IQuoteService_cuangan _quoteService;
+       private readonly IQuoteService _quoteService;
 
-       public QuoteController(IQuoteService_cuangan quoteService)
+       public QuoteController(IQuoteService quoteService)
        {
            _quoteService = quoteService;
        }

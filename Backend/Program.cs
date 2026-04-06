@@ -5,11 +5,12 @@ using Backend.Repositories.Interfaces;
 using Backend.Services;
 using Backend.Services.Implementations.Cua_ngan;
 using Backend.Services.Interfaces.Ngan;
+using Backend.Services.Interfaces.minh;
+using Backend.Services.Implementations.Implementations_cuaminh;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,7 +48,6 @@ builder.Services.AddMemoryCache();
 // Extensions (giữ lại nếu bạn đã custom)
 builder.Services.AddSwaggerDocumentation();
 builder.Services.AddMapping();
-builder.Services.AddJwtAuth(builder.Configuration);
 builder.Services.AddCustomAuthorization();
 
 // ==========================================================
@@ -97,32 +97,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Swagger có JWT
-builder.Services.AddSwaggerGen(c =>
-{
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Description = "Nhập: Bearer {token}",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey
-    });
-
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
-});
 
 // ==========================================================
 // PIPELINE
