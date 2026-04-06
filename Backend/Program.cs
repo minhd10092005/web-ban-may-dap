@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Backend.Services.Implementations;
+using Backend.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +52,7 @@ builder.Services.AddSwaggerDocumentation();
 builder.Services.AddMapping();
 builder.Services.AddCustomAuthorization();
 
+
 // ==========================================================
 // DEPENDENCY INJECTION
 // ==========================================================
@@ -61,6 +64,15 @@ builder.Services.AddScoped<IProductService_cuaminh, ProductService_cuaminh>();
 // Repositories
 builder.Services.AddScoped<IProductRepository_cuaminh, ProductRepository_cuaminh>();
 builder.Services.AddScoped<ICandidateRepository, CandidateRepository>();
+
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICateService, CateService>();
+builder.Services.AddScoped<IProductDetailService, ProductDetailService>();
+builder.Services.AddScoped<IProductImageService, ProductImageService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IQuoteService, QuoteService>();
+builder.Services.AddScoped<ICandidateProfileService, CandidateProfileService>();
 
 // Other services
 builder.Services.AddScoped<IEmailService, EmailService>();
@@ -109,7 +121,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 // Custom middleware
-app.UseCustomMiddleware();
+// app.UseCustomMiddleware();
 
 app.UseHttpsRedirection();
 

@@ -78,71 +78,82 @@ export default function Login() {
       setMessage("❌ Đăng nhập thất bại. Kiểm tra lại Email/Mật khẩu!");
     }
   };
+
   return (
-    <div className="min-h-screen pt-24 bg-[#f0f2f5] flex items-center justify-center px-4">
+<div className="min-h-screen pt-24 bg-gradient-to-br from-sky-100 via-white to-blue-200 flex items-center justify-center px-4">
 
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-white/30">
 
- 
+        {/* Title */}
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
+          Đăng nhập hệ thống
+        </h2>
 
-        {/* Card */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <form onSubmit={handleLogin} className="space-y-5">
 
-          <form onSubmit={handleLogin} className="space-y-4">
-
-            {/* Email */}
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Email
+            </label>
             <input
               type="email"
-              placeholder="Email hoặc số điện thoại"
+              placeholder="Nhập email..."
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-md 
-            text-base focus:outline-none focus:border-blue-500"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white/70
+            focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500
+            transition shadow-sm"
             />
+          </div>
 
-            {/* Password */}
+          {/* Password */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Mật khẩu
+            </label>
             <input
               type="password"
-              placeholder="Mật khẩu"
+              placeholder="Nhập mật khẩu..."
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-gray-300 rounded-md 
-            text-base focus:outline-none focus:border-blue-500"
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white/70
+            focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500
+            transition shadow-sm"
             />
-
-            {/* Button login */}
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white text-lg font-semibold 
-            py-3 rounded-md hover:bg-blue-700 transition"
-            >
-              Đăng nhập
-            </button>
-          </form>
-
-          {/* Error */}
-          {message && (
-            <div className="mt-4 text-center text-red-500 text-sm">
-              {message}
-            </div>
-          )}
-
-          {/* Divider */}
-          <div className="my-4 border-t"></div>
-
-          {/* Register */}
-          <div className="text-center">
-            <Link
-              to="/register"
-              className="inline-block bg-green-500 text-white font-semibold 
-            px-4 py-2 rounded-md hover:bg-green-600 transition"
-            >
-              Tạo tài khoản mới
-            </Link>
           </div>
-        </div>
+
+          {/* Button */}
+          <button
+            type="submit"
+            className="w-full py-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 
+          text-white font-semibold text-lg shadow-lg
+          hover:from-sky-600 hover:to-blue-700
+          active:scale-[0.97] transition-all"
+          >
+            Đăng nhập
+          </button>
+        </form>
+
+        {/* Error */}
+        {message && (
+          <div className="mt-5 text-center bg-red-100 text-red-700 py-2 px-3 rounded-lg text-sm">
+            {message}
+          </div>
+        )}
+
+        {/* Register */}
+        <p className="mt-6 text-center text-sm text-gray-600">
+          Chưa có tài khoản?{" "}
+          <Link
+            to="/register"
+            className="text-sky-600 font-semibold hover:underline"
+          >
+            Đăng ký ngay
+          </Link>
+        </p>
       </div>
     </div>
   );
