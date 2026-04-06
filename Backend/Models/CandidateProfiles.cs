@@ -36,7 +36,7 @@ namespace Backend.Models
             ResumeUrl = resumeUrl;
         }
 
-        protected CandidateProfile()
+        public CandidateProfile()
         {
         }
     }

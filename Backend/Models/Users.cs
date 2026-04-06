@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 namespace Backend.Models
 {
 
@@ -32,6 +32,6 @@ namespace Backend.Models
         }
 
         // Constructor cho EF Core dùng 
-        protected User() { } 
+        public User() { } 
     }
 }

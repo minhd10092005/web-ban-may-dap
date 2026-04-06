@@ -2,34 +2,31 @@
 using Backend.Extensions;
 using Backend.Repositories;
 using Backend.Repositories.Interfaces;
-using Backend.Services;
+using Backend.Services; // Namespace thực tế của file ProductService_cuaminh
+using Backend.Services.Interfaces;
+using Backend.Services.Implementations;
 using Backend.Services.Implementations.Cua_ngan;
-using Backend.Services.Interfaces.Ngan;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // ==========================================================
-// SERVICES
+// 1. SERVICES & DATABASE CONFIGURATION
 // ==========================================================
 
-// Controllers
 builder.Services.AddControllers();
 
-// DB (MYSQL - chỉ giữ 1 chỗ duy nhất)
+// Cấu hình Database (MySQL)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySQL(connectionString!)
            .LogTo(Console.WriteLine, LogLevel.Information)
 );
 
-// CORS (gộp lại 1 policy duy nhất)
+// Cấu hình CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -40,36 +37,42 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Cache + Swagger base
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddMemoryCache();
-
-// Extensions (giữ lại nếu bạn đã custom)
-builder.Services.AddSwaggerDocumentation();
 builder.Services.AddMapping();
-builder.Services.AddJwtAuth(builder.Configuration);
 builder.Services.AddCustomAuthorization();
 
 // ==========================================================
-// DEPENDENCY INJECTION
+// 2. DEPENDENCY INJECTION (BẢN FIX THEO NAMESPACE PHẲNG)
 // ==========================================================
 
-// Services
-builder.Services.AddScoped<IQuoteService_cuangan, QuoteService_cuangan>();
+// --- Nhóm Sản phẩm ---
+// Vì file của bro khai báo namespace Backend.Services nên gọi trực tiếp như này:
+builder.Services.AddScoped<IProductService, ProductService_cuaminh>();
 builder.Services.AddScoped<IProductService_cuaminh, ProductService_cuaminh>();
-
-// Repositories
 builder.Services.AddScoped<IProductRepository_cuaminh, ProductRepository_cuaminh>();
+
+// --- Nhóm Category & Details (Các file này nằm trong namespace Implementations) ---
+builder.Services.AddScoped<ICateService, CateService>();
+builder.Services.AddScoped<IProductDetailService, ProductDetailService>();
+builder.Services.AddScoped<IProductImageService, ProductImageService>();
+
+// --- Nhóm Admin & User ---
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<ICandidateProfileService, CandidateProfileService>();
 builder.Services.AddScoped<ICandidateRepository, CandidateRepository>();
 
-// Other services
+// --- Tiện ích ---
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IQuoteService, QuoteService>();
+builder.Services.AddScoped<IQuoteService_cuangan, QuoteService_cuangan>();
 
 // ==========================================================
-// JWT AUTH
+// 3. JWT AUTHENTICATION LOGIC
 // ==========================================================
 
-var jwtKey = builder.Configuration["Jwt:Key"]!;
+var jwtKey = builder.Configuration["Jwt:Key"] ?? "Chuoi_Key_Du_Phong_Cho_Duan_May_Dap_123456";
 var keyBytes = Encoding.UTF8.GetBytes(jwtKey);
 
 builder.Services.AddAuthentication(options =>
@@ -81,74 +84,32 @@ builder.Services.AddAuthentication(options =>
 {
     options.RequireHttpsMetadata = false;
     options.SaveToken = true;
-
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
-
         ValidateIssuer = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-
+        ValidIssuer = builder.Configuration["Jwt:Issuer"] ?? "Backend",
         ValidateAudience = true,
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-
+        ValidAudience = builder.Configuration["Jwt:Audience"] ?? "Frontend",
         ClockSkew = TimeSpan.Zero
     };
 });
 
-// Swagger có JWT
-builder.Services.AddSwaggerGen(c =>
-{
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Description = "Nhập: Bearer {token}",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey
-    });
-
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
-});
-
-// ==========================================================
-// PIPELINE
-// ==========================================================
-
 var app = builder.Build();
 
-// Swagger
-app.UseSwagger();
-app.UseSwaggerUI();
+// ==========================================================
+// 4. MIDDLEWARE PIPELINE
+// ==========================================================
 
-// Custom middleware
 app.UseCustomMiddleware();
-
 app.UseHttpsRedirection();
-
 app.UseRouting();
-
-// CORS
 app.UseCors("AllowFrontend");
 
-// Auth
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Map API
 app.MapControllers();
 
 app.Run();
