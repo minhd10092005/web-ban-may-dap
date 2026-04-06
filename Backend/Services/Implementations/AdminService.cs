@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Backend.Models;
 
 namespace Backend.Services.Implementations
 {
@@ -169,6 +170,29 @@ namespace Backend.Services.Implementations
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+        public async Task<IEnumerable<Admin>> GetTrashAsync()
+        {
+            return await _context.Admins
+                .IgnoreQueryFilters() // Xuyên qua lớp lọc IsDeleted = 0
+                .Where(u => u.IsDeleted == true)
+                .ToListAsync();
+        }
+
+        public async Task<bool> RestoreAsync(int id)
+        {
+
+            var item = await _context.Admins
+                .IgnoreQueryFilters()
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (item == null) return false;
+
+            item.IsDeleted = false; // Khôi phục
+            item.UpdatedAt = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

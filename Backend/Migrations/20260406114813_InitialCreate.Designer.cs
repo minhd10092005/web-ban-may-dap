@@ -3,7 +3,6 @@ using System;
 using Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -12,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260328030726_AddProductImages")]
-    partial class AddProductImages
+    [Migration("20260406114813_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,9 +20,7 @@ namespace Backend.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "10.0.5")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Backend.Models.Admin", b =>
                 {
@@ -31,331 +28,340 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.ToTable("Admins");
+                    b.ToTable("admins", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.CandidateProfile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("varchar(200)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("FullName");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("ResumeUrl")
                         .IsRequired()
                         .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("CandidateProfiles");
+                    b.ToTable("candidateprofiles", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.Category", b =>
                 {
                     b.Property<int>("CateId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CateId"));
+                        .HasColumnType("int")
+                        .HasColumnName("CateId");
 
                     b.Property<string>("CateName")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("CateName");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("CreatedAt");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("DeletedAt");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("IsDeleted");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("UpdatedAt");
 
                     b.HasKey("CateId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("categories", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CategoryCateId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("CreatedAt");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("DeletedAt");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("IsDeleted");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("ProductName");
 
                     b.Property<string>("ProductType")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("ProductType");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("UpdatedAt");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryCateId");
-
-                    b.ToTable("Products");
+                    b.ToTable("products", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.ProductDetail", b =>
                 {
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ProductId");
 
-                    b.Property<int>("CateId")
-                        .HasColumnType("int");
+                    b.Property<int?>("CateId")
+                        .HasColumnType("int")
+                        .HasColumnName("CateId");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .HasColumnType("varchar(2000)")
+                        .HasColumnName("Description");
 
                     b.HasKey("ProductId");
 
                     b.HasIndex("CateId");
 
-                    b.ToTable("ProductDetails");
+                    b.ToTable("productdetails", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.ProductImage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("CreatedAt");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("ImageUrl");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("IsDeleted");
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ProductId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages");
+                    b.ToTable("productimages", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.Quote", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Comments")
                         .IsRequired()
                         .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasColumnType("varchar(1000)")
+                        .HasColumnName("Comments");
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Country")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("CreatedAt");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("FullName");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("IsDeleted");
 
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("PostalCode")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("State")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Quotes");
+                    b.ToTable("quotes", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("varchar(150)")
+                        .HasColumnName("Email");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.ToTable("Users");
+                    b.ToTable("users", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.CandidateProfile", b =>
@@ -369,21 +375,11 @@ namespace Backend.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Backend.Models.Product", b =>
-                {
-                    b.HasOne("Backend.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryCateId");
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("Backend.Models.ProductDetail", b =>
                 {
                     b.HasOne("Backend.Models.Category", "Category")
-                        .WithMany("ProductDetails")
-                        .HasForeignKey("CateId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithMany()
+                        .HasForeignKey("CateId");
 
                     b.HasOne("Backend.Models.Product", "Product")
                         .WithOne("ProductDetail")
@@ -405,11 +401,6 @@ namespace Backend.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Backend.Models.Category", b =>
-                {
-                    b.Navigation("ProductDetails");
                 });
 
             modelBuilder.Entity("Backend.Models.Product", b =>

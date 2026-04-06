@@ -4,6 +4,7 @@ using Backend.DTOs.Common;
 using Backend.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Backend.Services.Interfaces;
+using Backend.Models;
 
 namespace Backend.Services.Implementations
 {
@@ -52,8 +53,8 @@ namespace Backend.Services.Implementations
         public async Task<UserDto> CreateAsync(UserCreateDto dto)
         {
             var user = new Models.User(
-                dto.Email, 
-                dto.PhoneNumber, 
+                dto.Email,
+                dto.PhoneNumber,
                 BCrypt.Net.BCrypt.HashPassword(dto.Password)
             );
 
@@ -91,6 +92,28 @@ namespace Backend.Services.Implementations
             if (user == null) return false;
 
             user.IsDeleted = true; // Soft Delete
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<IEnumerable<User>> GetTrashAsync()
+        {
+            return await _context.Users
+                .IgnoreQueryFilters() // Xuyên qua lớp lọc IsDeleted = 0
+                .Where(u => u.IsDeleted == true)
+                .ToListAsync();
+        }
+
+        public async Task<bool> RestoreAsync(int id)
+        {
+            var user = await _context.Users
+                .IgnoreQueryFilters()
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null) return false;
+
+            user.IsDeleted = false; // Khôi phục lại
+            user.UpdatedAt = DateTime.Now;
+
             await _context.SaveChangesAsync();
             return true;
         }

@@ -1,5 +1,6 @@
 using Backend.DTOs.Admin;
 using Backend.DTOs.Common;
+using Backend.Models;
 
 namespace Backend.Services.Interfaces
 {
@@ -13,5 +14,7 @@ namespace Backend.Services.Interfaces
 
 
         Task<AdminLoginResponseDto?> AuthenticateAsync(AdminLoginDto dto);
+        Task<IEnumerable<Admin>> GetTrashAsync();
+        Task<bool> RestoreAsync(int id);
     }
 }

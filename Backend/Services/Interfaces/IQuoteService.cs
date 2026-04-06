@@ -1,5 +1,6 @@
 using Backend.DTOs.Quote;
 using Backend.DTOs.Common;
+using Backend.Models;
 
 namespace Backend.Services.Interfaces
 {
@@ -9,5 +10,7 @@ namespace Backend.Services.Interfaces
         Task<QuoteDto?> GetByIdAsync(int id);
         Task<QuoteDto> CreateAsync(QuoteCreateDto dto);
         Task<bool> DeleteAsync(int id);
+        Task<IEnumerable<Quote>> GetTrashAsync();
+        Task<bool> RestoreAsync(int id);
     }
 }

@@ -54,5 +54,22 @@ namespace Backend.Controllers
             if (!deleted) return NotFound("User not found.");
             return NoContent();
         }
+        [HttpGet("trash")]
+        public async Task<IActionResult> GetTrash()
+        {
+            // Gọi qua service thay vì gọi trực tiếp _context
+            var result = await _userService.GetTrashAsync();
+            return Ok(result);
+        }
+
+        [HttpPost("restore/{id}")]
+        public async Task<IActionResult> Restore(int id)
+        {
+            var success = await _userService.RestoreAsync(id);
+            if (!success) return NotFound(new { message = "Không tìm thấy người dùng trong thùng rác!" });
+            
+            return Ok(new { message = "Khôi phục thành công!" });
+        }
     }
+    
 }

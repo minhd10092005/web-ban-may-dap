@@ -4,6 +4,7 @@ using Backend.DTOs.Common;
 using Backend.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Backend.Services.Interfaces;
+using Backend.Models;
 
 namespace Backend.Services.Implementations
 {
@@ -105,6 +106,26 @@ namespace Backend.Services.Implementations
             if (profile == null) return false;
 
             profile.IsDeleted = true; // Soft Delete
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<IEnumerable<CandidateProfile>> GetTrashAsync()
+        {
+            return await _context.CandidateProfiles
+                .IgnoreQueryFilters() // Xuyên qua lớp lọc IsDeleted = 0
+                .Where(u => u.IsDeleted == true)
+                .ToListAsync();
+        }
+        public async Task<bool> RestoreAsync(int id)
+        {
+            var profile = await _context.CandidateProfiles
+                .IgnoreQueryFilters()
+                .FirstOrDefaultAsync(cp => cp.Id == id);
+
+            if (profile == null) return false;
+
+            profile.IsDeleted = false;
+
             await _context.SaveChangesAsync();
             return true;
         }

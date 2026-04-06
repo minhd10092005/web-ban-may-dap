@@ -91,6 +91,55 @@ namespace Backend.Data
                 entity.Property(c => c.IsDeleted).HasColumnName("IsDeleted");
                 entity.Property(c => c.DeletedAt).HasColumnName("DeletedAt");
             });
+            modelBuilder.Entity<User>(entity =>
+    {
+        entity.ToTable("users"); // Kiểm tra lại tên bảng trong MySQL/SQL Server có phải là "users" không
+        entity.HasKey(u => u.Id);
+        entity.Property(u => u.Id).HasColumnName("Id");
+        entity.Property(u => u.Email).HasColumnName("Email");
+        // Nếu dùng Soft Delete
+        entity.HasQueryFilter(u => !u.IsDeleted);
+    });
+
+            // 6. Cấu hình bảng CandidateProfile (Quan trọng vì bảng này hay sai tên cột)
+            modelBuilder.Entity<CandidateProfile>(entity =>
+            {
+                entity.ToTable("candidateprofiles");
+                entity.HasKey(cp => cp.Id);
+
+                entity.Property(cp => cp.Id).HasColumnName("Id");
+                entity.Property(cp => cp.UserId).HasColumnName("UserId"); // Khóa ngoại kết nối với bảng User
+                entity.Property(cp => cp.FullName).HasColumnName("FullName");
+                entity.HasQueryFilter(a => !a.IsDeleted);
+                // Cấu hình quan hệ 1-1 với User (nếu cần)
+                entity.HasOne(cp => cp.User)
+                      .WithOne()
+                      .HasForeignKey<CandidateProfile>(cp => cp.UserId);
+            });
+
+            // 7. Cấu hình bảng Quote
+            modelBuilder.Entity<Quote>(entity =>
+            {
+                entity.ToTable("quotes");
+                entity.HasKey(q => q.Id);
+                entity.Property(q => q.Id).HasColumnName("Id");
+                entity.Property(q => q.FullName).HasColumnName("FullName");
+                entity.Property(q => q.Comments).HasColumnName("Comments");
+                entity.Property(q => q.CreatedAt).HasColumnName("CreatedAt");
+
+                // THÊM DÒNG NÀY ĐỂ KHỚP VỚI DATABASE
+                entity.Property(q => q.IsDeleted).HasColumnName("IsDeleted");
+
+                entity.HasQueryFilter(a => !a.IsDeleted);
+            });
+
+            // 8. Cấu hình bảng Admin
+            modelBuilder.Entity<Admin>(entity =>
+            {
+                entity.ToTable("admins");
+                entity.HasKey(a => a.Id);
+                entity.HasQueryFilter(a => !a.IsDeleted);
+            });
         }
 
         // Tự động gán thời gian khi lưu

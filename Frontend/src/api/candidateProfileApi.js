@@ -1,6 +1,9 @@
 import axiosClient from "./axiosClient";
 
 const candidateProfileApi = {
+    reviewCv: (data) => {
+        return axiosClient.post("/AdminRecruitment/review-cv", data);
+    },
     getAll: (params) => {
         const url = "/candidate-profiles";
         return axiosClient.get(url, { params });

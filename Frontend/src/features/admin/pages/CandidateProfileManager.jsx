@@ -3,35 +3,35 @@ import { toast } from "react-toastify";
 import candidateProfileApi from "../../../api/candidateProfileApi";
 import userApi from "../../../api/userApi";
 
-const IconSearch       = () => <span style={{fontSize:15}}>🔍</span>;
-const IconPlus         = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
-const IconEdit         = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>;
-const IconTrash        = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>;
-const IconChevronLeft  = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>;
-const IconChevronRight = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><polyline points="9 18 15 12 9 6"/></svg>;
+const IconSearch = () => <span style={{ fontSize: 15 }}>🔍</span>;
+const IconPlus = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>;
+const IconEdit = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>;
+const IconTrash = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14H6L5 6" /><path d="M10 11v6" /><path d="M14 11v6" /><path d="M9 6V4h6v2" /></svg>;
+const IconChevronLeft = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><polyline points="15 18 9 12 15 6" /></svg>;
+const IconChevronRight = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><polyline points="9 18 15 12 9 6" /></svg>;
 
 const EMPTY_CREATE = { userId: "", fullName: "", phone: "", address: "", resumeUrl: "" };
 const EMPTY_UPDATE = { fullName: "", phone: "", address: "", resumeUrl: "" };
 
 const CandidateProfileManager = () => {
-    const [dataList, setDataList]       = useState([]);
-    const [loading, setLoading]         = useState(false);
-    const [meta, setMeta]               = useState({ totalPages: 0, totalCount: 0 });
+    const [dataList, setDataList] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [meta, setMeta] = useState({ totalPages: 0, totalCount: 0 });
     const [searchInput, setSearchInput] = useState("");
-    const [filters, setFilters]         = useState({ pageNumber: 1, pageSize: 10, searchTerm: "" });
+    const [filters, setFilters] = useState({ pageNumber: 1, pageSize: 10, searchTerm: "" });
 
     // Modal states
-    const [createOpen, setCreateOpen]   = useState(false);
-    const [editItem, setEditItem]       = useState(null);
+    const [createOpen, setCreateOpen] = useState(false);
+    const [editItem, setEditItem] = useState(null);
     const [deleteTarget, setDeleteTarget] = useState(null);
-    const [deleting, setDeleting]       = useState(false);
-    const [saving, setSaving]           = useState(false);
-    const [createForm, setCreateForm]   = useState(EMPTY_CREATE);
-    const [editForm, setEditForm]       = useState(EMPTY_UPDATE);
+    const [deleting, setDeleting] = useState(false);
+    const [saving, setSaving] = useState(false);
+    const [createForm, setCreateForm] = useState(EMPTY_CREATE);
+    const [editForm, setEditForm] = useState(EMPTY_UPDATE);
     const [createErrors, setCreateErrors] = useState({});
 
     // Users list for dropdown
-    const [users, setUsers]             = useState([]);
+    const [users, setUsers] = useState([]);
     const [loadingUsers, setLoadingUsers] = useState(false);
 
     const loadData = useCallback(async () => {
@@ -63,8 +63,8 @@ const CandidateProfileManager = () => {
     // Validate create form
     const validateCreate = () => {
         const errs = {};
-        if (!createForm.userId)           errs.userId   = "Vui lòng chọn User";
-        if (!createForm.fullName.trim())  errs.fullName = "Họ tên không được để trống";
+        if (!createForm.userId) errs.userId = "Vui lòng chọn User";
+        if (!createForm.fullName.trim()) errs.fullName = "Họ tên không được để trống";
         return errs;
     };
 
@@ -109,7 +109,38 @@ const CandidateProfileManager = () => {
         } catch { toast.error("Xóa thất bại!"); }
         finally { setDeleting(false); setDeleteTarget(null); }
     };
+    // Thêm hàm này vào trong Component CandidateProfileManager
+    const handleReview = async (userId, fullName) => {
+        const isAccepted = window.confirm(`Bạn có chắc chắn muốn DUYỆT hồ sơ của [${fullName}] và gửi mail thông báo không?`);
 
+        // Nếu bấm Cancel thì dừng
+        if (!isAccepted) return;
+
+        // Nhập thời gian phỏng vấn (Nếu duyệt)
+        const interviewTime = window.prompt("Nhập thời gian phỏng vấn (Ví dụ: 09:00 AM - 15/04/2026):", "08:30 AM sáng mai");
+        if (!interviewTime) {
+            toast.warning("Bạn phải nhập thời gian phỏng vấn để gửi mail!");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const response = await candidateProfileApi.reviewCv({
+                userId: userId,
+                isAccepted: true,
+                interviewTime: interviewTime
+            });
+
+            if (response.success) {
+                toast.success(`Đã gửi mail thành công cho ${fullName}!`);
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error(error.response?.data?.message || "Lỗi khi duyệt hồ sơ hoặc gửi mail!");
+        } finally {
+            setLoading(false);
+        }
+    };
     const openCreate = () => {
         setCreateForm(EMPTY_CREATE);
         setCreateErrors({});
@@ -192,8 +223,22 @@ const CandidateProfileManager = () => {
                                         </td>
                                         <td className="col-actions">
                                             <div className="row-actions">
-                                                <button className="btn btn-sm btn-ghost" onClick={() => openEdit(item)}><IconEdit /> Sửa</button>
-                                                <button className="btn btn-sm btn-danger" onClick={() => setDeleteTarget(item)}><IconTrash /> Xóa</button>
+                                               
+                                                <button
+                                                    className="btn btn-sm btn-ghost"
+                                                    style={{ color: 'var(--primary)', fontWeight: 'bold' }}
+                                                    onClick={() => handleReview(item.userId, item.fullName)}
+                                                >
+                                            Duyệt
+                                                </button>
+
+                                                <button className="btn btn-sm btn-ghost" onClick={() => openEdit(item)}>
+                                                    <IconEdit /> Sửa
+                                                </button>
+
+                                                <button className="btn btn-sm btn-danger" onClick={() => setDeleteTarget(item)}>
+                                                    <IconTrash /> Xóa
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -278,7 +323,7 @@ const CandidateProfileManager = () => {
                             <div className="modal-body">
                                 <div className="field">
                                     <label className="field-label">User</label>
-                                    <input type="text" className="field-input" value={editItem.email} disabled style={{opacity:0.6}} />
+                                    <input type="text" className="field-input" value={editItem.email} disabled style={{ opacity: 0.6 }} />
                                 </div>
                                 <div className="field">
                                     <label className="field-label">Họ tên <span className="req">*</span></label>
